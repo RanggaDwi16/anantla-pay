@@ -2,6 +2,7 @@ import 'package:anantla_pay/src/core/helpers/custom_app_bar.dart';
 import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
+import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
 import 'package:anantla_pay/src/presentation/pay/controllers/amunt_provider.dart';
 import 'package:anantla_pay/src/presentation/pay/controllers/select_currency_provider.dart';
 import 'package:anantla_pay/src/presentation/pay/data/currency.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class PayPage extends ConsumerWidget {
   const PayPage({super.key});
@@ -21,15 +23,31 @@ class PayPage extends ConsumerWidget {
 
     void onNumberPress(String number) {
       final current = ref.read(amountProvider.notifier).state;
+      String updated = "";
+
       if (number == "<") {
-        ref.read(amountProvider.notifier).state =
+        updated =
             current.length > 1 ? current.substring(0, current.length - 1) : "0";
       } else if (current == "0") {
-        ref.read(amountProvider.notifier).state = number;
+        updated = number;
       } else {
-        ref.read(amountProvider.notifier).state = current + number;
+        updated = current + number;
       }
+
+      // ✅ Validasi maksimal 10 juta (10000000)
+      final value = int.tryParse(updated.replaceAll(RegExp(r'\D'), '')) ?? 0;
+      if (value > 10000000) {
+        context.showCustomSnackBar("The maximum amount is Rp10,000,000",
+            isError: true);
+        return;
+      }
+
+      ref.read(amountProvider.notifier).state = updated;
     }
+
+    final formattedAmount =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0)
+            .format(int.tryParse(amount) ?? 0);
 
     return Scaffold(
       backgroundColor: AppColor.primaryColor,
@@ -51,7 +69,7 @@ class PayPage extends ConsumerWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    "$symbol$amount",
+                    formattedAmount,
                     style: const TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,

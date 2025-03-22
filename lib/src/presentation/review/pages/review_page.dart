@@ -1,10 +1,11 @@
 import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
+import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/constant/path.dart';
+import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
 import 'package:anantla_pay/src/presentation/pay/controllers/amunt_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -92,8 +93,15 @@ class ReviewPage extends HookConsumerWidget {
                     alignment: Alignment.centerLeft,
                     child: Button.filled(
                       onPressed: () {
-                        context.pop();
-                        ref.read(amountProvider.notifier).state = 0.toString();
+                        context.showSuccessDialog(
+                          title: "Success!",
+                          message: "Payment has been successfully sent.",
+                          onConfirm: () {
+                            context.pushReplacementNamed(RouteName.main);
+                            ref.read(amountProvider.notifier).state =
+                                0.toString();
+                          },
+                        );
                       },
                       label: 'Pay',
                       isPay: true,

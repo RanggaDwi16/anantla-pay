@@ -1,3 +1,3 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final selectedCurrencyProvider = StateProvider<String>((ref) => 'USD');
+final selectedCurrencyProvider = StateProvider<String>((ref) => 'IDR');

@@ -2,8 +2,10 @@ import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/presentation/account/pages/account_page.dart';
 import 'package:anantla_pay/src/presentation/card/pages/card_page.dart';
 import 'package:anantla_pay/src/presentation/home/pages/home_page.dart';
+import 'package:anantla_pay/src/presentation/login/pages/login_page.dart';
 import 'package:anantla_pay/src/presentation/main/pages/main_page.dart';
 import 'package:anantla_pay/src/presentation/pay/pages/pay_page.dart';
+import 'package:anantla_pay/src/presentation/register/pages/register_page.dart';
 import 'package:anantla_pay/src/presentation/review/pages/review_page.dart';
 import 'package:anantla_pay/src/presentation/splash/pages/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,16 @@ Raw<GoRouter> router(RouterRef ref) {
           },
         );
       },
+    ),
+    GoRoute(
+      path: '/login',
+      name: RouteName.login,
+      builder: (context, state) => LoginPage(),
+    ),
+    GoRoute(
+      path: '/register',
+      name: RouteName.register,
+      builder: (context, state) => const RegisterPage(),
     ),
     GoRoute(
       path: '/home',

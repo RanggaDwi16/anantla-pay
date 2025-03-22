@@ -1,3 +1,4 @@
+import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,16 +24,16 @@ class _SplashPageState extends State<SplashPage>
       duration: const Duration(milliseconds: 1500),
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    _fadeAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeIn,
     ));
 
     _controller.forward();
 
-    /// Delay lalu push ke MainPage
     Future.delayed(const Duration(seconds: 3), () {
-      context.go('/main');
+      context.pushReplacementNamed(RouteName.login);
     });
   }
 

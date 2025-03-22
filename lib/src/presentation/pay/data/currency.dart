@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 
 final List<Map<String, dynamic>> currencies = [
   {
+    'code': 'IDR',
+    'name': 'Indonesian Rupiah',
+    'icon': Icons.attach_money,
+    'color': Colors.green,
+  },
+  {
     'code': 'USD',
     'name': 'US Dollar',
     'icon': Icons.attach_money,
@@ -35,6 +41,7 @@ final List<Map<String, dynamic>> currencies = [
 ];
 
 final Map<String, String> currencySymbols = {
+  'IDR': 'Rp',
   'USD': '\$',
   'EUR': '€',
   'MXN': '\$',

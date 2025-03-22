@@ -76,7 +76,10 @@ class BalanceSection extends StatelessWidget {
             Gap(10),
             Button.filled(
               width: 150,
-              onPressed: () {},
+              onPressed: () {
+                context.showCustomSnackBar(
+                    'Feature is on development. Stay tuned!');
+              },
               label: 'Withdraw',
               color: AppColor.primaryBlack,
               borderColor: Colors.white,
