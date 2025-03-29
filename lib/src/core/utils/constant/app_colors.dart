@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color primaryColor = Color(0xFFFFEB00); // Warna kuning utama
+  static const Color primaryColor = Color(0xFF9FE872); // Warna kuning utama
   //warna kuning kedua
   static const Color secondaryColor = Color.fromARGB(255, 241, 211, 62);
   static const Color primaryBlack = Color(0xFF000000); // Warna hitam utama

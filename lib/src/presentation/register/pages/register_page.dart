@@ -1,5 +1,7 @@
 import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:anantla_pay/src/core/helpers/widgets/custom_text_field.dart';
+import 'package:anantla_pay/src/core/main/controllers/auth/authentication_provider.dart';
+import 'package:anantla_pay/src/core/main/domain/entities/register_param.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
@@ -15,48 +17,58 @@ class RegisterPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authenticationProvider);
     final nameController = useTextEditingController();
     final emailController = useTextEditingController();
-    final passwordController = useTextEditingController();
-    final confirmPasswordController = useTextEditingController();
+    final nomorHpController = useTextEditingController();
+    final wishlistChecked = useState<bool>(false);
 
-    final passwordVisible = useState(false);
-    final confirmPasswordVisible = useState(false);
-
-    final formData =
-        useState((name: '', email: '', password: '', confirmPassword: ''));
+    final formData = useState((
+      name: '',
+      email: '',
+      nomorHp: '',
+    ));
 
     final nameError = useState<String?>(null);
     final emailError = useState<String?>(null);
-    final passwordError = useState<String?>(null);
-    final confirmPasswordError = useState<String?>(null);
+    final nomorHpError = useState<String?>(null);
 
     useEffect(() {
       void update() {
-        if (!nameController.hasListeners) return;
-
         formData.value = (
           name: nameController.text,
           email: emailController.text,
-          password: passwordController.text,
-          confirmPassword: confirmPasswordController.text,
+          nomorHp: nomorHpController.text,
         );
+
+        // Real-time validation
+        nameError.value =
+            formData.value.name.isEmpty ? 'Name is required' : null;
+
+        emailError.value = !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}')
+                .hasMatch(formData.value.email)
+            ? 'Invalid email'
+            : null;
+
+        nomorHpError.value =
+            formData.value.nomorHp.length < 10 ? 'Nomor HP tidak valid' : null;
       }
 
       nameController.addListener(update);
       emailController.addListener(update);
-      passwordController.addListener(update);
-      confirmPasswordController.addListener(update);
+      nomorHpController.addListener(update);
 
       return () {
         nameController.removeListener(update);
         emailController.removeListener(update);
-        passwordController.removeListener(update);
-        confirmPasswordController.removeListener(update);
+        nomorHpController.removeListener(update);
       };
     }, []);
 
-    final isValid = ref.watch(registerFormValidProvider(formData.value));
+    final isValid = ref.watch(registerFormValidProvider(formData.value)) &&
+        nameError.value == null &&
+        emailError.value == null &&
+        nomorHpError.value == null;
 
     return Scaffold(
       body: SafeArea(
@@ -84,8 +96,8 @@ class RegisterPage extends HookConsumerWidget {
                 /// Name
                 CustomTextField(
                   controller: nameController,
-                  labelText: "Full Name",
-                  hintText: "Enter your full name",
+                  labelText: "User Name",
+                  hintText: "Enter your user name",
                   isRequired: true,
                 ),
                 if (nameError.value != null) ...[
@@ -119,28 +131,17 @@ class RegisterPage extends HookConsumerWidget {
                 ],
                 const Gap(20),
 
-                /// Password
+                /// Nomor HP
                 CustomTextField(
-                  controller: passwordController,
-                  labelText: "Password",
-                  hintText: "Enter your password",
-                  obscureText: !passwordVisible.value,
+                  controller: nomorHpController,
+                  labelText: "Nomor HP",
+                  hintText: "08xxxxxxxxxx",
                   isRequired: true,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      passwordVisible.value
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: AppColor.primaryBlack,
-                    ),
-                    onPressed: () =>
-                        passwordVisible.value = !passwordVisible.value,
-                  ),
                 ),
-                if (passwordError.value != null) ...[
+                if (nomorHpError.value != null) ...[
                   const Gap(10),
                   Text(
-                    passwordError.value!,
+                    nomorHpError.value!,
                     style: const TextStyle(
                       color: Colors.red,
                       fontSize: 12,
@@ -149,52 +150,67 @@ class RegisterPage extends HookConsumerWidget {
                 ],
                 const Gap(20),
 
-                /// Confirm Password
-                CustomTextField(
-                  controller: confirmPasswordController,
-                  labelText: "Confirm Password",
-                  hintText: "Re-enter your password",
-                  obscureText: !confirmPasswordVisible.value,
-                  isRequired: true,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      confirmPasswordVisible.value
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: AppColor.primaryBlack,
-                    ),
-                    onPressed: () => confirmPasswordVisible.value =
-                        !confirmPasswordVisible.value,
-                  ),
+                /// Wishlist Checkbox
+                const Text(
+                  "Do you want to be included in the wishlist?",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
-                if (confirmPasswordError.value != null) ...[
-                  const Gap(10),
-                  Text(
-                    confirmPasswordError.value!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
+                const Gap(5),
+                Text(
+                  "By enabling the checkbox below, you will be included in the list of people who will be notified when the app is fully released.",
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                ),
+                const Gap(10),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: wishlistChecked.value,
+                      onChanged: (value) {
+                        wishlistChecked.value = value ?? false;
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      activeColor: AppColor.primaryBlack,
                     ),
-                  ),
-                ],
+                    const Text(
+                      "Yes, I want in",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
 
                 const Gap(40),
 
                 Button.filled(
-                    label: "Register",
-                    color: isValid ? AppColor.primaryBlack : Colors.grey,
+                    label: auth.isLoading ? 'Loading...' : 'Register',
+                    color: auth.isLoading ? Colors.grey : AppColor.primaryBlack,
                     textColor: Colors.white,
                     borderRadius: 12,
+                    disabled: !isValid,
                     onPressed: () {
                       if (isValid) {
-                        context.showSuccessDialog(
-                          title: "Success!",
-                          message: "Your registration is successful",
-                          onConfirm: () {
-                            context.pop();
-                            context.pushReplacementNamed(RouteName.login);
-                          },
-                        );
+                        ref.read(authenticationProvider.notifier).register(
+                            params: RegisterParams(
+                              username: formData.value.name,
+                              email: formData.value.email,
+                              phone: formData.value.nomorHp,
+                              countryCode: 'ID',
+                              clientId: 25,
+                            ),
+                            onSuccess: () {
+                              context.showSuccessDialog(
+                                title: 'Register',
+                                message:
+                                    'Register Success, We sent your password to your email',
+                                onConfirm: () {
+                                  context.pushReplacementNamed(RouteName.login);
+                                },
+                              );
+                            },
+                            onError: () {
+                              context.customErrorDialog('Register Failed');
+                            });
                       }
                     }),
                 const Gap(20),

@@ -1,5 +1,8 @@
+import 'package:anantla_pay/src/core/main/controllers/auth/authentication_provider.dart';
+import 'package:anantla_pay/src/core/main/domain/entities/otp_params.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
+import 'package:anantla_pay/src/presentation/home/controllers/get_user/fetch_user_provider.dart';
 import 'package:anantla_pay/src/presentation/login/controllers/login_form_provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,8 +19,10 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = useTextEditingController();
-    final passwordController = useTextEditingController();
+    final auth = ref.watch(authenticationProvider);
+    final emailController =
+        useTextEditingController(text: 'tari@bangunrumah.com');
+    final passwordController = useTextEditingController(text: 'U(8kZv%yPe');
 
     final isFormValid = ref.watch(loginFormProvider);
     final emailError = ref.watch(emailErrorProvider);
@@ -136,18 +141,26 @@ class LoginPage extends HookConsumerWidget {
 
                 /// Login Button
                 Button.filled(
-                  label: "Login",
-                  color: isFormValid ? AppColor.primaryBlack : Colors.grey,
+                  label: auth.isLoading ? 'Loading...' : 'Login',
+                  color: auth.isLoading ? Colors.grey : AppColor.primaryBlack,
+                  disabled: !isFormValid,
                   textColor: Colors.white,
                   borderRadius: 12,
                   onPressed: () {
-                    context.showSuccessDialog(
-                      title: "Success!",
-                      message: "Your login is successful",
-                      onConfirm: () {
-                        context.pushReplacementNamed(RouteName.main);
-                      },
-                    );
+                    ref.read(authenticationProvider.notifier).login(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                          onSuccess: (message) {
+                            ref.invalidate(fetchUserProvider);
+                            _showOtpDialog(
+                                context, ref, emailController.text.trim());
+                          },
+                          onError: () {
+                            context.customErrorDialog(
+                              'Login Failed, Try Again',
+                            );
+                          },
+                        );
                   },
                 ),
 
@@ -162,11 +175,103 @@ class LoginPage extends HookConsumerWidget {
                     ),
                   ],
                 ),
+
+                //forgot password
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () =>
+                          context.pushNamed(RouteName.forgotPassword),
+                      child: const Text("Forgot Password?"),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  /// **Dialog OTP setelah login**
+  void _showOtpDialog(BuildContext context, WidgetRef ref, String email) {
+    final otpController = useTextEditingController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        // ✅ Store the dialog context
+        return AlertDialog(
+          title: const Text("Enter OTP"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("We have sent a verification code to $email."),
+              const Gap(10),
+              TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: "OTP Code",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (dialogContext.mounted) Navigator.pop(dialogContext);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                final enteredOtp = otpController.text.trim();
+                if (enteredOtp.isNotEmpty) {
+                  ref.read(authenticationProvider.notifier).verifOtp(
+                        params: OtpParams(
+                          otpCode: enteredOtp,
+                          email: email, // ✅ Use email from login input
+                        ),
+                        onSuccess: () {
+                          if (dialogContext.mounted) {
+                            Navigator.pop(
+                                dialogContext); // ✅ Close OTP Dialog first
+                          }
+
+                          if (context.mounted) {
+                            context.showSuccessDialog(
+                              title: "Success",
+                              message: "OTP Verified!",
+                              onConfirm: () {
+                                if (context.mounted) {
+                                  context.pushReplacementNamed(RouteName.main);
+                                }
+                              },
+                            );
+                          }
+                        },
+                        onError: () {
+                          if (dialogContext.mounted) {
+                            context.showCustomSnackBar("Invalid OTP!",
+                                isError: true);
+                          }
+                        },
+                      );
+                } else {
+                  context.showCustomSnackBar("Please enter the OTP!",
+                      isError: true);
+                }
+              },
+              child: const Text("Verify"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

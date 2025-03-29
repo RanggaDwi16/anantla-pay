@@ -33,7 +33,7 @@ class _SplashPageState extends State<SplashPage>
     _controller.forward();
 
     Future.delayed(const Duration(seconds: 3), () {
-      context.pushReplacementNamed(RouteName.login);
+      context.pushReplacementNamed(RouteName.onboarding);
     });
   }
 

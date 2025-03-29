@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final registerFormValidProvider = Provider.family<bool, ({
-  String name,
-  String email,
-  String password,
-  String confirmPassword,
-})>((ref, data) {
+final registerFormValidProvider = Provider.family<
+    bool,
+    ({
+      String name,
+      String email,
+      String nomorHp,
+    })>((ref, data) {
   return data.name.trim().isNotEmpty &&
       data.email.contains('@') &&
-      data.password.length >= 6 &&
-      data.password == data.confirmPassword;
+      data.nomorHp.length >= 10;
 });

@@ -45,7 +45,7 @@ Widget buildPendingTransaction() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    formatText('Cuty Bank Mexico', 14),
+                    'Cuty Bank Mexico',
                     style: TextStyle(
                       color: AppColor.primaryBlack,
                       fontSize: 14,

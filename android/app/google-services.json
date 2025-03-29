@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "588765546311",
+    "project_id": "aolcore2",
+    "storage_bucket": "aolcore2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588765546311:android:afba7a7dcbc54167012e62",
+        "android_client_info": {
+          "package_name": "com.aol.anantla"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDypGsZDIPvu8dxaROoyv6gzM97rzHxgF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

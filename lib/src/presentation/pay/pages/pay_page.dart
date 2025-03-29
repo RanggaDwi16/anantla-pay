@@ -3,9 +3,11 @@ import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/top_up/top_up_data_provider.dart';
 import 'package:anantla_pay/src/presentation/pay/controllers/amunt_provider.dart';
 import 'package:anantla_pay/src/presentation/pay/controllers/select_currency_provider.dart';
 import 'package:anantla_pay/src/presentation/pay/data/currency.dart';
+import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -18,8 +20,14 @@ class PayPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCurrency = ref.watch(selectedCurrencyProvider);
-    final symbol = currencySymbols[selectedCurrency] ?? '';
     final amount = ref.watch(amountProvider);
+
+    /// **Detect whether it's a Top-Up or Transfer**
+    final topUpData = ref.watch(topUpDataNotifierProvider);
+    final transferData = ref.watch(transferDataNotifierProvider);
+
+    final isTopUp = topUpData.walletId != null;
+    final isTransfer = transferData.fromWalletId != null;
 
     void onNumberPress(String number) {
       final current = ref.read(amountProvider.notifier).state;
@@ -49,211 +57,250 @@ class PayPage extends ConsumerWidget {
         NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0)
             .format(int.tryParse(amount) ?? 0);
 
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      appBar: CustomAppBar(
-        title: 'Payments',
-        backgroundColor: AppColor.primaryColor,
-      ),
-      body: Column(
-        children: [
-          const Spacer(),
+    return WillPopScope(
+      onWillPop: () async {
+        ref.read(amountProvider.notifier).state = "0";
+        ref.read(topUpDataNotifierProvider.notifier).reset();
+        return true; 
+      },
+      child: Scaffold(
+        backgroundColor: isTopUp ? AppColor.errorRed : AppColor.primaryColor,
+        appBar: CustomAppBar(
+          title: isTopUp ? 'Simulate Top Up' : 'Transfer',
+          showBackButton: false,
+          backgroundColor: isTopUp ? AppColor.errorRed : AppColor.primaryColor,
+        ),
+        body: Column(
+          children: [
+            const Spacer(),
 
-          /// **Bagian untuk menampilkan angka (DIBUAT RESPONSIF)**
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SizedBox(
-              height: 60, // **Atur tinggi agar tidak terlalu besar**
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    formattedAmount,
-                    style: const TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
+                height: 60, // **Atur tinggi agar tidak terlalu besar**
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      formattedAmount,
+                      style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis, // **Hindari Overflow**
+                      maxLines: 1,
                     ),
-                    overflow: TextOverflow.ellipsis, // **Hindari Overflow**
-                    maxLines: 1,
                   ),
                 ),
               ),
             ),
-          ),
 
-          const Gap(10),
+            const Gap(10),
 
-          /// **Tombol Pilih Mata Uang**
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Colors.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                ),
-                builder: (context) {
-                  return FractionallySizedBox(
-                    heightFactor: 0.5,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        Container(
-                          width: 80,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(2),
+            /// **Tombol Pilih Mata Uang**
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  builder: (context) {
+                    return FractionallySizedBox(
+                      heightFactor: 0.5,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Container(
+                            width: 80,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text("Select currency",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 10),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: currencies.length,
-                            itemBuilder: (context, index) {
-                              final currency = currencies[index];
-                              final isSelected =
-                                  selectedCurrency == currency['code'];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 5),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    ref
-                                        .read(selectedCurrencyProvider.notifier)
-                                        .state = currency['code'];
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? AppColor.primaryColor
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 12),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: currency['color'],
-                                          child: Icon(currency['icon'],
-                                              color: Colors.white),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(currency['code'],
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text(currency['name'],
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey)),
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        if (isSelected)
-                                          const Icon(Icons.check,
-                                              color: Colors.black),
-                                      ],
+                          const SizedBox(height: 16),
+                          const Text("Select currency",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: currencies.length,
+                              itemBuilder: (context, index) {
+                                final currency = currencies[index];
+                                final isSelected =
+                                    selectedCurrency == currency['code'];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 5),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      ref
+                                          .read(
+                                              selectedCurrencyProvider.notifier)
+                                          .state = currency['code'];
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: isSelected
+                                            ? AppColor.primaryColor
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 12),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor: currency['color'],
+                                            child: Icon(currency['icon'],
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(currency['code'],
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              Text(currency['name'],
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey)),
+                                            ],
+                                          ),
+                                          const Spacer(),
+                                          if (isSelected)
+                                            const Icon(Icons.check,
+                                                color: Colors.black),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColor.secondaryColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(selectedCurrency,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  const Icon(Icons.arrow_drop_down, color: Colors.black),
-                ],
-              ),
-            ),
-          ),
-
-          const Spacer(),
-
-          /// **Grid Numpad**
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Align(
-              alignment: Alignment.center,
-              child: GridView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
-                children: [
-                  ...[
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                    "8",
-                    "9",
-                    " ",
-                    "0",
-                    "<"
-                  ].map((num) => _buildNumpadButton(num, onNumberPress)),
-                ],
-              ),
-            ),
-          ),
-
-          const Spacer(),
-
-          /// **Tombol Pay**
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Button.filled(
-              onPressed: () {
-                context.pushNamed(RouteName.review);
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
-              label: 'Pay',
-              isPay: true,
-              width: 250,
-              height: 50,
-              color: AppColor.primaryBlack,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: isTopUp ? AppColor.errorRed : AppColor.primaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(selectedCurrency,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Icon(Icons.arrow_drop_down, color: Colors.black),
+                  ],
+                ),
+              ),
             ),
-          ),
 
-          const Gap(20),
-        ],
+            const Spacer(),
+
+            /// **Grid Numpad**
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Align(
+                alignment: Alignment.center,
+                child: GridView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                  ),
+                  children: [
+                    ...[
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5",
+                      "6",
+                      "7",
+                      "8",
+                      "9",
+                      " ",
+                      "0",
+                      "<"
+                    ].map((num) => _buildNumpadButton(num, onNumberPress)),
+                  ],
+                ),
+              ),
+            ),
+
+            const Spacer(),
+
+            /// **Tombol Pay**
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Button.filled(
+                onPressed: () {
+                  final selectedCurrency = ref.read(selectedCurrencyProvider);
+                  final amount = ref.read(amountProvider);
+
+                  if (amount.isEmpty ||
+                      int.tryParse(amount) == null ||
+                      int.parse(amount) == 0) {
+                    context.showCustomSnackBar("Enter a valid amount!",
+                        isError: true);
+                    return;
+                  }
+
+                  print('isTopUp: $isTopUp');
+                  print('isTransfer: $isTransfer');
+
+                  if (isTopUp) {
+                    ref
+                        .read(topUpDataNotifierProvider.notifier)
+                        .setCurrency(selectedCurrency);
+                    ref
+                        .read(topUpDataNotifierProvider.notifier)
+                        .setAmount(int.parse(amount));
+
+                    context.pushNamed(RouteName.review);
+                  } else if (isTransfer) {
+                    ref
+                        .read(transferDataNotifierProvider.notifier)
+                        .setAmount(int.parse(amount));
+
+                    context.pushNamed(RouteName.review);
+                  }
+                },
+                label: isTopUp ? 'Simulate Top Up' : 'Transfer',
+                isPay: true,
+                width: 250,
+                height: 50,
+                color: AppColor.primaryBlack,
+              ),
+            ),
+
+            const Gap(20),
+          ],
+        ),
       ),
     );
   }

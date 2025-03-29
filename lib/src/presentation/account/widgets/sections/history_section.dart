@@ -1,10 +1,13 @@
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/presentation/account/data/history.dart';
+import 'package:anantla_pay/src/presentation/account/domain/entities/transaction_model.dart';
+import 'package:anantla_pay/src/presentation/home/data/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class HistorySection extends StatelessWidget {
-  const HistorySection({super.key});
+  TransactionModel transaction;
+   HistorySection({super.key, required this.transaction});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class HistorySection extends StatelessWidget {
         ),
         const Gap(10),
         ListView.builder(
-          itemCount: historyTransactions.length,
+          itemCount: transactions.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {

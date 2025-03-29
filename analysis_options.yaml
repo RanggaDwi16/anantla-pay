@@ -2,3 +2,6 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
     must_be_immutable: ignore
+    invalid_annotation_target: ignore
+    deprecated_member_use_from_same_package: ignore
+    deprecated_member_use: ignore

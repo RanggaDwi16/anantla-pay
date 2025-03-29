@@ -8,25 +8,30 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Color backgroundColor;
   Color textColor;
   IconThemeData iconTheme;
-  TabBar? bottom;
   
+  TabBar? bottom;
+  bool? centertitle;
+  bool showBackButton;
 
   CustomAppBar({
     super.key,
     this.title = "",
+    this.centertitle = false,
     this.actions = const [],
     this.textColor = AppColor.primaryBlack,
     this.backgroundColor = AppColor.primaryWhite,
     this.iconTheme = const IconThemeData(color: Colors.white),
     this.bottom,
+    this.showBackButton = true, // ✅ default true
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: showBackButton && Navigator.of(context).canPop(), // ✅ kontrol tombol back
       surfaceTintColor: Colors.transparent,
       backgroundColor: backgroundColor,
-      centerTitle: false,
+      centerTitle: centertitle,
       iconTheme: iconTheme,
       title: Text(
         title,
@@ -41,7 +46,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? PreferredSize(
               preferredSize: const Size.fromHeight(48),
               child: Container(
-                color: Colors.white, // Background color for TabBar
+                color: Colors.white,
                 child: bottom,
               ),
             )
@@ -52,5 +57,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => bottom == null
       ? const Size.fromHeight(56)
-      : const Size.fromHeight(100); // Adjust height for AppBar with TabBar
+      : const Size.fromHeight(100);
 }
