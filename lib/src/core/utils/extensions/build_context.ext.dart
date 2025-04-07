@@ -1,5 +1,7 @@
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 extension BuildContextExt on BuildContext {
   double get deviceHeight => MediaQuery.of(this).size.height;
@@ -24,6 +26,8 @@ extension BuildContextExt on BuildContext {
   void showSuccessDialog({
     required String title,
     String? message,
+    bool enableCopy = false,
+    bool enableLink = false,
     VoidCallback? onConfirm,
     String confirmText = "OK",
   }) {
@@ -40,7 +44,7 @@ extension BuildContextExt on BuildContext {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                /// Checkmark Circle
+                /// Icon Success
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -64,14 +68,40 @@ extension BuildContextExt on BuildContext {
 
                 if (message != null) ...[
                   const SizedBox(height: 10),
-                  Text(
+                  SelectableText(
                     message,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                    ),
+                    style: const TextStyle(fontSize: 14, color: Colors.black87),
                     textAlign: TextAlign.center,
                   ),
+
+                  /// Copy Button
+                  if (enableCopy)
+                    TextButton.icon(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: message));
+                        showCustomSnackBar("Copied to clipboard!");
+                      },
+                      icon: const Icon(Icons.copy, size: 18),
+                      label: const Text("Copy"),
+                    ),
+
+                  /// Open Link
+                  if (enableLink)
+                    TextButton(
+                      onPressed: () async {
+                        print('link: $message');
+                        final Uri link = Uri.parse(message.trim());
+                        launch(link.toString());
+                      },
+                      child: const Text(
+                        "Open Link",
+                        style: TextStyle(
+                          color: AppColor.primaryColor,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
                 ],
 
                 const SizedBox(height: 25),

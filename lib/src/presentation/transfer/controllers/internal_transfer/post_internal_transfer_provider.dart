@@ -1,6 +1,8 @@
+import 'package:anantla_pay/src/core/main/controllers/notification_service/notification_services.dart';
 import 'package:anantla_pay/src/presentation/transfer/controllers/internal_transfer/internal_transfer_provider.dart';
 import 'package:anantla_pay/src/presentation/transfer/domain/entities/transfer_params.dart';
 import 'package:anantla_pay/src/presentation/transfer/domain/usecases/internal_transfer.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_internal_transfer_provider.g.dart';
@@ -18,6 +20,8 @@ class PostInternalTransfer extends _$PostInternalTransfer {
     required Function(String message) onError,
   }) async {
     state = const AsyncLoading();
+    NotificationService notificationService = NotificationService();
+    final fcmToken = await notificationService.getToken();
     InternalTransfer internalTransfer =
         await ref.read(internalTransferProvider);
     final result = await internalTransfer(InternalTransferParams(
@@ -25,6 +29,8 @@ class PostInternalTransfer extends _$PostInternalTransfer {
       fromWalletId: params.fromWalletId,
       toWalletId: params.toWalletId,
       note: params.note,
+      firebaseToken: fcmToken,
+      otpCode: params.otpCode,
     ));
     return result.fold(
       (error) {

@@ -8,7 +8,7 @@ part 'fetch_balance_provider.g.dart';
 @riverpod
 class FetchBalance extends _$FetchBalance {
   @override
-  FutureOr<BalanceModel?> build() async {
+  FutureOr<List<BalanceModel>?> build() async {
     GetBalance getBalance = ref.watch(getBalanceProvider);
     final result = await getBalance.call(null);
     return result.fold(

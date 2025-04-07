@@ -29,6 +29,8 @@ class TransferRemoteDataSourceImpl implements TransferRemoteDataSource {
 
       if (response.statusCode == 200) {
         return Right(response.data['message']);
+      } else if (response.statusCode == 202) {
+        return Right(response.data['message']);
       } else if (response.statusCode == 401) {
         return Left(response.data['value']['error']);
       } else if (response.statusCode == 404) {

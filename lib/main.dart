@@ -1,4 +1,6 @@
 import 'package:anantla_pay/firebase_options.dart';
+import 'package:anantla_pay/src/core/helpers/permission/camera_permission.dart';
+import 'package:anantla_pay/src/core/helpers/permission/location_permission.dart';
 import 'package:anantla_pay/src/core/main/controllers/notification_service/notification_services.dart';
 import 'package:anantla_pay/src/core/routers/go_router_provider.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_theme.dart';
@@ -13,6 +15,9 @@ import 'package:permission_handler/permission_handler.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeDateFormatting('id_ID', null);
+
+  await checkCameraPermission();
+  await checkLocationPermission();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

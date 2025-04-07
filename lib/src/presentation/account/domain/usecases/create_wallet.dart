@@ -3,17 +3,19 @@ import 'package:anantla_pay/src/presentation/account/domain/entities/create_wall
 import 'package:anantla_pay/src/presentation/account/domain/repository/account_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class CreateWallet implements UseCase<String, CreateWalletParams> {
+class CreateWallet implements UseCase<int, CreateWalletParams> {
   final AccountRepository accountRepository;
 
   CreateWallet({required this.accountRepository});
 
   @override
-  Future<Either<String, String>> call(CreateWalletParams params) {
+  Future<Either<String, int>> call(CreateWalletParams params) {
     return accountRepository.createWallet(
       params: CreateWalletParams(
         userId: params.userId,
+        // clientId: params.clientId,
         countryCode: params.countryCode,
+        
       ),
     );
   }

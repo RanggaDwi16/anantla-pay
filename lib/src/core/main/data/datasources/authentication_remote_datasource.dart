@@ -13,11 +13,12 @@ abstract class AuthenticationRemoteDataSource {
     required String fcmToken,
   });
   Future<Either<String, String>> register({required RegisterParams params});
-  Future<Either<String, LoginModel>> verifOtp({
+  Future<Either<String, LoginModel>> verifOtpLogin({
     required OtpParams params,
   });
   Future<Either<String, UserModel>> getUser({required int userId});
   Future<Either<String, String>> logout();
+  Future<Either<String, String>> addWishtList();
   Future<Either<String, String>> forgotPassword({
     required RegisterParams params,
   });
@@ -105,7 +106,7 @@ class AuthenticationRemoteDataSourceImpl
       final response =
           await adminHttpClient.post('/users/register', data: params.toJson());
       if (response.statusCode == 201) {
-        return Right(response.data['message']);
+        return Right(response.data['temp_password']);
       } else if (response.statusCode == 400) {
         return Left(response.data['message']);
       } else {
@@ -147,7 +148,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await httpClient.post('/users/forgot-password',
           data: params.toJson());
       if (response.statusCode == 200) {
-        return Right(response.data['message']);
+        return Right(response.data['reset_link']);
       } else if (response.statusCode == 400) {
         return Left(response.data['message']);
       } else {
@@ -163,7 +164,8 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<Either<String, LoginModel>> verifOtp({required OtpParams params}) async {
+  Future<Either<String, LoginModel>> verifOtpLogin(
+      {required OtpParams params}) async {
     try {
       final response =
           await httpClient.post('/users/verifOtp', data: params.toJson());
@@ -171,6 +173,26 @@ class AuthenticationRemoteDataSourceImpl
         final user = response.data;
         return Right(LoginModel.fromJson(user));
       } else if (response.statusCode == 400) {
+        return Left(response.data['message']);
+      } else {
+        return const Left("Something went wrong");
+      }
+    } on DioException catch (e) {
+      final error = await DioErrorHandler.handleError(e);
+      print('Error: $error');
+      return Left(error);
+    } catch (e) {
+      return Left('Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> addWishtList() async {
+    try {
+      final response = await httpClient.get('/lists/wish-list');
+      if (response.statusCode == 200) {
+        return Right(response.data['message']);
+      } else if (response.statusCode == 401) {
         return Left(response.data['message']);
       } else {
         return const Left("Something went wrong");

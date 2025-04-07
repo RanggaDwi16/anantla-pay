@@ -10,12 +10,19 @@ class UserModel with _$UserModel {
     @JsonKey(name: "client_id") int? clientId,
     @JsonKey(name: "email") String? email,
     @JsonKey(name: "username") String? username,
-    @JsonKey(name: "role") String? role,
     @JsonKey(name: "user_status") String? userStatus,
-    @JsonKey(name: "country_code") String? countryCode,
-    @JsonKey(name: "e_kyc_status") String? eKycStatus,
-    @JsonKey(name: "phone") dynamic phone,
     @JsonKey(name: "created") DateTime? created,
+    @JsonKey(name: "updated") DateTime? updated,
+    @JsonKey(name: "public_key") dynamic publicKey,
+    @JsonKey(name: "e_kyc_status") String? eKycStatus,
+    @JsonKey(name: "e_kyc_verified_at") dynamic eKycVerifiedAt,
+    @JsonKey(name: "phone") String? phone,
+    @JsonKey(name: "role") String? role,
+    @JsonKey(name: "ekyc_verified_at") DateTime? ekycVerifiedAt,
+    @JsonKey(name: "profile_picture") dynamic profilePicture,
+    @JsonKey(name: "country_code") String? countryCode,
+    @JsonKey(name: "tos_accepted_at") dynamic tosAcceptedAt,
+    @JsonKey(name: "psp_id") int? pspId,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

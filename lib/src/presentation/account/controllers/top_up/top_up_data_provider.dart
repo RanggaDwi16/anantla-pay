@@ -3,6 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'top_up_data_provider.g.dart';
 
+enum TopUpType { normal, virtualAccount }
+
 @Riverpod(keepAlive: true)
 class TopUpDataNotifier extends _$TopUpDataNotifier {
   @override
@@ -10,27 +12,87 @@ class TopUpDataNotifier extends _$TopUpDataNotifier {
     return TopUpData.initial();
   }
 
-  /// Update Wallet ID
+  // --- SETTERS ---
+  void setTopUpType(TopUpType type) {
+    state = state.copyWith(topUpType: type);
+  }
+
   void setWalletId(int id) {
     state = state.copyWith(walletId: id);
   }
 
-  /// Update Amount
   void setAmount(int amount) {
     state = state.copyWith(amount: amount);
   }
 
-  /// Update Currency
   void setCurrency(String currency) {
     state = state.copyWith(currency: currency);
   }
 
-  /// Update Reference ID
   void setReferenceId(String referenceId) {
     state = state.copyWith(referenceId: referenceId);
   }
 
-  /// Reset Data
+  void setVirtualAccountData({
+    String? bankCode,
+    String? virtualAccountName,
+    String? virtualAccountEmail,
+    String? virtualAccountPhone,
+    int? totalAmount,
+    String? currency,
+  }) {
+    state = state.copyWith(
+      bankCode: bankCode ?? state.bankCode,
+      virtualAccountName: virtualAccountName ?? state.virtualAccountName,
+      virtualAccountEmail: virtualAccountEmail ?? state.virtualAccountEmail,
+      virtualAccountPhone: virtualAccountPhone ?? state.virtualAccountPhone,
+      totalAmount: totalAmount ?? state.totalAmount,
+      currency: currency ?? state.currency,
+    );
+  }
+
+  // --- REMOVERS ---
+  void removeTopUpType() {
+    state = state.copyWith(topUpType: TopUpType.normal);
+  }
+
+  void removeWalletId() {
+    state = state.copyWith(walletId: null);
+  }
+
+  void removeAmount() {
+    state = state.copyWith(amount: null);
+  }
+
+  void removeCurrency() {
+    state = state.copyWith(currency: null);
+  }
+
+  void removeReferenceId() {
+    state = state.copyWith(referenceId: null);
+  }
+
+  void removeBankCode() {
+    state = state.copyWith(bankCode: null);
+  }
+
+  void removeVirtualAccountName() {
+    state = state.copyWith(virtualAccountName: null);
+  }
+
+  void removeVirtualAccountEmail() {
+    state = state.copyWith(virtualAccountEmail: null);
+  }
+
+  void removeVirtualAccountPhone() {
+    state = state.copyWith(virtualAccountPhone: null);
+  }
+
+  void removeTotalAmount() {
+    state = state.copyWith(totalAmount: null);
+  }
+
+  // --- RESET ALL ---
   void reset() {
     state = TopUpData.initial();
   }

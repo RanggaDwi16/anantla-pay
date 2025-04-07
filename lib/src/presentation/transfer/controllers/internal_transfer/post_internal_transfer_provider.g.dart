@@ -7,7 +7,7 @@ part of 'post_internal_transfer_provider.dart';
 // **************************************************************************
 
 String _$postInternalTransferHash() =>
-    r'e7e566714386404f419c9f86d282c34878a2da88';
+    r'966899b85ab193e5264eb08869421b6916278a83';
 
 /// See also [PostInternalTransfer].
 @ProviderFor(PostInternalTransfer)

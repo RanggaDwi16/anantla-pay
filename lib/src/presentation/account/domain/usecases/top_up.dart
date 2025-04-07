@@ -14,7 +14,7 @@ class TopUp implements UseCase<String, TopupParams> {
       params: TopupParams(
         amount: params.amount,
         currency: params.currency,
-        referenceId: params.referenceId,
+        firebaseToken: params.firebaseToken,
         walletId: params.walletId,
       ),
     );

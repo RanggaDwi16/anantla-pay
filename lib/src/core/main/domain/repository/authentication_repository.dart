@@ -10,11 +10,11 @@ abstract class AuthenticationRepository {
       required String password,
       required String fcmToken});
   Future<Either<String, String>> register({required RegisterParams params});
-  Future<Either<String, LoginModel>> verifOtp({
+  Future<Either<String, LoginModel>> verifOtpLogin({
     required OtpParams params,
   });
   Future<Either<String, String>> logout();
-// Future<Either<String, String>> resetPasword({required String email});
+  Future<Either<String, String>> addWishtList();
   Future<Either<String, UserModel>> getUser({required int userId});
   Future<Either<String, String>> forgotPassword({
     required RegisterParams params,

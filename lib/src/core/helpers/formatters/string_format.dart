@@ -1,3 +1,4 @@
+import 'package:anantla_pay/src/core/utils/assets.gen.dart';
 import 'package:intl/intl.dart';
 
 String formatRupiah(String amount) {
@@ -18,5 +19,18 @@ String formatEnglishDate(String isoDate) {
     return formatter.format(dateTime);
   } catch (e) {
     return isoDate; // fallback jika parsing gagal
+  }
+}
+
+String getCurrencyFlagAsset(String? currency) {
+  switch (currency) {
+    case 'USD':
+      return Assets.flags.us.path;
+    case 'IDR':
+      return Assets.flags.id.path;
+    case 'SGD':
+      return Assets.flags.us.path;
+    default:
+      return Assets.flags.us.path;
   }
 }

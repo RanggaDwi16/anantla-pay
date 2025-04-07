@@ -6,8 +6,15 @@ import 'package:anantla_pay/src/presentation/forgot-password/pages/forgot_passwo
 import 'package:anantla_pay/src/presentation/home/pages/home_page.dart';
 import 'package:anantla_pay/src/presentation/login/pages/login_page.dart';
 import 'package:anantla_pay/src/presentation/main/pages/main_page.dart';
+import 'package:anantla_pay/src/presentation/notification/pages/notification_page.dart';
 import 'package:anantla_pay/src/presentation/onboarding/pages/onboarding_page.dart';
 import 'package:anantla_pay/src/presentation/pay/pages/pay_page.dart';
+import 'package:anantla_pay/src/presentation/qr/domain/entities/qr_model.dart';
+import 'package:anantla_pay/src/presentation/qr/pages/invoice_page.dart';
+import 'package:anantla_pay/src/presentation/qr/pages/payment_option_page.dart';
+import 'package:anantla_pay/src/presentation/qr/pages/qrCode_page.dart';
+import 'package:anantla_pay/src/presentation/qr/pages/qr_tab_page.dart';
+import 'package:anantla_pay/src/presentation/qr/pages/qris_scanner_page.dart';
 import 'package:anantla_pay/src/presentation/register/pages/register_page.dart';
 import 'package:anantla_pay/src/presentation/review/pages/review_page.dart';
 import 'package:anantla_pay/src/presentation/splash/pages/splash_page.dart';
@@ -50,9 +57,14 @@ Raw<GoRouter> router(RouterRef ref) {
       path: '/main',
       name: RouteName.main,
       builder: (context, state) {
-        // final userId = state.extra as int;
-        // print('User ID MAIN: $userId');
         return MainPage();
+      },
+    ),
+    GoRoute(
+      path: '/notification',
+      name: RouteName.notification,
+      builder: (context, state) {
+        return NotificationPage();
       },
     ),
     GoRoute(
@@ -90,11 +102,50 @@ Raw<GoRouter> router(RouterRef ref) {
       },
     ),
     GoRoute(
-        path: '/pay',
-        name: RouteName.pay,
-        builder: (context, state) {
-          return PayPage();
-        }),
+      path: '/qrtab',
+      name: RouteName.qrtab,
+      builder: (context, state) {
+        return QRTabPage();
+      },
+    ),
+    GoRoute(
+      path: '/qrcode',
+      name: RouteName.qrcode,
+      builder: (context, state) {
+        return QrcodePage();
+      },
+    ),
+    GoRoute(
+      path: '/qrisScanner',
+      name: RouteName.qrisScanner,
+      builder: (context, state) {
+        return QrisScannerPage();
+      },
+    ),
+    GoRoute(
+      path: '/paymentOption',
+      name: RouteName.paymentOption,
+      builder: (context, state) {
+        return PaymentOptionPage();
+      },
+    ),
+    GoRoute(
+      path: '/invoice',
+      name: RouteName.invoice,
+      builder: (context, state) {
+        final qr = state.extra as QrModel;
+        return InvoicePage(
+          qrModel: qr,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/pay',
+      name: RouteName.pay,
+      builder: (context, state) {
+        return PayPage();
+      },
+    ),
     GoRoute(
       path: '/review',
       name: RouteName.review,

@@ -1,5 +1,6 @@
 import 'package:anantla_pay/src/core/main/domain/entities/user_model.dart';
 import 'package:anantla_pay/src/core/main/domain/usecases/get_user.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/top_up/top_up_data_provider.dart';
 import 'package:anantla_pay/src/presentation/home/controllers/get_user/get_user_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,7 +15,7 @@ class FetchUser extends _$FetchUser {
 
   Future<void> fetchUser({
     required int userId,
-    required Function() onSuccess,
+    required Function(UserModel data) onSuccess,
     required Function() onError,
   }) async {
     state = const AsyncLoading();
@@ -26,7 +27,18 @@ class FetchUser extends _$FetchUser {
         onError();
       },
       (data) async {
-        onSuccess();
+        print('Full User Data: ${data.toJson()}');
+
+        // final topUpData = ref.read(topUpDataNotifierProvider);
+        // ref.read(topUpDataNotifierProvider.notifier).setVirtualAccountData(
+        //       virtualAccountEmail: data.email,
+        //       virtualAccountName: data.username,
+        //       virtualAccountPhone: data.phone,
+        //     );
+        print('User data fetched: ${data.username}');
+        print('User data fetched: ${data.email}');
+        print('User data fetched: ${data.phone}');
+        onSuccess(data);
         state = AsyncData(data);
       },
     );

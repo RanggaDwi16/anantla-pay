@@ -29,6 +29,10 @@ mixin _$InternalTransferParams {
   int? get amount => throw _privateConstructorUsedError;
   @JsonKey(name: "note")
   String? get note => throw _privateConstructorUsedError;
+  @JsonKey(name: "firebase_token")
+  String? get firebaseToken => throw _privateConstructorUsedError;
+  @JsonKey(name: "otp_code")
+  String? get otpCode => throw _privateConstructorUsedError;
 
   /// Serializes this InternalTransferParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,7 +54,9 @@ abstract class $InternalTransferParamsCopyWith<$Res> {
       {@JsonKey(name: "from_wallet_id") int? fromWalletId,
       @JsonKey(name: "to_wallet_id") int? toWalletId,
       @JsonKey(name: "amount") int? amount,
-      @JsonKey(name: "note") String? note});
+      @JsonKey(name: "note") String? note,
+      @JsonKey(name: "firebase_token") String? firebaseToken,
+      @JsonKey(name: "otp_code") String? otpCode});
 }
 
 /// @nodoc
@@ -73,6 +79,8 @@ class _$InternalTransferParamsCopyWithImpl<$Res,
     Object? toWalletId = freezed,
     Object? amount = freezed,
     Object? note = freezed,
+    Object? firebaseToken = freezed,
+    Object? otpCode = freezed,
   }) {
     return _then(_value.copyWith(
       fromWalletId: freezed == fromWalletId
@@ -91,6 +99,14 @@ class _$InternalTransferParamsCopyWithImpl<$Res,
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
+      firebaseToken: freezed == firebaseToken
+          ? _value.firebaseToken
+          : firebaseToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      otpCode: freezed == otpCode
+          ? _value.otpCode
+          : otpCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -108,7 +124,9 @@ abstract class _$$InternalTransferParamsImplCopyWith<$Res>
       {@JsonKey(name: "from_wallet_id") int? fromWalletId,
       @JsonKey(name: "to_wallet_id") int? toWalletId,
       @JsonKey(name: "amount") int? amount,
-      @JsonKey(name: "note") String? note});
+      @JsonKey(name: "note") String? note,
+      @JsonKey(name: "firebase_token") String? firebaseToken,
+      @JsonKey(name: "otp_code") String? otpCode});
 }
 
 /// @nodoc
@@ -130,6 +148,8 @@ class __$$InternalTransferParamsImplCopyWithImpl<$Res>
     Object? toWalletId = freezed,
     Object? amount = freezed,
     Object? note = freezed,
+    Object? firebaseToken = freezed,
+    Object? otpCode = freezed,
   }) {
     return _then(_$InternalTransferParamsImpl(
       fromWalletId: freezed == fromWalletId
@@ -148,6 +168,14 @@ class __$$InternalTransferParamsImplCopyWithImpl<$Res>
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
+      firebaseToken: freezed == firebaseToken
+          ? _value.firebaseToken
+          : firebaseToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      otpCode: freezed == otpCode
+          ? _value.otpCode
+          : otpCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -159,7 +187,9 @@ class _$InternalTransferParamsImpl implements _InternalTransferParams {
       {@JsonKey(name: "from_wallet_id") this.fromWalletId,
       @JsonKey(name: "to_wallet_id") this.toWalletId,
       @JsonKey(name: "amount") this.amount,
-      @JsonKey(name: "note") this.note});
+      @JsonKey(name: "note") this.note,
+      @JsonKey(name: "firebase_token") this.firebaseToken,
+      @JsonKey(name: "otp_code") this.otpCode});
 
   factory _$InternalTransferParamsImpl.fromJson(Map<String, dynamic> json) =>
       _$$InternalTransferParamsImplFromJson(json);
@@ -176,10 +206,16 @@ class _$InternalTransferParamsImpl implements _InternalTransferParams {
   @override
   @JsonKey(name: "note")
   final String? note;
+  @override
+  @JsonKey(name: "firebase_token")
+  final String? firebaseToken;
+  @override
+  @JsonKey(name: "otp_code")
+  final String? otpCode;
 
   @override
   String toString() {
-    return 'InternalTransferParams(fromWalletId: $fromWalletId, toWalletId: $toWalletId, amount: $amount, note: $note)';
+    return 'InternalTransferParams(fromWalletId: $fromWalletId, toWalletId: $toWalletId, amount: $amount, note: $note, firebaseToken: $firebaseToken, otpCode: $otpCode)';
   }
 
   @override
@@ -192,13 +228,16 @@ class _$InternalTransferParamsImpl implements _InternalTransferParams {
             (identical(other.toWalletId, toWalletId) ||
                 other.toWalletId == toWalletId) &&
             (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.note, note) || other.note == note));
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.firebaseToken, firebaseToken) ||
+                other.firebaseToken == firebaseToken) &&
+            (identical(other.otpCode, otpCode) || other.otpCode == otpCode));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, fromWalletId, toWalletId, amount, note);
+  int get hashCode => Object.hash(runtimeType, fromWalletId, toWalletId, amount,
+      note, firebaseToken, otpCode);
 
   /// Create a copy of InternalTransferParams
   /// with the given fields replaced by the non-null parameter values.
@@ -222,7 +261,9 @@ abstract class _InternalTransferParams implements InternalTransferParams {
           {@JsonKey(name: "from_wallet_id") final int? fromWalletId,
           @JsonKey(name: "to_wallet_id") final int? toWalletId,
           @JsonKey(name: "amount") final int? amount,
-          @JsonKey(name: "note") final String? note}) =
+          @JsonKey(name: "note") final String? note,
+          @JsonKey(name: "firebase_token") final String? firebaseToken,
+          @JsonKey(name: "otp_code") final String? otpCode}) =
       _$InternalTransferParamsImpl;
 
   factory _InternalTransferParams.fromJson(Map<String, dynamic> json) =
@@ -240,6 +281,12 @@ abstract class _InternalTransferParams implements InternalTransferParams {
   @override
   @JsonKey(name: "note")
   String? get note;
+  @override
+  @JsonKey(name: "firebase_token")
+  String? get firebaseToken;
+  @override
+  @JsonKey(name: "otp_code")
+  String? get otpCode;
 
   /// Create a copy of InternalTransferParams
   /// with the given fields replaced by the non-null parameter values.

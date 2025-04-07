@@ -1,6 +1,8 @@
 import 'package:anantla_pay/src/core/routers/router_name.dart';
+import 'package:anantla_pay/src/core/utils/assets.gen.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
@@ -53,18 +55,8 @@ class _SplashPageState extends State<SplashPage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.account_balance_wallet,
-                size: 100,
-                color: AppColor.primaryBlack,
-              ),
-              Text(
-                'Anantla Pay',
-                style: TextStyle(
-                  color: AppColor.primaryBlack,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              Image.asset(
+                Assets.images.anantlaLogo.path,
               ),
             ],
           ),

@@ -3,8 +3,10 @@ import 'package:anantla_pay/src/core/helpers/widgets/custom_text_field.dart';
 import 'package:anantla_pay/src/core/main/controllers/auth/authentication_provider.dart';
 import 'package:anantla_pay/src/core/main/domain/entities/register_param.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
+import 'package:anantla_pay/src/core/utils/assets.gen.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
+import 'package:anantla_pay/src/presentation/register/controller/action/register_action.dart';
 import 'package:anantla_pay/src/presentation/register/controller/register_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -50,8 +52,11 @@ class RegisterPage extends HookConsumerWidget {
             ? 'Invalid email'
             : null;
 
-        nomorHpError.value =
-            formData.value.nomorHp.length < 10 ? 'Nomor HP tidak valid' : null;
+        nomorHpError.value = !formData.value.nomorHp.startsWith('62')
+            ? 'Nomor HP has to start with 62'
+            : formData.value.nomorHp.length < 10
+                ? 'Nomor HP must be at least 10 digits'
+                : null;
       }
 
       nameController.addListener(update);
@@ -79,22 +84,31 @@ class RegisterPage extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap(40),
-                const Text(
+                Text(
                   "Create Account",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.primaryBlack,
-                  ),
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
-                const Text(
-                  "Please fill the form to continue",
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
+
+                Text(
+                  "Create, send, receive, and save effortlessly.",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColor.textGray,
+                      ),
                 ),
+
                 const Gap(40),
 
                 /// Name
                 CustomTextField(
+                  prefixIcon: Image.asset(
+                    Assets.icons.person.path,
+                    width: 20,
+                  ),
                   controller: nameController,
                   labelText: "User Name",
                   hintText: "Enter your user name",
@@ -104,16 +118,20 @@ class RegisterPage extends HookConsumerWidget {
                   const Gap(10),
                   Text(
                     nameError.value!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
                   ),
                 ],
                 const Gap(20),
 
                 /// Email
                 CustomTextField(
+                  prefixIcon: Image.asset(
+                    Assets.icons.email.path,
+                    width: 20,
+                  ),
                   controller: emailController,
                   labelText: "Email",
                   hintText: "Enter your email",
@@ -123,43 +141,54 @@ class RegisterPage extends HookConsumerWidget {
                   const Gap(10),
                   Text(
                     emailError.value!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
                   ),
                 ],
                 const Gap(20),
 
                 /// Nomor HP
                 CustomTextField(
+                  prefixIcon: Image.asset(
+                    Assets.icons.phone.path,
+                    width: 20,
+                  ),
                   controller: nomorHpController,
                   labelText: "Nomor HP",
-                  hintText: "08xxxxxxxxxx",
+                  hintText: "628XXXXXXXX",
+                  keyboardType: TextInputType.phone,
                   isRequired: true,
                 ),
                 if (nomorHpError.value != null) ...[
                   const Gap(10),
                   Text(
                     nomorHpError.value!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
                   ),
                 ],
                 const Gap(20),
 
                 /// Wishlist Checkbox
-                const Text(
+                Text(
                   "Do you want to be included in the wishlist?",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
+
                 const Gap(5),
                 Text(
                   "By enabling the checkbox below, you will be included in the list of people who will be notified when the app is fully released.",
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColor.textGray,
+                      ),
                 ),
+
                 const Gap(10),
                 Row(
                   children: [
@@ -167,15 +196,18 @@ class RegisterPage extends HookConsumerWidget {
                       value: wishlistChecked.value,
                       onChanged: (value) {
                         wishlistChecked.value = value ?? false;
+                        if (wishlistChecked.value) {
+                          addToWishlist(ref: ref, context: context);
+                        }
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      activeColor: AppColor.primaryBlack,
+                      activeColor: AppColor.primaryColor,
                     ),
-                    const Text(
+                    Text(
                       "Yes, I want in",
-                      style: TextStyle(fontSize: 14),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
                     ),
                   ],
                 ),
@@ -186,31 +218,20 @@ class RegisterPage extends HookConsumerWidget {
                     label: auth.isLoading ? 'Loading...' : 'Register',
                     color: auth.isLoading ? Colors.grey : AppColor.primaryBlack,
                     textColor: Colors.white,
-                    borderRadius: 12,
                     disabled: !isValid,
                     onPressed: () {
                       if (isValid) {
-                        ref.read(authenticationProvider.notifier).register(
-                            params: RegisterParams(
-                              username: formData.value.name,
-                              email: formData.value.email,
-                              phone: formData.value.nomorHp,
-                              countryCode: 'ID',
-                              clientId: 25,
-                            ),
-                            onSuccess: () {
-                              context.showSuccessDialog(
-                                title: 'Register',
-                                message:
-                                    'Register Success, We sent your password to your email',
-                                onConfirm: () {
-                                  context.pushReplacementNamed(RouteName.login);
-                                },
-                              );
-                            },
-                            onError: () {
-                              context.customErrorDialog('Register Failed');
-                            });
+                        registerUser(
+                          ref: ref,
+                          context: context,
+                          params: RegisterParams(
+                            username: formData.value.name,
+                            email: formData.value.email,
+                            phone: formData.value.nomorHp,
+                            countryCode: 'ID',
+                            clientId: 25,
+                          ),
+                        );
                       }
                     }),
                 const Gap(20),
@@ -218,10 +239,23 @@ class RegisterPage extends HookConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already have an account?"),
+                    Text(
+                      "Already have an account?",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                    ),
                     TextButton(
                       onPressed: () => context.pop(),
-                      child: const Text("Login"),
+                      child: Text(
+                        "Login",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColor.primaryColor,
+                            ),
+                      ),
                     ),
                   ],
                 ),

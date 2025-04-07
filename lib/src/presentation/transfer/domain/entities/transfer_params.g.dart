@@ -13,6 +13,8 @@ _$InternalTransferParamsImpl _$$InternalTransferParamsImplFromJson(
       toWalletId: (json['to_wallet_id'] as num?)?.toInt(),
       amount: (json['amount'] as num?)?.toInt(),
       note: json['note'] as String?,
+      firebaseToken: json['firebase_token'] as String?,
+      otpCode: json['otp_code'] as String?,
     );
 
 Map<String, dynamic> _$$InternalTransferParamsImplToJson(
@@ -22,6 +24,8 @@ Map<String, dynamic> _$$InternalTransferParamsImplToJson(
       'to_wallet_id': instance.toWalletId,
       'amount': instance.amount,
       'note': instance.note,
+      'firebase_token': instance.firebaseToken,
+      'otp_code': instance.otpCode,
     };
 
 _$CrossPspParamsImpl _$$CrossPspParamsImplFromJson(Map<String, dynamic> json) =>

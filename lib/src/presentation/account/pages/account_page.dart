@@ -1,16 +1,25 @@
+// ignore_for_file: unused_import
+
+import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:anantla_pay/src/core/main/controllers/auth/authentication_provider.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/activate_wallet/post_activate_wallet_provider.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/create_wallet/post_wallet_provider.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/e-kyc/post_ekyc_verification_provider.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/get_all_country/fetch_all_country_provider.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/get_balance/fetch_balance_provider.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/get_transaction/fetch_transaction_provider.dart';
+import 'package:anantla_pay/src/presentation/account/domain/entities/create_wallet_params.dart';
 import 'package:anantla_pay/src/presentation/account/widgets/history_transaction_item.dart';
+import 'package:anantla_pay/src/presentation/account/widgets/wallet_empty_state.dart';
+import 'package:anantla_pay/src/presentation/main/controllers/user_id_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/helpers/custom_app_bar.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/constant/path.dart';
 import 'package:anantla_pay/src/presentation/account/widgets/pending_transaction_widget.dart';
 import 'package:anantla_pay/src/presentation/account/widgets/sections/balance_section.dart';
-import 'package:anantla_pay/src/presentation/account/widgets/sections/history_section.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +35,7 @@ class AccountPage extends ConsumerWidget {
 
     Future<void> onRefresh(WidgetRef ref) async {
       ref.invalidate(fetchBalanceProvider);
+      ref.invalidate(fetchTransactionProvider);
     }
 
     return Scaffold(
@@ -51,7 +61,6 @@ class AccountPage extends ConsumerWidget {
               ),
             ),
           ),
-          //logout
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
@@ -78,94 +87,100 @@ class AccountPage extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () => onRefresh(ref),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap(20),
-              balance.when(
-                  data: (data) {
-                    return BalanceSection();
-                  },
-                  loading: () => Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          height: 170,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                  error: (error, stack) {
-                    return Text('Error: $error');
-                  }),
-              Gap(40),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Pending",
-                        style: TextStyle(
-                          color: AppColor.textGray,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Gap(10),
-                      buildPendingTransaction(),
-                      Gap(40),
-                      transaction.when(
-                          data: (data) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "History",
-                                  style: TextStyle(
-                                    color: AppColor.textGray,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Gap(10),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) {
-                                    final transaction = data[index];
-                                    return HistoryTransactionItem(
-                                        data: transaction);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                          loading: () => Shimmer.fromColors(
-                                baseColor: Colors.grey.shade300,
-                                highlightColor: Colors.grey.shade100,
-                                child: Container(
-                                  height: 170,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  balance.when(
+                      data: (data) => BalanceSection(),
+                      loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 170,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                          error: (error, stack) {
-                            return Text('Error: $error');
-                          }),
-                    ],
+                            ),
+                          ),
+                      error: (error, stack) {
+                        // return WalletEmptyState();
+                        return Text(
+                          'Error: $error',
+                          style: const TextStyle(
+                            color: AppColor.textGray,
+                            fontSize: 14,
+                          ),
+                        );
+                      }),
+                  const Gap(24),
+                  Text(
+                    "Pending",
+                    style: TextStyle(
+                      color: AppColor.textGray,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
+                  const Gap(10),
+                  buildPendingTransaction(),
+                  const Gap(24),
+                  transaction.when(
+                    data: (data) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "History",
+                            style: TextStyle(
+                              color: AppColor.textGray,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const Gap(10),
+                          data.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                    "No Transaction Found",
+                                    style: TextStyle(
+                                      color: AppColor.textGray,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                )
+                              : Column(
+                                  children: List.generate(
+                                    data.length,
+                                    (index) => HistoryTransactionItem(
+                                        data: data[index]),
+                                  ),
+                                )
+                        ],
+                      );
+                    },
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        height: 170,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    error: (error, stack) => Text('Error: $error'),
+                  ),
+                  const SizedBox(height: 100), // extra bottom padding for nav
+                ]),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

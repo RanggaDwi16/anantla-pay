@@ -1,15 +1,17 @@
+import 'package:anantla_pay/src/core/main/controllers/add_wish_list/add_wish_list_provider.dart';
 import 'package:anantla_pay/src/core/main/controllers/forgot_password/forgot_password_provider.dart';
 import 'package:anantla_pay/src/core/main/controllers/login/login_provider.dart';
 import 'package:anantla_pay/src/core/main/controllers/logout/logout_provider.dart';
 import 'package:anantla_pay/src/core/main/controllers/notification_service/notification_services.dart';
 import 'package:anantla_pay/src/core/main/controllers/register/register_provider.dart';
-import 'package:anantla_pay/src/core/main/controllers/verifOtp/verifOtp_provider.dart';
+import 'package:anantla_pay/src/core/main/controllers/verifOtp/verifOtpLogin_provider.dart';
 import 'package:anantla_pay/src/core/main/domain/entities/otp_params.dart';
 import 'package:anantla_pay/src/core/main/domain/entities/register_param.dart';
+import 'package:anantla_pay/src/core/main/domain/usecases/add_wish_list.dart';
 import 'package:anantla_pay/src/core/main/domain/usecases/forgot_password.dart';
 import 'package:anantla_pay/src/core/main/domain/usecases/login.dart';
 import 'package:anantla_pay/src/core/main/domain/usecases/register.dart';
-import 'package:anantla_pay/src/core/main/domain/usecases/verifOtp.dart';
+import 'package:anantla_pay/src/core/main/domain/usecases/verifOtpLogin.dart';
 import 'package:anantla_pay/src/core/provider/token_manager_provider.dart';
 import 'package:anantla_pay/src/presentation/main/controllers/selected_index_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -58,15 +60,15 @@ class Authentication extends _$Authentication {
     );
   }
 
-  Future<void> verifOtp({
+  Future<void> verifOtpLogin({
     required OtpParams params,
     required Function() onSuccess,
     required Function() onError,
   }) async {
     state = const AsyncLoading();
 
-    Verifotp verifotp = await ref.read(verifotpProvider);
-    final result = await verifotp(OtpParams(
+    VerifOtpLogin verifOtpLogin = await ref.read(verifOtpLoginProvider);
+    final result = await verifOtpLogin(OtpParams(
       otpCode: params.otpCode,
       email: params.email,
     ));
@@ -114,7 +116,7 @@ class Authentication extends _$Authentication {
 
   Future<void> register({
     required RegisterParams params,
-    required Function() onSuccess,
+    required Function(String message) onSuccess,
     required Function() onError,
   }) async {
     try {
@@ -133,7 +135,7 @@ class Authentication extends _$Authentication {
           onError();
         },
         (data) async {
-          onSuccess();
+          onSuccess(data);
           state = AsyncData('Register Success');
         },
       );
@@ -148,7 +150,7 @@ class Authentication extends _$Authentication {
 
   Future<void> forgotPassword({
     required RegisterParams params,
-    required Function() onSuccess,
+    required Function(String message) onSuccess,
     required Function() onError,
   }) async {
     try {
@@ -167,7 +169,7 @@ class Authentication extends _$Authentication {
           onError();
         },
         (data) async {
-          onSuccess();
+          onSuccess(data);
           state = AsyncData('Forgot Password Success');
         },
       );
@@ -178,5 +180,24 @@ class Authentication extends _$Authentication {
       state = AsyncError(e, stackTrace);
       onError();
     }
+  }
+
+  Future<void> addWishList({
+    required Function (String message) onSuccess,
+    required Function (String message) onError,
+  }) async {
+    state = const AsyncLoading();
+    AddWishList addWishList = await ref.read(addWishListProvider);
+    final result = await addWishList.call(null);
+    result.fold(
+      (error) {
+        state = AsyncError(error, StackTrace.current);
+        onError(error);
+      },
+      (data) async {
+        onSuccess(data);
+        state = AsyncData('Add Wish List Success');
+      },
+    );
   }
 }

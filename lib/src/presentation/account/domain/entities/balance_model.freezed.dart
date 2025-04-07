@@ -25,9 +25,13 @@ mixin _$BalanceModel {
   @JsonKey(name: "wallet_id")
   int? get walletId => throw _privateConstructorUsedError;
   @JsonKey(name: "balance")
-  int? get balance => throw _privateConstructorUsedError;
+  String? get balance => throw _privateConstructorUsedError;
   @JsonKey(name: "currency")
   String? get currency => throw _privateConstructorUsedError;
+  @JsonKey(name: "psp_id")
+  int? get pspId => throw _privateConstructorUsedError;
+  @JsonKey(name: "wallet_status")
+  String? get walletStatus => throw _privateConstructorUsedError;
 
   /// Serializes this BalanceModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,8 +52,10 @@ abstract class $BalanceModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "user_id") int? userId,
       @JsonKey(name: "wallet_id") int? walletId,
-      @JsonKey(name: "balance") int? balance,
-      @JsonKey(name: "currency") String? currency});
+      @JsonKey(name: "balance") String? balance,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "psp_id") int? pspId,
+      @JsonKey(name: "wallet_status") String? walletStatus});
 }
 
 /// @nodoc
@@ -71,6 +77,8 @@ class _$BalanceModelCopyWithImpl<$Res, $Val extends BalanceModel>
     Object? walletId = freezed,
     Object? balance = freezed,
     Object? currency = freezed,
+    Object? pspId = freezed,
+    Object? walletStatus = freezed,
   }) {
     return _then(_value.copyWith(
       userId: freezed == userId
@@ -84,10 +92,18 @@ class _$BalanceModelCopyWithImpl<$Res, $Val extends BalanceModel>
       balance: freezed == balance
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       currency: freezed == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pspId: freezed == pspId
+          ? _value.pspId
+          : pspId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      walletStatus: freezed == walletStatus
+          ? _value.walletStatus
+          : walletStatus // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -104,8 +120,10 @@ abstract class _$$BalanceModelImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "user_id") int? userId,
       @JsonKey(name: "wallet_id") int? walletId,
-      @JsonKey(name: "balance") int? balance,
-      @JsonKey(name: "currency") String? currency});
+      @JsonKey(name: "balance") String? balance,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "psp_id") int? pspId,
+      @JsonKey(name: "wallet_status") String? walletStatus});
 }
 
 /// @nodoc
@@ -125,6 +143,8 @@ class __$$BalanceModelImplCopyWithImpl<$Res>
     Object? walletId = freezed,
     Object? balance = freezed,
     Object? currency = freezed,
+    Object? pspId = freezed,
+    Object? walletStatus = freezed,
   }) {
     return _then(_$BalanceModelImpl(
       userId: freezed == userId
@@ -138,10 +158,18 @@ class __$$BalanceModelImplCopyWithImpl<$Res>
       balance: freezed == balance
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       currency: freezed == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pspId: freezed == pspId
+          ? _value.pspId
+          : pspId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      walletStatus: freezed == walletStatus
+          ? _value.walletStatus
+          : walletStatus // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -154,7 +182,9 @@ class _$BalanceModelImpl implements _BalanceModel {
       {@JsonKey(name: "user_id") this.userId,
       @JsonKey(name: "wallet_id") this.walletId,
       @JsonKey(name: "balance") this.balance,
-      @JsonKey(name: "currency") this.currency});
+      @JsonKey(name: "currency") this.currency,
+      @JsonKey(name: "psp_id") this.pspId,
+      @JsonKey(name: "wallet_status") this.walletStatus});
 
   factory _$BalanceModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BalanceModelImplFromJson(json);
@@ -167,14 +197,20 @@ class _$BalanceModelImpl implements _BalanceModel {
   final int? walletId;
   @override
   @JsonKey(name: "balance")
-  final int? balance;
+  final String? balance;
   @override
   @JsonKey(name: "currency")
   final String? currency;
+  @override
+  @JsonKey(name: "psp_id")
+  final int? pspId;
+  @override
+  @JsonKey(name: "wallet_status")
+  final String? walletStatus;
 
   @override
   String toString() {
-    return 'BalanceModel(userId: $userId, walletId: $walletId, balance: $balance, currency: $currency)';
+    return 'BalanceModel(userId: $userId, walletId: $walletId, balance: $balance, currency: $currency, pspId: $pspId, walletStatus: $walletStatus)';
   }
 
   @override
@@ -187,13 +223,16 @@ class _$BalanceModelImpl implements _BalanceModel {
                 other.walletId == walletId) &&
             (identical(other.balance, balance) || other.balance == balance) &&
             (identical(other.currency, currency) ||
-                other.currency == currency));
+                other.currency == currency) &&
+            (identical(other.pspId, pspId) || other.pspId == pspId) &&
+            (identical(other.walletStatus, walletStatus) ||
+                other.walletStatus == walletStatus));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, userId, walletId, balance, currency);
+  int get hashCode => Object.hash(
+      runtimeType, userId, walletId, balance, currency, pspId, walletStatus);
 
   /// Create a copy of BalanceModel
   /// with the given fields replaced by the non-null parameter values.
@@ -213,10 +252,13 @@ class _$BalanceModelImpl implements _BalanceModel {
 
 abstract class _BalanceModel implements BalanceModel {
   const factory _BalanceModel(
-      {@JsonKey(name: "user_id") final int? userId,
-      @JsonKey(name: "wallet_id") final int? walletId,
-      @JsonKey(name: "balance") final int? balance,
-      @JsonKey(name: "currency") final String? currency}) = _$BalanceModelImpl;
+          {@JsonKey(name: "user_id") final int? userId,
+          @JsonKey(name: "wallet_id") final int? walletId,
+          @JsonKey(name: "balance") final String? balance,
+          @JsonKey(name: "currency") final String? currency,
+          @JsonKey(name: "psp_id") final int? pspId,
+          @JsonKey(name: "wallet_status") final String? walletStatus}) =
+      _$BalanceModelImpl;
 
   factory _BalanceModel.fromJson(Map<String, dynamic> json) =
       _$BalanceModelImpl.fromJson;
@@ -229,10 +271,16 @@ abstract class _BalanceModel implements BalanceModel {
   int? get walletId;
   @override
   @JsonKey(name: "balance")
-  int? get balance;
+  String? get balance;
   @override
   @JsonKey(name: "currency")
   String? get currency;
+  @override
+  @JsonKey(name: "psp_id")
+  int? get pspId;
+  @override
+  @JsonKey(name: "wallet_status")
+  String? get walletStatus;
 
   /// Create a copy of BalanceModel
   /// with the given fields replaced by the non-null parameter values.

@@ -11,5 +11,7 @@ AccountRepository accountRepository(AccountRepositoryRef ref) {
   return AccountRepositoryImpl(
       remoteDataSource: AccountRemoteDataSourceImpl(
           httpClient: ref.watch(userDioProvider),
-          virtualHttpClient: ref.watch(virtualAccountDioProvider)));
+          virtualHttpClient: ref.watch(virtualAccountDioProvider), 
+          adminHttpClient: ref.watch(adminDioProvider),
+          ));
 }

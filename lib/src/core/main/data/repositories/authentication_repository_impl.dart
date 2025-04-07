@@ -77,9 +77,22 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<String, LoginModel>> verifOtp({required OtpParams params})  async{
+  Future<Either<String, LoginModel>> verifOtpLogin({required OtpParams params})  async{
     try{
-      final result = await remoteDataSource.verifOtp(params: params);
+      final result = await remoteDataSource.verifOtpLogin(params: params);
+      return result.fold(
+        (error) => Left(error),
+        (message) => Right(message),
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+  
+  @override
+  Future<Either<String, String>> addWishtList() async{
+    try{
+      final result = await remoteDataSource.addWishtList();
       return result.fold(
         (error) => Left(error),
         (message) => Right(message),

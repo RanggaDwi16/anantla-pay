@@ -4,14 +4,14 @@ import 'package:anantla_pay/src/core/main/domain/repository/authentication_repos
 import 'package:anantla_pay/src/core/utils/usecase/usecase.dart';
 import 'package:dartz/dartz.dart';
 
-class Verifotp implements UseCase<LoginModel, OtpParams> {
+class VerifOtpLogin implements UseCase<LoginModel, OtpParams> {
   final AuthenticationRepository authenticationRepository;
 
-  Verifotp({required this.authenticationRepository});
+  VerifOtpLogin({required this.authenticationRepository});
 
   @override
   Future<Either<String, LoginModel>> call(OtpParams params) {
-    return authenticationRepository.verifOtp(params: params);
+    return authenticationRepository.verifOtpLogin(params: params);
   }
 
   

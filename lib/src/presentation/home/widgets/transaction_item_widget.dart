@@ -3,17 +3,13 @@ import 'package:anantla_pay/src/presentation/home/data/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-Widget buildTransactionList() {
-  return ListView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(), // Menghindari konflik scroll
-    itemCount: transactions.length,
-    itemBuilder: (context, index) {
-      final transaction = transactions[index];
-      return _buildTransactionItem(transaction);
-    },
-  );
+List<Widget> buildTransactionList() {
+  return List.generate(transactions.length, (index) {
+    final transaction = transactions[index];
+    return _buildTransactionItem(transaction);
+  });
 }
+
 
 /// Widget untuk item transaksi
 Widget _buildTransactionItem(Map<String, String> transaction) {

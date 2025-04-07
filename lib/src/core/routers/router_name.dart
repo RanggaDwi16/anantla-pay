@@ -6,6 +6,12 @@ class RouteName {
   static const String forgotPassword = '/forgotPassword';
   static const String home = '/home';
   static const String main = '/main';
+  static const String notification = '/notification';
+  static const String qrtab = '/qrtab';
+  static const String qrcode = '/qrcode';
+  static const String qrisScanner = '/qrisScanner';
+  static const String paymentOption = '/paymentOption';
+  static const String invoice = '/invoice';
   static const String pay = '/pay';
   static const String review = '/review';
   static const String card = '/card';

@@ -5,17 +5,21 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String title;
   List<Widget> actions;
+  final Widget? customTitleWidget;
+  Widget? leading;
   Color backgroundColor;
   Color textColor;
   IconThemeData iconTheme;
-  
-  TabBar? bottom;
+
+  PreferredSizeWidget? bottom;
   bool? centertitle;
   bool showBackButton;
 
   CustomAppBar({
     super.key,
+    this.leading,
     this.title = "",
+    this.customTitleWidget,
     this.centertitle = false,
     this.actions = const [],
     this.textColor = AppColor.primaryBlack,
@@ -28,19 +32,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: showBackButton && Navigator.of(context).canPop(), // ✅ kontrol tombol back
+      leading: leading,
+      automaticallyImplyLeading: showBackButton &&
+          Navigator.of(context).canPop(), // ✅ kontrol tombol back
       surfaceTintColor: Colors.transparent,
       backgroundColor: backgroundColor,
       centerTitle: centertitle,
       iconTheme: iconTheme,
-      title: Text(
-        title,
-        style: TextStyle(
-          color: textColor,
-          fontSize: context.deviceWidth * 0.055,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      title: customTitleWidget ??
+          Text(
+            title,
+            style: TextStyle(
+              color: textColor,
+              fontSize: context.deviceWidth * 0.045,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
       actions: actions,
       bottom: bottom != null
           ? PreferredSize(
@@ -55,7 +62,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => bottom == null
-      ? const Size.fromHeight(56)
-      : const Size.fromHeight(100);
+  Size get preferredSize =>
+      bottom == null ? const Size.fromHeight(56) : const Size.fromHeight(100);
 }

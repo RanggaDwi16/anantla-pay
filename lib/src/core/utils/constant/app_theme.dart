@@ -7,7 +7,7 @@ class AppTheme {
       primaryColor: Colors.black,
       cardColor: Colors.white,
       scaffoldBackgroundColor: AppColor.primaryWhite,
-      fontFamily: 'Inter',
+      fontFamily: 'Poppins',
       appBarTheme: const AppBarTheme(
         color: Colors.white,
         iconTheme: IconThemeData(
@@ -80,35 +80,65 @@ class AppTheme {
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-            color: Colors.black, fontSize: 32, fontWeight: FontWeight.w600),
+            color: AppColor.primaryBlack,
+            fontSize: 32,
+            fontWeight: FontWeight.w600),
         displayMedium: TextStyle(
-            color: Colors.black, fontSize: 28, fontWeight: FontWeight.w500),
+            color: AppColor.primaryBlack,
+            fontSize: 28,
+            fontWeight: FontWeight.w500),
         displaySmall: TextStyle(
-            color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600),
+            color: AppColor.primaryBlack,
+            fontSize: 24,
+            fontWeight: FontWeight.w600),
         headlineLarge: TextStyle(
-            color: Colors.black, fontSize: 22, fontWeight: FontWeight.w600),
+            color: AppColor.primaryBlack,
+            fontSize: 22,
+            fontWeight: FontWeight.w600),
         headlineMedium: TextStyle(
-            color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+            color: AppColor.primaryBlack,
+            fontSize: 20,
+            fontWeight: FontWeight.w600),
         headlineSmall: TextStyle(
-            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+            color: AppColor.primaryBlack,
+            fontSize: 18,
+            fontWeight: FontWeight.w600),
         titleLarge: TextStyle(
-            color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            color: AppColor.primaryBlack,
+            fontSize: 16,
+            fontWeight: FontWeight.w500),
         titleMedium: TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+            color: AppColor.primaryBlack,
+            fontSize: 14,
+            fontWeight: FontWeight.w500),
         titleSmall: TextStyle(
-            color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+            color: AppColor.primaryBlack,
+            fontSize: 12,
+            fontWeight: FontWeight.w400),
         bodyLarge: TextStyle(
-            color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+            color: AppColor.primaryBlack,
+            fontSize: 16,
+            fontWeight: FontWeight.w400),
         bodyMedium: TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
+            color: AppColor.primaryBlack,
+            fontSize: 14,
+            fontWeight: FontWeight.w400),
         bodySmall: TextStyle(
-            color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+            color: AppColor.primaryBlack,
+            fontSize: 12,
+            fontWeight: FontWeight.w400),
         labelLarge: TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
+            color: AppColor.primaryBlack,
+            fontSize: 14,
+            fontWeight: FontWeight.w600),
         labelMedium: TextStyle(
-            color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
+            color: AppColor.primaryBlack,
+            fontSize: 12,
+            fontWeight: FontWeight.w500),
         labelSmall: TextStyle(
-            color: Colors.black, fontSize: 10, fontWeight: FontWeight.w400),
+            color: AppColor.primaryBlack,
+            fontSize: 10,
+            fontWeight: FontWeight.w400),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(

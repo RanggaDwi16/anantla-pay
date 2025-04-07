@@ -10,6 +10,9 @@ class InternalTransferParams with _$InternalTransferParams {
     @JsonKey(name: "to_wallet_id") int? toWalletId,
     @JsonKey(name: "amount") int? amount,
     @JsonKey(name: "note") String? note,
+    @JsonKey(name: "firebase_token") String? firebaseToken,
+    @JsonKey(name: "otp_code") String? otpCode,
+
   }) = _InternalTransferParams;
 
   factory InternalTransferParams.fromJson(Map<String, dynamic> json) =>

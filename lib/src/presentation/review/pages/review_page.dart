@@ -37,8 +37,6 @@ class ReviewPage extends HookConsumerWidget {
     print(
         'Before sending: fromCurrency = ${transferData.fromCurrency}, toCurrency = ${transferData.toCurrency}');
 
-    final transferDataLatest = ref.read(transferDataNotifierProvider);
-
     // final transferDataLatest = ref.read(transferDataNotifierProvider);
 
     final isTopUp = topUpData.walletId != null;
@@ -133,7 +131,6 @@ class ReviewPage extends HookConsumerWidget {
                                   walletId: topUpData.walletId!,
                                   amount: topUpData.amount!,
                                   currency: topUpData.currency!,
-                                  referenceId: messageController.text,
                                 ),
                                 onError: (message) {
                                   context.customErrorDialog(message);
@@ -172,24 +169,10 @@ class ReviewPage extends HookConsumerWidget {
                                   context.customErrorDialog(message);
                                 },
                                 onSuccess: (message) {
-                                  ref.invalidate(fetchBalanceProvider);
-                                  ref.invalidate(fetchTransactionProvider);
-                                  ref.read(amountProvider.notifier).state = '';
-                                  ref
-                                      .read(
-                                          transferDataNotifierProvider.notifier)
-                                      .reset();
-                                  context.showSuccessDialog(
-                                    title: 'Internal Transfer Successful',
-                                    message:
-                                        'Your transfer has been completed!',
-                                    onConfirm: () {
-                                      context.goNamed(RouteName.main);
-                                      ref
-                                          .read(selectedIndexProvider.notifier)
-                                          .state = 1;
-                                    },
-                                  );
+                                  final fromWalletId =
+                                      transferData.fromWalletId!;
+                                  _showOtpDialog(context, ref, fromWalletId);
+                                 
                                 },
                               );
                         } else if (isCrossPspTransfer) {
@@ -253,6 +236,81 @@ class ReviewPage extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showOtpDialog(BuildContext context, WidgetRef ref, int fromWalletId) {
+    final otpController = TextEditingController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        // ✅ Store the dialog context
+        return AlertDialog(
+          title: const Text("Enter OTP"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: "OTP Code",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (dialogContext.mounted) Navigator.pop(dialogContext);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                final enteredOtp = otpController.text.trim();
+                print("Entered OTP: $enteredOtp");
+                if (enteredOtp.isNotEmpty) {
+                  ref
+                      .read(postInternalTransferProvider.notifier)
+                      .postInternalTranfer(
+                          params: InternalTransferParams(
+                            otpCode: enteredOtp,
+                            fromWalletId: fromWalletId,
+                          ),
+                          onError: (message) {
+                            context.customErrorDialog(message);
+                          },
+                          onSuccess: (message) {
+                            ref.invalidate(fetchBalanceProvider);
+                            ref.invalidate(fetchTransactionProvider);
+                            context.showSuccessDialog(
+                                title: "Success",
+                                message: message,
+                                onConfirm: () {
+                                  ref.read(amountProvider.notifier).state = "0";
+                                  ref
+                                      .read(topUpDataNotifierProvider.notifier)
+                                      .reset();
+                                  context.goNamed(RouteName.main);
+                                  ref
+                                      .read(selectedIndexProvider.notifier)
+                                      .state = 1;
+                                });
+                          });
+                } else {
+                  context.showCustomSnackBar("Please enter the OTP!",
+                      isError: true);
+                }
+              },
+              child: const Text("Verify"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
