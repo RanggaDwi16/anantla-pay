@@ -11,23 +11,25 @@ import 'package:go_router/go_router.dart';
 typedef OnSuccessCallback = void Function(String message);
 typedef OnErrorCallback = void Function();
 
-void loginWithEmailPassword({
-  required WidgetRef ref,
-  required String email,
-  required String password,
-  required OnSuccessCallback onSuccess,
-  required OnErrorCallback onError,
-}) {
-  ref.read(authenticationProvider.notifier).login(
-        email: email,
-        password: password,
-        onSuccess: (message) {
-          ref.invalidate(fetchUserProvider);
-          onSuccess(message);
-        },
-        onError: onError,
-      );
-}
+// void loginWithEmailPassword({
+//   required WidgetRef ref,
+//   required String email,
+//   required String password,
+//   required OnSuccessCallback onSuccess,
+//   required OnErrorCallback onError,
+// }) {
+//   ref.read(authenticationProvider.notifier).login(
+//         email: email,
+//         password: password,
+//         onSuccess: (message) {
+//           ref.invalidate(fetchUserProvider);
+//           onSuccess(message);
+//         },
+//         onError: (message) {
+//           onError();
+//         },
+//       );
+// }
 
 void showOtpDialog({
   required BuildContext context,

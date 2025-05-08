@@ -150,6 +150,7 @@ class CrossPspTransferPage extends HookConsumerWidget {
                         : AppColor.primaryColor,
                     disabled: !isSendEnabled.value,
                     onPressed: () {
+                      print(selectedWallet.value!.walletId);
                       ref
                           .read(postCrossPspTransferProvider.notifier)
                           .postCrossPspTransfer(

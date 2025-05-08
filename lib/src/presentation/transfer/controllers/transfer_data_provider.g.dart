@@ -7,7 +7,7 @@ part of 'transfer_data_provider.dart';
 // **************************************************************************
 
 String _$transferDataNotifierHash() =>
-    r'4878338352ef557567c8f7c6f507eec2e449e98a';
+    r'e6c559b155b09a563b1022e19e0068c56689046f';
 
 /// See also [TransferDataNotifier].
 @ProviderFor(TransferDataNotifier)

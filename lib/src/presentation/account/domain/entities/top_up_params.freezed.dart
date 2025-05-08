@@ -28,6 +28,8 @@ mixin _$TopupParams {
   String? get currency => throw _privateConstructorUsedError;
   @JsonKey(name: "firebase_token")
   String? get firebaseToken => throw _privateConstructorUsedError;
+  @JsonKey(name: "otp_code")
+  String? get otpCode => throw _privateConstructorUsedError;
 
   /// Serializes this TopupParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +51,8 @@ abstract class $TopupParamsCopyWith<$Res> {
       {@JsonKey(name: "wallet_id") int? walletId,
       @JsonKey(name: "amount") int? amount,
       @JsonKey(name: "currency") String? currency,
-      @JsonKey(name: "firebase_token") String? firebaseToken});
+      @JsonKey(name: "firebase_token") String? firebaseToken,
+      @JsonKey(name: "otp_code") String? otpCode});
 }
 
 /// @nodoc
@@ -71,6 +74,7 @@ class _$TopupParamsCopyWithImpl<$Res, $Val extends TopupParams>
     Object? amount = freezed,
     Object? currency = freezed,
     Object? firebaseToken = freezed,
+    Object? otpCode = freezed,
   }) {
     return _then(_value.copyWith(
       walletId: freezed == walletId
@@ -89,6 +93,10 @@ class _$TopupParamsCopyWithImpl<$Res, $Val extends TopupParams>
           ? _value.firebaseToken
           : firebaseToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      otpCode: freezed == otpCode
+          ? _value.otpCode
+          : otpCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -105,7 +113,8 @@ abstract class _$$TopupParamsImplCopyWith<$Res>
       {@JsonKey(name: "wallet_id") int? walletId,
       @JsonKey(name: "amount") int? amount,
       @JsonKey(name: "currency") String? currency,
-      @JsonKey(name: "firebase_token") String? firebaseToken});
+      @JsonKey(name: "firebase_token") String? firebaseToken,
+      @JsonKey(name: "otp_code") String? otpCode});
 }
 
 /// @nodoc
@@ -125,6 +134,7 @@ class __$$TopupParamsImplCopyWithImpl<$Res>
     Object? amount = freezed,
     Object? currency = freezed,
     Object? firebaseToken = freezed,
+    Object? otpCode = freezed,
   }) {
     return _then(_$TopupParamsImpl(
       walletId: freezed == walletId
@@ -143,6 +153,10 @@ class __$$TopupParamsImplCopyWithImpl<$Res>
           ? _value.firebaseToken
           : firebaseToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      otpCode: freezed == otpCode
+          ? _value.otpCode
+          : otpCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -154,7 +168,8 @@ class _$TopupParamsImpl implements _TopupParams {
       {@JsonKey(name: "wallet_id") this.walletId,
       @JsonKey(name: "amount") this.amount,
       @JsonKey(name: "currency") this.currency,
-      @JsonKey(name: "firebase_token") this.firebaseToken});
+      @JsonKey(name: "firebase_token") this.firebaseToken,
+      @JsonKey(name: "otp_code") this.otpCode});
 
   factory _$TopupParamsImpl.fromJson(Map<String, dynamic> json) =>
       _$$TopupParamsImplFromJson(json);
@@ -171,10 +186,13 @@ class _$TopupParamsImpl implements _TopupParams {
   @override
   @JsonKey(name: "firebase_token")
   final String? firebaseToken;
+  @override
+  @JsonKey(name: "otp_code")
+  final String? otpCode;
 
   @override
   String toString() {
-    return 'TopupParams(walletId: $walletId, amount: $amount, currency: $currency, firebaseToken: $firebaseToken)';
+    return 'TopupParams(walletId: $walletId, amount: $amount, currency: $currency, firebaseToken: $firebaseToken, otpCode: $otpCode)';
   }
 
   @override
@@ -188,13 +206,14 @@ class _$TopupParamsImpl implements _TopupParams {
             (identical(other.currency, currency) ||
                 other.currency == currency) &&
             (identical(other.firebaseToken, firebaseToken) ||
-                other.firebaseToken == firebaseToken));
+                other.firebaseToken == firebaseToken) &&
+            (identical(other.otpCode, otpCode) || other.otpCode == otpCode));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, walletId, amount, currency, firebaseToken);
+  int get hashCode => Object.hash(
+      runtimeType, walletId, amount, currency, firebaseToken, otpCode);
 
   /// Create a copy of TopupParams
   /// with the given fields replaced by the non-null parameter values.
@@ -214,11 +233,11 @@ class _$TopupParamsImpl implements _TopupParams {
 
 abstract class _TopupParams implements TopupParams {
   const factory _TopupParams(
-          {@JsonKey(name: "wallet_id") final int? walletId,
-          @JsonKey(name: "amount") final int? amount,
-          @JsonKey(name: "currency") final String? currency,
-          @JsonKey(name: "firebase_token") final String? firebaseToken}) =
-      _$TopupParamsImpl;
+      {@JsonKey(name: "wallet_id") final int? walletId,
+      @JsonKey(name: "amount") final int? amount,
+      @JsonKey(name: "currency") final String? currency,
+      @JsonKey(name: "firebase_token") final String? firebaseToken,
+      @JsonKey(name: "otp_code") final String? otpCode}) = _$TopupParamsImpl;
 
   factory _TopupParams.fromJson(Map<String, dynamic> json) =
       _$TopupParamsImpl.fromJson;
@@ -235,6 +254,9 @@ abstract class _TopupParams implements TopupParams {
   @override
   @JsonKey(name: "firebase_token")
   String? get firebaseToken;
+  @override
+  @JsonKey(name: "otp_code")
+  String? get otpCode;
 
   /// Create a copy of TopupParams
   /// with the given fields replaced by the non-null parameter values.
@@ -252,6 +274,12 @@ VerifyOtpTopupParams _$VerifyOtpTopupParamsFromJson(Map<String, dynamic> json) {
 mixin _$VerifyOtpTopupParams {
   @JsonKey(name: "wallet_id")
   int? get walletId => throw _privateConstructorUsedError;
+  @JsonKey(name: "amount")
+  int? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: "currency")
+  String? get currency => throw _privateConstructorUsedError;
+  @JsonKey(name: "firebase_token")
+  String? get firebaseToken => throw _privateConstructorUsedError;
   @JsonKey(name: "otp_code")
   String? get otpCode => throw _privateConstructorUsedError;
 
@@ -273,6 +301,9 @@ abstract class $VerifyOtpTopupParamsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "wallet_id") int? walletId,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "firebase_token") String? firebaseToken,
       @JsonKey(name: "otp_code") String? otpCode});
 }
 
@@ -293,6 +324,9 @@ class _$VerifyOtpTopupParamsCopyWithImpl<$Res,
   @override
   $Res call({
     Object? walletId = freezed,
+    Object? amount = freezed,
+    Object? currency = freezed,
+    Object? firebaseToken = freezed,
     Object? otpCode = freezed,
   }) {
     return _then(_value.copyWith(
@@ -300,6 +334,18 @@ class _$VerifyOtpTopupParamsCopyWithImpl<$Res,
           ? _value.walletId
           : walletId // ignore: cast_nullable_to_non_nullable
               as int?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      firebaseToken: freezed == firebaseToken
+          ? _value.firebaseToken
+          : firebaseToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       otpCode: freezed == otpCode
           ? _value.otpCode
           : otpCode // ignore: cast_nullable_to_non_nullable
@@ -318,6 +364,9 @@ abstract class _$$VerifyOtpTopupParamsImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: "wallet_id") int? walletId,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "firebase_token") String? firebaseToken,
       @JsonKey(name: "otp_code") String? otpCode});
 }
 
@@ -335,6 +384,9 @@ class __$$VerifyOtpTopupParamsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? walletId = freezed,
+    Object? amount = freezed,
+    Object? currency = freezed,
+    Object? firebaseToken = freezed,
     Object? otpCode = freezed,
   }) {
     return _then(_$VerifyOtpTopupParamsImpl(
@@ -342,6 +394,18 @@ class __$$VerifyOtpTopupParamsImplCopyWithImpl<$Res>
           ? _value.walletId
           : walletId // ignore: cast_nullable_to_non_nullable
               as int?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      firebaseToken: freezed == firebaseToken
+          ? _value.firebaseToken
+          : firebaseToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       otpCode: freezed == otpCode
           ? _value.otpCode
           : otpCode // ignore: cast_nullable_to_non_nullable
@@ -355,6 +419,9 @@ class __$$VerifyOtpTopupParamsImplCopyWithImpl<$Res>
 class _$VerifyOtpTopupParamsImpl implements _VerifyOtpTopupParams {
   const _$VerifyOtpTopupParamsImpl(
       {@JsonKey(name: "wallet_id") this.walletId,
+      @JsonKey(name: "amount") this.amount,
+      @JsonKey(name: "currency") this.currency,
+      @JsonKey(name: "firebase_token") this.firebaseToken,
       @JsonKey(name: "otp_code") this.otpCode});
 
   factory _$VerifyOtpTopupParamsImpl.fromJson(Map<String, dynamic> json) =>
@@ -364,12 +431,21 @@ class _$VerifyOtpTopupParamsImpl implements _VerifyOtpTopupParams {
   @JsonKey(name: "wallet_id")
   final int? walletId;
   @override
+  @JsonKey(name: "amount")
+  final int? amount;
+  @override
+  @JsonKey(name: "currency")
+  final String? currency;
+  @override
+  @JsonKey(name: "firebase_token")
+  final String? firebaseToken;
+  @override
   @JsonKey(name: "otp_code")
   final String? otpCode;
 
   @override
   String toString() {
-    return 'VerifyOtpTopupParams(walletId: $walletId, otpCode: $otpCode)';
+    return 'VerifyOtpTopupParams(walletId: $walletId, amount: $amount, currency: $currency, firebaseToken: $firebaseToken, otpCode: $otpCode)';
   }
 
   @override
@@ -379,12 +455,18 @@ class _$VerifyOtpTopupParamsImpl implements _VerifyOtpTopupParams {
             other is _$VerifyOtpTopupParamsImpl &&
             (identical(other.walletId, walletId) ||
                 other.walletId == walletId) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
+            (identical(other.firebaseToken, firebaseToken) ||
+                other.firebaseToken == firebaseToken) &&
             (identical(other.otpCode, otpCode) || other.otpCode == otpCode));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, walletId, otpCode);
+  int get hashCode => Object.hash(
+      runtimeType, walletId, amount, currency, firebaseToken, otpCode);
 
   /// Create a copy of VerifyOtpTopupParams
   /// with the given fields replaced by the non-null parameter values.
@@ -407,6 +489,9 @@ class _$VerifyOtpTopupParamsImpl implements _VerifyOtpTopupParams {
 abstract class _VerifyOtpTopupParams implements VerifyOtpTopupParams {
   const factory _VerifyOtpTopupParams(
           {@JsonKey(name: "wallet_id") final int? walletId,
+          @JsonKey(name: "amount") final int? amount,
+          @JsonKey(name: "currency") final String? currency,
+          @JsonKey(name: "firebase_token") final String? firebaseToken,
           @JsonKey(name: "otp_code") final String? otpCode}) =
       _$VerifyOtpTopupParamsImpl;
 
@@ -416,6 +501,15 @@ abstract class _VerifyOtpTopupParams implements VerifyOtpTopupParams {
   @override
   @JsonKey(name: "wallet_id")
   int? get walletId;
+  @override
+  @JsonKey(name: "amount")
+  int? get amount;
+  @override
+  @JsonKey(name: "currency")
+  String? get currency;
+  @override
+  @JsonKey(name: "firebase_token")
+  String? get firebaseToken;
   @override
   @JsonKey(name: "otp_code")
   String? get otpCode;
@@ -783,8 +877,18 @@ mixin _$VirtualAccountParams {
   String? get virtualAccountEmail => throw _privateConstructorUsedError;
   @JsonKey(name: "virtualAccountPhone")
   String? get virtualAccountPhone => throw _privateConstructorUsedError;
+  @JsonKey(name: "platform_fee")
+  int? get platformFee => throw _privateConstructorUsedError;
+  @JsonKey(name: "partner_fee")
+  int? get partnerFee => throw _privateConstructorUsedError;
   @JsonKey(name: "totalAmount")
   TotalAmount? get totalAmount => throw _privateConstructorUsedError;
+  @JsonKey(name: "amount")
+  int? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: "currency")
+  String? get currency => throw _privateConstructorUsedError;
+  @JsonKey(name: "cover_fee")
+  bool? get coverFee => throw _privateConstructorUsedError;
 
   /// Serializes this VirtualAccountParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -809,7 +913,12 @@ abstract class $VirtualAccountParamsCopyWith<$Res> {
       @JsonKey(name: "virtualAccountName") String? virtualAccountName,
       @JsonKey(name: "virtualAccountEmail") String? virtualAccountEmail,
       @JsonKey(name: "virtualAccountPhone") String? virtualAccountPhone,
-      @JsonKey(name: "totalAmount") TotalAmount? totalAmount});
+      @JsonKey(name: "platform_fee") int? platformFee,
+      @JsonKey(name: "partner_fee") int? partnerFee,
+      @JsonKey(name: "totalAmount") TotalAmount? totalAmount,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "cover_fee") bool? coverFee});
 
   $TotalAmountCopyWith<$Res>? get totalAmount;
 }
@@ -836,7 +945,12 @@ class _$VirtualAccountParamsCopyWithImpl<$Res,
     Object? virtualAccountName = freezed,
     Object? virtualAccountEmail = freezed,
     Object? virtualAccountPhone = freezed,
+    Object? platformFee = freezed,
+    Object? partnerFee = freezed,
     Object? totalAmount = freezed,
+    Object? amount = freezed,
+    Object? currency = freezed,
+    Object? coverFee = freezed,
   }) {
     return _then(_value.copyWith(
       walletId: freezed == walletId
@@ -863,10 +977,30 @@ class _$VirtualAccountParamsCopyWithImpl<$Res,
           ? _value.virtualAccountPhone
           : virtualAccountPhone // ignore: cast_nullable_to_non_nullable
               as String?,
+      platformFee: freezed == platformFee
+          ? _value.platformFee
+          : platformFee // ignore: cast_nullable_to_non_nullable
+              as int?,
+      partnerFee: freezed == partnerFee
+          ? _value.partnerFee
+          : partnerFee // ignore: cast_nullable_to_non_nullable
+              as int?,
       totalAmount: freezed == totalAmount
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
               as TotalAmount?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      coverFee: freezed == coverFee
+          ? _value.coverFee
+          : coverFee // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 
@@ -900,7 +1034,12 @@ abstract class _$$VirtualAccountParamsImplCopyWith<$Res>
       @JsonKey(name: "virtualAccountName") String? virtualAccountName,
       @JsonKey(name: "virtualAccountEmail") String? virtualAccountEmail,
       @JsonKey(name: "virtualAccountPhone") String? virtualAccountPhone,
-      @JsonKey(name: "totalAmount") TotalAmount? totalAmount});
+      @JsonKey(name: "platform_fee") int? platformFee,
+      @JsonKey(name: "partner_fee") int? partnerFee,
+      @JsonKey(name: "totalAmount") TotalAmount? totalAmount,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "cover_fee") bool? coverFee});
 
   @override
   $TotalAmountCopyWith<$Res>? get totalAmount;
@@ -925,7 +1064,12 @@ class __$$VirtualAccountParamsImplCopyWithImpl<$Res>
     Object? virtualAccountName = freezed,
     Object? virtualAccountEmail = freezed,
     Object? virtualAccountPhone = freezed,
+    Object? platformFee = freezed,
+    Object? partnerFee = freezed,
     Object? totalAmount = freezed,
+    Object? amount = freezed,
+    Object? currency = freezed,
+    Object? coverFee = freezed,
   }) {
     return _then(_$VirtualAccountParamsImpl(
       walletId: freezed == walletId
@@ -952,10 +1096,30 @@ class __$$VirtualAccountParamsImplCopyWithImpl<$Res>
           ? _value.virtualAccountPhone
           : virtualAccountPhone // ignore: cast_nullable_to_non_nullable
               as String?,
+      platformFee: freezed == platformFee
+          ? _value.platformFee
+          : platformFee // ignore: cast_nullable_to_non_nullable
+              as int?,
+      partnerFee: freezed == partnerFee
+          ? _value.partnerFee
+          : partnerFee // ignore: cast_nullable_to_non_nullable
+              as int?,
       totalAmount: freezed == totalAmount
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
               as TotalAmount?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      coverFee: freezed == coverFee
+          ? _value.coverFee
+          : coverFee // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -970,7 +1134,12 @@ class _$VirtualAccountParamsImpl implements _VirtualAccountParams {
       @JsonKey(name: "virtualAccountName") this.virtualAccountName,
       @JsonKey(name: "virtualAccountEmail") this.virtualAccountEmail,
       @JsonKey(name: "virtualAccountPhone") this.virtualAccountPhone,
-      @JsonKey(name: "totalAmount") this.totalAmount});
+      @JsonKey(name: "platform_fee") this.platformFee,
+      @JsonKey(name: "partner_fee") this.partnerFee,
+      @JsonKey(name: "totalAmount") this.totalAmount,
+      @JsonKey(name: "amount") this.amount,
+      @JsonKey(name: "currency") this.currency,
+      @JsonKey(name: "cover_fee") this.coverFee});
 
   factory _$VirtualAccountParamsImpl.fromJson(Map<String, dynamic> json) =>
       _$$VirtualAccountParamsImplFromJson(json);
@@ -994,12 +1163,27 @@ class _$VirtualAccountParamsImpl implements _VirtualAccountParams {
   @JsonKey(name: "virtualAccountPhone")
   final String? virtualAccountPhone;
   @override
+  @JsonKey(name: "platform_fee")
+  final int? platformFee;
+  @override
+  @JsonKey(name: "partner_fee")
+  final int? partnerFee;
+  @override
   @JsonKey(name: "totalAmount")
   final TotalAmount? totalAmount;
+  @override
+  @JsonKey(name: "amount")
+  final int? amount;
+  @override
+  @JsonKey(name: "currency")
+  final String? currency;
+  @override
+  @JsonKey(name: "cover_fee")
+  final bool? coverFee;
 
   @override
   String toString() {
-    return 'VirtualAccountParams(walletId: $walletId, bankCode: $bankCode, trxId: $trxId, virtualAccountName: $virtualAccountName, virtualAccountEmail: $virtualAccountEmail, virtualAccountPhone: $virtualAccountPhone, totalAmount: $totalAmount)';
+    return 'VirtualAccountParams(walletId: $walletId, bankCode: $bankCode, trxId: $trxId, virtualAccountName: $virtualAccountName, virtualAccountEmail: $virtualAccountEmail, virtualAccountPhone: $virtualAccountPhone, platformFee: $platformFee, partnerFee: $partnerFee, totalAmount: $totalAmount, amount: $amount, currency: $currency, coverFee: $coverFee)';
   }
 
   @override
@@ -1018,8 +1202,17 @@ class _$VirtualAccountParamsImpl implements _VirtualAccountParams {
                 other.virtualAccountEmail == virtualAccountEmail) &&
             (identical(other.virtualAccountPhone, virtualAccountPhone) ||
                 other.virtualAccountPhone == virtualAccountPhone) &&
+            (identical(other.platformFee, platformFee) ||
+                other.platformFee == platformFee) &&
+            (identical(other.partnerFee, partnerFee) ||
+                other.partnerFee == partnerFee) &&
             (identical(other.totalAmount, totalAmount) ||
-                other.totalAmount == totalAmount));
+                other.totalAmount == totalAmount) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
+            (identical(other.coverFee, coverFee) ||
+                other.coverFee == coverFee));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1032,7 +1225,12 @@ class _$VirtualAccountParamsImpl implements _VirtualAccountParams {
       virtualAccountName,
       virtualAccountEmail,
       virtualAccountPhone,
-      totalAmount);
+      platformFee,
+      partnerFee,
+      totalAmount,
+      amount,
+      currency,
+      coverFee);
 
   /// Create a copy of VirtualAccountParams
   /// with the given fields replaced by the non-null parameter values.
@@ -1060,8 +1258,13 @@ abstract class _VirtualAccountParams implements VirtualAccountParams {
       @JsonKey(name: "virtualAccountName") final String? virtualAccountName,
       @JsonKey(name: "virtualAccountEmail") final String? virtualAccountEmail,
       @JsonKey(name: "virtualAccountPhone") final String? virtualAccountPhone,
-      @JsonKey(name: "totalAmount")
-      final TotalAmount? totalAmount}) = _$VirtualAccountParamsImpl;
+      @JsonKey(name: "platform_fee") final int? platformFee,
+      @JsonKey(name: "partner_fee") final int? partnerFee,
+      @JsonKey(name: "totalAmount") final TotalAmount? totalAmount,
+      @JsonKey(name: "amount") final int? amount,
+      @JsonKey(name: "currency") final String? currency,
+      @JsonKey(name: "cover_fee")
+      final bool? coverFee}) = _$VirtualAccountParamsImpl;
 
   factory _VirtualAccountParams.fromJson(Map<String, dynamic> json) =
       _$VirtualAccountParamsImpl.fromJson;
@@ -1085,8 +1288,23 @@ abstract class _VirtualAccountParams implements VirtualAccountParams {
   @JsonKey(name: "virtualAccountPhone")
   String? get virtualAccountPhone;
   @override
+  @JsonKey(name: "platform_fee")
+  int? get platformFee;
+  @override
+  @JsonKey(name: "partner_fee")
+  int? get partnerFee;
+  @override
   @JsonKey(name: "totalAmount")
   TotalAmount? get totalAmount;
+  @override
+  @JsonKey(name: "amount")
+  int? get amount;
+  @override
+  @JsonKey(name: "currency")
+  String? get currency;
+  @override
+  @JsonKey(name: "cover_fee")
+  bool? get coverFee;
 
   /// Create a copy of VirtualAccountParams
   /// with the given fields replaced by the non-null parameter values.
@@ -1103,7 +1321,7 @@ TotalAmount _$TotalAmountFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TotalAmount {
   @JsonKey(name: "value")
-  String? get value => throw _privateConstructorUsedError;
+  String? get amount => throw _privateConstructorUsedError;
   @JsonKey(name: "currency")
   String? get currency => throw _privateConstructorUsedError;
 
@@ -1124,7 +1342,7 @@ abstract class $TotalAmountCopyWith<$Res> {
       _$TotalAmountCopyWithImpl<$Res, TotalAmount>;
   @useResult
   $Res call(
-      {@JsonKey(name: "value") String? value,
+      {@JsonKey(name: "value") String? amount,
       @JsonKey(name: "currency") String? currency});
 }
 
@@ -1143,13 +1361,13 @@ class _$TotalAmountCopyWithImpl<$Res, $Val extends TotalAmount>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = freezed,
+    Object? amount = freezed,
     Object? currency = freezed,
   }) {
     return _then(_value.copyWith(
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as String?,
       currency: freezed == currency
           ? _value.currency
@@ -1168,7 +1386,7 @@ abstract class _$$TotalAmountImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "value") String? value,
+      {@JsonKey(name: "value") String? amount,
       @JsonKey(name: "currency") String? currency});
 }
 
@@ -1185,13 +1403,13 @@ class __$$TotalAmountImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = freezed,
+    Object? amount = freezed,
     Object? currency = freezed,
   }) {
     return _then(_$TotalAmountImpl(
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as String?,
       currency: freezed == currency
           ? _value.currency
@@ -1205,7 +1423,7 @@ class __$$TotalAmountImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TotalAmountImpl implements _TotalAmount {
   const _$TotalAmountImpl(
-      {@JsonKey(name: "value") this.value,
+      {@JsonKey(name: "value") this.amount,
       @JsonKey(name: "currency") this.currency});
 
   factory _$TotalAmountImpl.fromJson(Map<String, dynamic> json) =>
@@ -1213,14 +1431,14 @@ class _$TotalAmountImpl implements _TotalAmount {
 
   @override
   @JsonKey(name: "value")
-  final String? value;
+  final String? amount;
   @override
   @JsonKey(name: "currency")
   final String? currency;
 
   @override
   String toString() {
-    return 'TotalAmount(value: $value, currency: $currency)';
+    return 'TotalAmount(amount: $amount, currency: $currency)';
   }
 
   @override
@@ -1228,14 +1446,14 @@ class _$TotalAmountImpl implements _TotalAmount {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TotalAmountImpl &&
-            (identical(other.value, value) || other.value == value) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.currency, currency) ||
                 other.currency == currency));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, value, currency);
+  int get hashCode => Object.hash(runtimeType, amount, currency);
 
   /// Create a copy of TotalAmount
   /// with the given fields replaced by the non-null parameter values.
@@ -1255,7 +1473,7 @@ class _$TotalAmountImpl implements _TotalAmount {
 
 abstract class _TotalAmount implements TotalAmount {
   const factory _TotalAmount(
-      {@JsonKey(name: "value") final String? value,
+      {@JsonKey(name: "value") final String? amount,
       @JsonKey(name: "currency") final String? currency}) = _$TotalAmountImpl;
 
   factory _TotalAmount.fromJson(Map<String, dynamic> json) =
@@ -1263,7 +1481,7 @@ abstract class _TotalAmount implements TotalAmount {
 
   @override
   @JsonKey(name: "value")
-  String? get value;
+  String? get amount;
   @override
   @JsonKey(name: "currency")
   String? get currency;
@@ -1273,5 +1491,304 @@ abstract class _TotalAmount implements TotalAmount {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TotalAmountImplCopyWith<_$TotalAmountImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+FeeModel _$FeeModelFromJson(Map<String, dynamic> json) {
+  return _FeeModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$FeeModel {
+  @JsonKey(name: "quote_id")
+  String? get quoteId => throw _privateConstructorUsedError;
+  @JsonKey(name: "currency")
+  String? get currency => throw _privateConstructorUsedError;
+  @JsonKey(name: "amount")
+  int? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: "cover_fee")
+  bool? get coverFee => throw _privateConstructorUsedError;
+  @JsonKey(name: "total_with_fee")
+  String? get totalWithFee => throw _privateConstructorUsedError;
+  @JsonKey(name: "platform_fee")
+  String? get platformFee => throw _privateConstructorUsedError;
+  @JsonKey(name: "partner_fee")
+  String? get partnerFee => throw _privateConstructorUsedError;
+
+  /// Serializes this FeeModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of FeeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $FeeModelCopyWith<FeeModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FeeModelCopyWith<$Res> {
+  factory $FeeModelCopyWith(FeeModel value, $Res Function(FeeModel) then) =
+      _$FeeModelCopyWithImpl<$Res, FeeModel>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "quote_id") String? quoteId,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "cover_fee") bool? coverFee,
+      @JsonKey(name: "total_with_fee") String? totalWithFee,
+      @JsonKey(name: "platform_fee") String? platformFee,
+      @JsonKey(name: "partner_fee") String? partnerFee});
+}
+
+/// @nodoc
+class _$FeeModelCopyWithImpl<$Res, $Val extends FeeModel>
+    implements $FeeModelCopyWith<$Res> {
+  _$FeeModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of FeeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? quoteId = freezed,
+    Object? currency = freezed,
+    Object? amount = freezed,
+    Object? coverFee = freezed,
+    Object? totalWithFee = freezed,
+    Object? platformFee = freezed,
+    Object? partnerFee = freezed,
+  }) {
+    return _then(_value.copyWith(
+      quoteId: freezed == quoteId
+          ? _value.quoteId
+          : quoteId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      coverFee: freezed == coverFee
+          ? _value.coverFee
+          : coverFee // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      totalWithFee: freezed == totalWithFee
+          ? _value.totalWithFee
+          : totalWithFee // ignore: cast_nullable_to_non_nullable
+              as String?,
+      platformFee: freezed == platformFee
+          ? _value.platformFee
+          : platformFee // ignore: cast_nullable_to_non_nullable
+              as String?,
+      partnerFee: freezed == partnerFee
+          ? _value.partnerFee
+          : partnerFee // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$FeeModelImplCopyWith<$Res>
+    implements $FeeModelCopyWith<$Res> {
+  factory _$$FeeModelImplCopyWith(
+          _$FeeModelImpl value, $Res Function(_$FeeModelImpl) then) =
+      __$$FeeModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "quote_id") String? quoteId,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "cover_fee") bool? coverFee,
+      @JsonKey(name: "total_with_fee") String? totalWithFee,
+      @JsonKey(name: "platform_fee") String? platformFee,
+      @JsonKey(name: "partner_fee") String? partnerFee});
+}
+
+/// @nodoc
+class __$$FeeModelImplCopyWithImpl<$Res>
+    extends _$FeeModelCopyWithImpl<$Res, _$FeeModelImpl>
+    implements _$$FeeModelImplCopyWith<$Res> {
+  __$$FeeModelImplCopyWithImpl(
+      _$FeeModelImpl _value, $Res Function(_$FeeModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FeeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? quoteId = freezed,
+    Object? currency = freezed,
+    Object? amount = freezed,
+    Object? coverFee = freezed,
+    Object? totalWithFee = freezed,
+    Object? platformFee = freezed,
+    Object? partnerFee = freezed,
+  }) {
+    return _then(_$FeeModelImpl(
+      quoteId: freezed == quoteId
+          ? _value.quoteId
+          : quoteId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      coverFee: freezed == coverFee
+          ? _value.coverFee
+          : coverFee // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      totalWithFee: freezed == totalWithFee
+          ? _value.totalWithFee
+          : totalWithFee // ignore: cast_nullable_to_non_nullable
+              as String?,
+      platformFee: freezed == platformFee
+          ? _value.platformFee
+          : platformFee // ignore: cast_nullable_to_non_nullable
+              as String?,
+      partnerFee: freezed == partnerFee
+          ? _value.partnerFee
+          : partnerFee // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$FeeModelImpl implements _FeeModel {
+  const _$FeeModelImpl(
+      {@JsonKey(name: "quote_id") this.quoteId,
+      @JsonKey(name: "currency") this.currency,
+      @JsonKey(name: "amount") this.amount,
+      @JsonKey(name: "cover_fee") this.coverFee,
+      @JsonKey(name: "total_with_fee") this.totalWithFee,
+      @JsonKey(name: "platform_fee") this.platformFee,
+      @JsonKey(name: "partner_fee") this.partnerFee});
+
+  factory _$FeeModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FeeModelImplFromJson(json);
+
+  @override
+  @JsonKey(name: "quote_id")
+  final String? quoteId;
+  @override
+  @JsonKey(name: "currency")
+  final String? currency;
+  @override
+  @JsonKey(name: "amount")
+  final int? amount;
+  @override
+  @JsonKey(name: "cover_fee")
+  final bool? coverFee;
+  @override
+  @JsonKey(name: "total_with_fee")
+  final String? totalWithFee;
+  @override
+  @JsonKey(name: "platform_fee")
+  final String? platformFee;
+  @override
+  @JsonKey(name: "partner_fee")
+  final String? partnerFee;
+
+  @override
+  String toString() {
+    return 'FeeModel(quoteId: $quoteId, currency: $currency, amount: $amount, coverFee: $coverFee, totalWithFee: $totalWithFee, platformFee: $platformFee, partnerFee: $partnerFee)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FeeModelImpl &&
+            (identical(other.quoteId, quoteId) || other.quoteId == quoteId) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.coverFee, coverFee) ||
+                other.coverFee == coverFee) &&
+            (identical(other.totalWithFee, totalWithFee) ||
+                other.totalWithFee == totalWithFee) &&
+            (identical(other.platformFee, platformFee) ||
+                other.platformFee == platformFee) &&
+            (identical(other.partnerFee, partnerFee) ||
+                other.partnerFee == partnerFee));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, quoteId, currency, amount,
+      coverFee, totalWithFee, platformFee, partnerFee);
+
+  /// Create a copy of FeeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FeeModelImplCopyWith<_$FeeModelImpl> get copyWith =>
+      __$$FeeModelImplCopyWithImpl<_$FeeModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FeeModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _FeeModel implements FeeModel {
+  const factory _FeeModel(
+      {@JsonKey(name: "quote_id") final String? quoteId,
+      @JsonKey(name: "currency") final String? currency,
+      @JsonKey(name: "amount") final int? amount,
+      @JsonKey(name: "cover_fee") final bool? coverFee,
+      @JsonKey(name: "total_with_fee") final String? totalWithFee,
+      @JsonKey(name: "platform_fee") final String? platformFee,
+      @JsonKey(name: "partner_fee") final String? partnerFee}) = _$FeeModelImpl;
+
+  factory _FeeModel.fromJson(Map<String, dynamic> json) =
+      _$FeeModelImpl.fromJson;
+
+  @override
+  @JsonKey(name: "quote_id")
+  String? get quoteId;
+  @override
+  @JsonKey(name: "currency")
+  String? get currency;
+  @override
+  @JsonKey(name: "amount")
+  int? get amount;
+  @override
+  @JsonKey(name: "cover_fee")
+  bool? get coverFee;
+  @override
+  @JsonKey(name: "total_with_fee")
+  String? get totalWithFee;
+  @override
+  @JsonKey(name: "platform_fee")
+  String? get platformFee;
+  @override
+  @JsonKey(name: "partner_fee")
+  String? get partnerFee;
+
+  /// Create a copy of FeeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FeeModelImplCopyWith<_$FeeModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -11,6 +11,15 @@ abstract class QrRemoteDataSource {
     TransferQrModel? transferQrModel,
     required String qrCode,
   });
+
+  //DYNAMIC CPM
+  Future<Either<String, DynamicCpmModel>> dynamicCpmQr({
+    required int amount,
+    required String note,
+  });
+
+  //STATIC CPM
+  Future<Either<String, TransferQrModel>> staticCpmQr();
 }
 
 class QrRemoteDataSourceImpl implements QrRemoteDataSource {
@@ -47,9 +56,10 @@ class QrRemoteDataSourceImpl implements QrRemoteDataSource {
       return Left('Error: $e');
     }
   }
-  
+
   @override
-  Future<Either<String, String>> transferQr({TransferQrModel? transferQrModel, required String qrCode}) async {
+  Future<Either<String, String>> transferQr(
+      {TransferQrModel? transferQrModel, required String qrCode}) async {
     try {
       final response = await httpClient.post('qr/scqr', data: {
         'qr_string': transferQrModel!.toJson(),
@@ -78,4 +88,61 @@ class QrRemoteDataSourceImpl implements QrRemoteDataSource {
     }
   }
 
+  @override
+  Future<Either<String, DynamicCpmModel>> dynamicCpmQr(
+      {required int amount, required String note}) async {
+    try {
+      final response =
+          await httpClient.get('qr/scgd?amount=$amount&note=$note');
+
+      if (response.statusCode == 200) {
+        final qr = response.data['qr_string'];
+        return Right(DynamicCpmModel.fromJson(qr));
+      } else if (response.statusCode == 401) {
+        return Left(response.data['value']['message']);
+      } else if (response.statusCode == 404) {
+        return Left(response.data['value']['message']);
+      } else if (response.statusCode == 500) {
+        return Left(response.data['value']['message']);
+      } else if (response.statusCode == 400) {
+        return Left(response.data['value']['message']);
+      } else {
+        return const Left("Something went wrong");
+      }
+    } on DioException catch (e) {
+      final error = await DioErrorHandler.handleError(e);
+      print('Error: $error');
+      return Left(error);
+    } catch (e) {
+      return Left('Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, TransferQrModel>> staticCpmQr() async {
+    try {
+      final response = await httpClient.get('qr/scst');
+
+      if (response.statusCode == 200) {
+        final qr = response.data['qr_string'];
+        return Right(TransferQrModel.fromJson(qr));
+      } else if (response.statusCode == 401) {
+        return Left(response.data['value']['message']);
+      } else if (response.statusCode == 404) {
+        return Left(response.data['value']['message']);
+      } else if (response.statusCode == 500) {
+        return Left(response.data['value']['message']);
+      } else if (response.statusCode == 400) {
+        return Left(response.data['value']['message']);
+      } else {
+        return const Left("Something went wrong");
+      }
+    } on DioException catch (e) {
+      final error = await DioErrorHandler.handleError(e);
+      print('Error: $error');
+      return Left(error);
+    } catch (e) {
+      return Left('Error: $e');
+    }
+  }
 }

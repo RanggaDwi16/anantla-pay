@@ -1,6 +1,8 @@
+import 'package:anantla_pay/src/core/helpers/custom_app_bar.dart';
 import 'package:anantla_pay/src/core/helpers/formatters/currency_format.dart';
 import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
+import 'package:anantla_pay/src/core/utils/assets.gen.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/get_balance/fetch_balance_provider.dart';
@@ -57,10 +59,12 @@ class InternalTransferPage extends HookConsumerWidget {
     }, [amountController, selectedWallet]);
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
+      backgroundColor: AppColor.secondaryBackground,
+      appBar: CustomAppBar(
+        backgroundColor: AppColor.secondaryBackground,
+        title: 'Send Now',
+        centertitle: true,
+        showBackButton: true,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: GestureDetector(
@@ -69,21 +73,18 @@ class InternalTransferPage extends HookConsumerWidget {
               width: 40,
               height: 40,
               decoration: const BoxDecoration(
-                color: Color(0xFFF1F1F1),
+                color: AppColor.itemGray, // abu-abu terang sesuai gambar
                 shape: BoxShape.circle,
               ),
-              child: const Center(
-                child: Icon(Icons.arrow_back_ios_new,
-                    color: Colors.black, size: 18),
+              child: Center(
+                child: Image.asset(
+                  Assets.icons.arrowLeft.path,
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
-        ),
-        title: const Text(
-          "Send Now",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -207,7 +208,15 @@ class InternalTransferPage extends HookConsumerWidget {
                         },
                         onSuccess: (message) {
                           final fromWalletId = transferData.fromWalletId!;
-                          _showOtpDialog(context, ref, fromWalletId);
+                          _showOtpDialog(
+                              context,
+                              ref,
+                              fromWalletId,
+                              int.tryParse(amountController.text
+                                  .replaceAll(RegExp(r'[^0-9]'), ''))!,
+                              noteController.text,
+                              selectedWallet.value!.walletId!,
+                              transferData.fromCurrency ?? 'IDR');
                         },
                       );
                 },
@@ -219,7 +228,8 @@ class InternalTransferPage extends HookConsumerWidget {
     );
   }
 
-  void _showOtpDialog(BuildContext context, WidgetRef ref, int fromWalletId) {
+  void _showOtpDialog(BuildContext context, WidgetRef ref, int fromWalletId,
+      int amount, String note, int toWalletId, String currency) {
     final otpController = TextEditingController();
 
     showDialog(
@@ -258,6 +268,9 @@ class InternalTransferPage extends HookConsumerWidget {
                       .read(postInternalTransferProvider.notifier)
                       .postInternalTranfer(
                           params: InternalTransferParams(
+                            amount: amount,
+                            note: note,
+                            toWalletId: toWalletId,
                             otpCode: enteredOtp,
                             fromWalletId: fromWalletId,
                           ),

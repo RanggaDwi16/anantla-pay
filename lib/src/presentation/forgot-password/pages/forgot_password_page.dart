@@ -158,8 +158,8 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                             context.showSuccessDialog(
                                               title:
                                                   'Forgot Password, Link Sent',
-                                              message: message,
-                                              enableLink: true,
+                                              message:
+                                                  'We have sent you a link to reset your password. Please check your email.',
                                               onConfirm: () {
                                                 context.pushReplacementNamed(
                                                     RouteName.login);
@@ -178,8 +178,6 @@ class ForgotPasswordPage extends HookConsumerWidget {
                           ),
                         ),
                       ),
-
-                      /// Bottom Login Link
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Row(

@@ -124,7 +124,7 @@ class BalanceSection extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        '$currency ${formatRupiah(balance)}',
+                        balance,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 28,
@@ -143,10 +143,10 @@ class BalanceSection extends ConsumerWidget {
                       context,
                       label: "Top Up",
                       onPressed: () {
-
                         ref
                             .read(topUpDataNotifierProvider.notifier)
                             .setWalletId(walletId);
+                            
 
                         context.pushNamed(RouteName.topUp);
                       },
@@ -446,13 +446,13 @@ class BalanceSection extends ConsumerWidget {
                                       params: EKycParams(
                                         userId: userId,
                                         countryCode: selectedCountryCode!,
-                                        kycData: KycData(
-                                          fullName:
-                                              fullnameController.text.trim(),
-                                          birthDate: selectedBirthdate,
-                                          idNumber:
-                                              idNumberController.text.trim(),
-                                        ),
+                                        // kycData: KycData(
+                                        //   fullName:
+                                        //       fullnameController.text.trim(),
+                                        //   birthDate: selectedBirthdate,
+                                        //   idNumber:
+                                        //       idNumberController.text.trim(),
+                                        // ),
                                       ),
                                       onSuccess: (message) {
                                         context.showSuccessDialog(

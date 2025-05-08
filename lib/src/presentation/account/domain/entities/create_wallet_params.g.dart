@@ -54,20 +54,42 @@ Map<String, dynamic> _$$EKycParamsImplToJson(_$EKycParamsImpl instance) =>
 
 _$KycDataImpl _$$KycDataImplFromJson(Map<String, dynamic> json) =>
     _$KycDataImpl(
-      fullName: json['full_name'] as String?,
-      birthDate: json['birth_date'] == null
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      dob: json['dob'] == null ? null : DateTime.parse(json['dob'] as String),
+      taxId: json['tax_id'] as String?,
+      kycType: json['kyc_type'] as String?,
+      address: json['address'] == null
           ? null
-          : DateTime.parse(json['birth_date'] as String),
-      idNumber: json['id_number'] as String?,
-      attachments: (json['attachments'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+          : KycAddress.fromJson(json['address'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$KycDataImplToJson(_$KycDataImpl instance) =>
     <String, dynamic>{
-      'full_name': instance.fullName,
-      'birth_date': instance.birthDate?.toIso8601String(),
-      'id_number': instance.idNumber,
-      'attachments': instance.attachments,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'dob': instance.dob?.toIso8601String(),
+      'tax_id': instance.taxId,
+      'kyc_type': instance.kycType,
+      'address': instance.address,
+    };
+
+_$KycAddressImpl _$$KycAddressImplFromJson(Map<String, dynamic> json) =>
+    _$KycAddressImpl(
+      line1: json['line1'] as String?,
+      line2: json['line2'] as String?,
+      city: json['city'] as String?,
+      state: json['state'] as String?,
+      postalCode: json['postal_code'] as String?,
+      country: json['country'] as String?,
+    );
+
+Map<String, dynamic> _$$KycAddressImplToJson(_$KycAddressImpl instance) =>
+    <String, dynamic>{
+      'line1': instance.line1,
+      'line2': instance.line2,
+      'city': instance.city,
+      'state': instance.state,
+      'postal_code': instance.postalCode,
+      'country': instance.country,
     };

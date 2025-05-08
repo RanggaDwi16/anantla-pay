@@ -36,7 +36,7 @@ class HistoryTransactionItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data.type ?? '',
+                  data.transWalletType ?? '',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -46,7 +46,8 @@ class HistoryTransactionItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  formatEnglishDate(data.createdAt?.toIso8601String() ?? ''),
+                  formatEnglishDate(
+                      data.transactionDate?.toIso8601String() ?? ''),
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey.shade600,
@@ -58,7 +59,7 @@ class HistoryTransactionItem extends StatelessWidget {
 
           // Amount
           Text(
-            '${data.currency} ${formatRupiah(data.amount ?? '')}',
+            '${data.amount}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14,

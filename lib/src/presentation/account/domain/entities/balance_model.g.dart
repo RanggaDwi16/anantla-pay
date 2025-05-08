@@ -8,20 +8,26 @@ part of 'balance_model.dart';
 
 _$BalanceModelImpl _$$BalanceModelImplFromJson(Map<String, dynamic> json) =>
     _$BalanceModelImpl(
-      userId: (json['user_id'] as num?)?.toInt(),
       walletId: (json['wallet_id'] as num?)?.toInt(),
-      balance: json['balance'] as String?,
+      walletCode: json['wallet_code'] as String?,
       currency: json['currency'] as String?,
-      pspId: (json['psp_id'] as num?)?.toInt(),
       walletStatus: json['wallet_status'] as String?,
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
+      balance: (json['balance'] as num?)?.toInt(),
+      totalReceived: (json['total_received'] as num?)?.toInt(),
+      totalSpent: (json['total_spent'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$BalanceModelImplToJson(_$BalanceModelImpl instance) =>
     <String, dynamic>{
-      'user_id': instance.userId,
       'wallet_id': instance.walletId,
-      'balance': instance.balance,
+      'wallet_code': instance.walletCode,
       'currency': instance.currency,
-      'psp_id': instance.pspId,
       'wallet_status': instance.walletStatus,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'balance': instance.balance,
+      'total_received': instance.totalReceived,
+      'total_spent': instance.totalSpent,
     };

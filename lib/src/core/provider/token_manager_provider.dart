@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:anantla_pay/src/core/provider/shared_pref_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +55,13 @@ class TokenManager {
     await sharedPreferences.remove('user_id');
   }
 
+  Future<void> removeData() async {
+    await removeToken();
+    await removeUserId();
+    await removeTokenVirtualAccount();
+    await removeFingerprintEnabled();
+  }
+
   Future<bool> isLogin() async {
     final token = await getToken();
     final userId = await getUserId();
@@ -76,5 +81,23 @@ class TokenManager {
   /// **🔹 Periksa apakah onboarding sudah selesai**
   bool isOnboardingCompleted() {
     return sharedPreferences.getBool(_onboardingKey) ?? false;
+  }
+
+  // Tambahan baru untuk fingerprint / face ID
+  static const String _fingerprintKey = 'fingerprintEnabled';
+
+  /// Simpan apakah user mengaktifkan fingerprint
+  Future<void> setFingerprintEnabled(bool enabled) async {
+    await sharedPreferences.setBool(_fingerprintKey, enabled);
+  }
+
+  /// Ambil status apakah fingerprint aktif
+  Future<bool> isFingerprintEnabled() async {
+    return sharedPreferences.getBool(_fingerprintKey) ?? false;
+  }
+
+  /// Hapus setting fingerprint (misal saat logout)
+  Future<void> removeFingerprintEnabled() async {
+    await sharedPreferences.remove(_fingerprintKey);
   }
 }

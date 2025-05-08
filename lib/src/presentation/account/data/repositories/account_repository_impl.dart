@@ -174,4 +174,17 @@ class AccountRepositoryImpl implements AccountRepository {
       return Left(e.toString());
     }
   }
+  
+  @override
+  Future<Either<String, FeeModel>> getFees({required VirtualAccountParams params})  async{
+    try {
+      final result = await remoteDataSource.getFees(params: params);
+      return result.fold(
+        (error) => Left(error),
+        (message) => Right(message),
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

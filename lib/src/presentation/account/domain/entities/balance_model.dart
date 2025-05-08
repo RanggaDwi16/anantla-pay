@@ -6,12 +6,14 @@ part 'balance_model.g.dart';
 @freezed
 class BalanceModel with _$BalanceModel {
   const factory BalanceModel({
-    @JsonKey(name: "user_id") int? userId,
     @JsonKey(name: "wallet_id") int? walletId,
-    @JsonKey(name: "balance") String? balance,
+    @JsonKey(name: "wallet_code") String? walletCode,
     @JsonKey(name: "currency") String? currency,
-    @JsonKey(name: "psp_id") int? pspId,
     @JsonKey(name: "wallet_status") String? walletStatus,
+    @JsonKey(name: "created_at") DateTime? createdAt,
+    @JsonKey(name: "balance") int? balance,
+    @JsonKey(name: "total_received") int? totalReceived,
+    @JsonKey(name: "total_spent") int? totalSpent,
   }) = _BalanceModel;
 
   factory BalanceModel.fromJson(Map<String, dynamic> json) =>

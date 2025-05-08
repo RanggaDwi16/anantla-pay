@@ -7,13 +7,19 @@ part 'transaction_model.g.dart';
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     @JsonKey(name: "transaction_id") String? transactionId,
-    @JsonKey(name: "type") String? type,
+    @JsonKey(name: "transaction_type") String? transactionType,
+    @JsonKey(name: "transaction_date") DateTime? transactionDate,
+    @JsonKey(name: "wallet_id") int? walletId,
+    @JsonKey(name: "wallet_from_id") dynamic walletFromId,
+    @JsonKey(name: "wallet_to_id") int? walletToId,
+    @JsonKey(name: "currency_from") String? currencyFrom,
+    @JsonKey(name: "currency_to") String? currencyTo,
     @JsonKey(name: "amount") String? amount,
-    @JsonKey(name: "currency") String? currency,
-    @JsonKey(name: "status") String? status,
-    @JsonKey(name: "reference_id") String? referenceId,
-    @JsonKey(name: "description") String? description,
-    @JsonKey(name: "created_at") DateTime? createdAt,
+    @JsonKey(name: "trans_wallet_type") String? transWalletType,
+    @JsonKey(name: "trans_wallet_flow") String? transWalletFlow,
+    @JsonKey(name: "settlement_status") String? settlementStatus,
+    @JsonKey(name: "settled_date") DateTime? settledDate,
+    @JsonKey(name: "settlement_approver") String? settlementApprover,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

@@ -109,7 +109,7 @@ class PayPage extends ConsumerWidget {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      formattedAmount,
+                      amount,
                       style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
@@ -338,9 +338,11 @@ class PayPage extends ConsumerWidget {
                           params: VirtualAccountParams(
                             walletId: walletId ?? 0,
                             totalAmount: TotalAmount(
-                              value: amount,
+                              // value: amount,
                               currency: selectedCurrency,
                             ),
+                            platformFee: 50,
+                            partnerFee: 50,
                             bankCode: topUpData.bankCode,
                             virtualAccountName: topUpData.virtualAccountName,
                             virtualAccountEmail: topUpData.virtualAccountEmail,
@@ -398,7 +400,8 @@ class PayPage extends ConsumerWidget {
                               context.customErrorDialog(message);
                             },
                             onSuccess: (message) {
-                              _showOtpDialog(context, ref, walletId ?? 0);
+                              _showOtpDialog(
+                                  context, ref, topUpData.walletId ?? 0);
                             },
                           );
                     }
@@ -413,7 +416,7 @@ class PayPage extends ConsumerWidget {
                   } else if (isTransfer) {
                     ref
                         .read(transferDataNotifierProvider.notifier)
-                        .setAmount(int.parse(amount));
+                        .setFromAmount(int.parse(amount));
 
                     context.pushNamed(RouteName.review);
                   }
@@ -491,6 +494,8 @@ class PayPage extends ConsumerWidget {
                 if (enteredOtp.isNotEmpty) {
                   ref.read(patchTopUpProvider.notifier).verifOtpTopUp(
                       params: VerifyOtpTopupParams(
+                        amount: int.parse(ref.read(amountProvider)),
+                        currency: ref.read(selectedCurrencyProvider),
                         walletId: walletId,
                         otpCode: enteredOtp,
                       ),

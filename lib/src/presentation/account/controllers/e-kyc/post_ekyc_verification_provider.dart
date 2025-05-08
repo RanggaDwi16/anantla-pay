@@ -21,17 +21,23 @@ class PostEkycVerification extends _$PostEkycVerification {
     EkycVerification ekycVerification =
         await ref.read(ekycVerificationProvider);
     final result = await ekycVerification.call(EKycParams(
-      clientId: 25,
+      clientId: 2,
       countryCode: params.countryCode,
       userId: params.userId,
       kycData: KycData(
-        fullName: params.kycData!.fullName,
-        birthDate: params.kycData!.birthDate,
-        idNumber: params.kycData!.idNumber,
-        attachments: [
-          "https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg",
-          "https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg"
-        ],
+        firstName: params.kycData!.firstName,
+        lastName: params.kycData!.lastName,
+        dob: params.kycData!.dob,
+        taxId: params.kycData!.taxId,
+        kycType: params.kycData!.kycType,
+        address: KycAddress(
+          line1: params.kycData!.address!.line1,
+          line2: params.kycData!.address!.line2,
+          city: params.kycData!.address!.city,
+          state: params.kycData!.address!.state,
+          country: params.kycData!.address!.country,
+          postalCode: params.kycData!.address!.postalCode,
+        ),
       ),
     ));
     result.fold(

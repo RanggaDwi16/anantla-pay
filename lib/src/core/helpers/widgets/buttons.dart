@@ -113,6 +113,7 @@ class Button extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 padding: padding,
                 elevation: elevation,
+                backgroundColor: color,
                 foregroundColor: textColor,
                 side: BorderSide(color: borderColor),
                 shape: isPay

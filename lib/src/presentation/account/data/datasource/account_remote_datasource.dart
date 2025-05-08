@@ -29,6 +29,9 @@ abstract class AccountRemoteDataSource {
   });
   Future<Either<String, List<TransactionModel>>> getTransaction();
   Future<Either<String, String>> getTokenVirtualAccount();
+  Future<Either<String, FeeModel>> getFees({
+    required VirtualAccountParams params,
+  });
   Future<Either<String, String>> topUpVirtualAccount({
     required VirtualAccountParams params,
   });
@@ -373,6 +376,36 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
       }
     } on DioException catch (e) {
       final error = await DioErrorHandler.handleError(e);
+      print('Error: $error');
+      return Left(error);
+    } catch (e) {
+      return Left('Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, FeeModel>> getFees(
+      {required VirtualAccountParams params}) async {
+    try {
+      final response =
+          await httpClient.post('/onramp_quotes', data: params.toJson());
+      if (response.statusCode == 200) {
+        final fee = response.data;
+        return Right(FeeModel.fromJson(fee));
+      } else if (response.statusCode == 401) {
+        return Left(response.data['value']['error']);
+      } else if (response.statusCode == 404) {
+        return Left(response.data['value']['error']);
+      } else if (response.statusCode == 500) {
+        return Left(response.data['value']['error']);
+      } else if (response.statusCode == 400) {
+        return Left(response.data['value']['error']);
+      } else {
+        return const Left("Something went wrong");
+      }
+    } on DioException catch (e) {
+      final error =
+          e.response?.data['details']['error'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {

@@ -29,6 +29,9 @@ Dio userDio(UserDioRef ref) {
         final authToken = await tokenManager.getToken();
         options.headers['Authorization'] = 'Bearer $authToken';
         options.headers['x-api-key'] = 'mock-api-key';
+        options.headers['User-Agent'] =
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
+        print('User-Agent: ${options.headers['User-Agent']}');
         return handler.next(options);
       },
     ),
@@ -63,6 +66,7 @@ Dio virtualAccountDio(VirtualAccountDioRef ref) {
         final tokenManager = await ref.watch(tokenManagerProvider.future);
         final authToken = await tokenManager.getTokenVirtualAccount();
         options.headers['Authorization'] = 'Bearer $authToken';
+
         options.headers['x-api-key'] = 'mock-api-key';
         return handler.next(options);
       },
@@ -89,8 +93,10 @@ Dio adminDio(AdminDioRef ref) {
   dio.options.headers['Content-Type'] = 'application/json';
   dio.options.headers['Accept'] = 'application/json';
   dio.options.headers['Authorization'] =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMSwiZW1haWwiOiJ0YXJpQGJhbmd1bnJ1bWFoLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc0MTc5NTc2OX0.xeOrUXt6obd8sNLo-7TAMAjqEJdFZ8Bqgjq5TXsd-w4'; // Ganti dengan token admin
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJlbWFpbCI6IlJhbmdnYS5Ed2lAYW5hbnRsYS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDAxNDl9.WEScFavJhSt_GG94_zJc4FtPCj1OEHTSaNw47x3kxsw'; // Ganti dengan token admin
   dio.options.headers['x-api-key'] = 'mock-api-key';
+  dio.options.headers['User-Agent'] =
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
 
   dio.options.validateStatus = (status) {
     return status != null && status >= 200 && status < 400;

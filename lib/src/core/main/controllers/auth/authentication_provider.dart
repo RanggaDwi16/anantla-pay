@@ -5,6 +5,7 @@ import 'package:anantla_pay/src/core/main/controllers/logout/logout_provider.dar
 import 'package:anantla_pay/src/core/main/controllers/notification_service/notification_services.dart';
 import 'package:anantla_pay/src/core/main/controllers/register/register_provider.dart';
 import 'package:anantla_pay/src/core/main/controllers/verifOtp/verifOtpLogin_provider.dart';
+import 'package:anantla_pay/src/core/main/domain/entities/login_model.dart';
 import 'package:anantla_pay/src/core/main/domain/entities/otp_params.dart';
 import 'package:anantla_pay/src/core/main/domain/entities/register_param.dart';
 import 'package:anantla_pay/src/core/main/domain/usecases/add_wish_list.dart';
@@ -14,6 +15,7 @@ import 'package:anantla_pay/src/core/main/domain/usecases/register.dart';
 import 'package:anantla_pay/src/core/main/domain/usecases/verifOtpLogin.dart';
 import 'package:anantla_pay/src/core/provider/token_manager_provider.dart';
 import 'package:anantla_pay/src/presentation/main/controllers/selected_index_provider.dart';
+import 'package:anantla_pay/src/presentation/main/controllers/user_id_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_provider.g.dart';
@@ -28,8 +30,8 @@ class Authentication extends _$Authentication {
   Future<void> login({
     required String email,
     required String password,
-    required Function(String message) onSuccess,
-    required Function() onError,
+    required Function(LoginModel) onSuccess,
+    required Function(String message) onError,
   }) async {
     state = const AsyncLoading();
     ref.invalidate(selectedIndexProvider);
@@ -42,15 +44,16 @@ class Authentication extends _$Authentication {
     result.fold(
       (error) {
         state = AsyncError(error, StackTrace.current);
-        onError();
+        onError(error);
       },
       (data) async {
-        // TokenManager tokenManager = await ref.read(tokenManagerProvider.future);
-        // await tokenManager.saveToken(data.token ?? '');
-        // await tokenManager.saveUserId(data.user!.userId!);
-        // final user = tokenManager.isLogin();
+        TokenManager tokenManager = await ref.read(tokenManagerProvider.future);
+        await tokenManager.saveToken(data.token ?? '');
+        await tokenManager.saveUserId(data.user!.userId!);
+        final user = tokenManager.isLogin();
 
-        // print('User: $user');
+        final userId = await tokenManager.getUserId();
+        print('User ID: $userId');
         onSuccess(data);
         // ref
         //     .read(routerProvider)
@@ -84,7 +87,7 @@ class Authentication extends _$Authentication {
         await tokenManager.saveUserId(data.user!.userId!);
         final user = await tokenManager.isLogin();
 
-        print('User: ${user}');
+        print('User: $user');
         onSuccess();
 
         state = AsyncData('Verif Otp Success');
@@ -107,6 +110,7 @@ class Authentication extends _$Authentication {
       (data) async {
         TokenManager tokenManager = await ref.read(tokenManagerProvider.future);
         await tokenManager.removeToken();
+
         await tokenManager.removeUserId();
         onSuccess();
         state = AsyncData('Logout Success');
@@ -117,7 +121,7 @@ class Authentication extends _$Authentication {
   Future<void> register({
     required RegisterParams params,
     required Function(String message) onSuccess,
-    required Function() onError,
+    required Function(String message) onError,
   }) async {
     try {
       state = const AsyncLoading();
@@ -132,7 +136,7 @@ class Authentication extends _$Authentication {
       result.fold(
         (error) {
           state = AsyncError(error, StackTrace.current);
-          onError();
+          onError(error);
         },
         (data) async {
           onSuccess(data);
@@ -144,7 +148,7 @@ class Authentication extends _$Authentication {
       print('Error saat logout: $e');
       print('StackTrace: $stackTrace');
       state = AsyncError(e, stackTrace);
-      onError();
+      onError(e.toString());
     }
   }
 
@@ -183,8 +187,8 @@ class Authentication extends _$Authentication {
   }
 
   Future<void> addWishList({
-    required Function (String message) onSuccess,
-    required Function (String message) onError,
+    required Function(String message) onSuccess,
+    required Function(String message) onError,
   }) async {
     state = const AsyncLoading();
     AddWishList addWishList = await ref.read(addWishListProvider);

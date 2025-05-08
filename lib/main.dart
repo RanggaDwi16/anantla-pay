@@ -18,6 +18,7 @@ Future main() async {
 
   await checkCameraPermission();
   await checkLocationPermission();
+  await checkGalleryPermission();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,7 +43,8 @@ class MainApp extends ConsumerWidget {
       routeInformationParser: ref.watch(routerProvider).routeInformationParser,
       routeInformationProvider:
           ref.watch(routerProvider).routeInformationProvider,
-      routerDelegate: ref.watch(routerProvider).routerDelegate,
+      routerDelegate: ref.watch(routerProvider).
+      routerDelegate,
     );
   }
 }

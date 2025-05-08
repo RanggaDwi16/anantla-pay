@@ -6,7 +6,7 @@ part of 'patch_top_up_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$patchTopUpHash() => r'd755f2868dc448e581df30386cead2e6923b5d91';
+String _$patchTopUpHash() => r'865c6b6450a8acc22642ab12e9b2d79168ce7faf';
 
 /// See also [PatchTopUp].
 @ProviderFor(PatchTopUp)

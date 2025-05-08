@@ -42,11 +42,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: customTitleWidget ??
           Text(
             title,
-            style: TextStyle(
-              color: textColor,
-              fontSize: context.deviceWidth * 0.045,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
           ),
       actions: actions,
       bottom: bottom != null

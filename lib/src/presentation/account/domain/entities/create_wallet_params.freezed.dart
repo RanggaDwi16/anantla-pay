@@ -634,14 +634,18 @@ KycData _$KycDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$KycData {
-  @JsonKey(name: "full_name")
-  String? get fullName => throw _privateConstructorUsedError;
-  @JsonKey(name: "birth_date")
-  DateTime? get birthDate => throw _privateConstructorUsedError;
-  @JsonKey(name: "id_number")
-  String? get idNumber => throw _privateConstructorUsedError;
-  @JsonKey(name: "attachments")
-  List<String>? get attachments => throw _privateConstructorUsedError;
+  @JsonKey(name: "first_name")
+  String? get firstName => throw _privateConstructorUsedError;
+  @JsonKey(name: "last_name")
+  String? get lastName => throw _privateConstructorUsedError;
+  @JsonKey(name: "dob")
+  DateTime? get dob => throw _privateConstructorUsedError;
+  @JsonKey(name: "tax_id")
+  String? get taxId => throw _privateConstructorUsedError;
+  @JsonKey(name: "kyc_type")
+  String? get kycType => throw _privateConstructorUsedError;
+  @JsonKey(name: "address")
+  KycAddress? get address => throw _privateConstructorUsedError;
 
   /// Serializes this KycData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -658,10 +662,14 @@ abstract class $KycDataCopyWith<$Res> {
       _$KycDataCopyWithImpl<$Res, KycData>;
   @useResult
   $Res call(
-      {@JsonKey(name: "full_name") String? fullName,
-      @JsonKey(name: "birth_date") DateTime? birthDate,
-      @JsonKey(name: "id_number") String? idNumber,
-      @JsonKey(name: "attachments") List<String>? attachments});
+      {@JsonKey(name: "first_name") String? firstName,
+      @JsonKey(name: "last_name") String? lastName,
+      @JsonKey(name: "dob") DateTime? dob,
+      @JsonKey(name: "tax_id") String? taxId,
+      @JsonKey(name: "kyc_type") String? kycType,
+      @JsonKey(name: "address") KycAddress? address});
+
+  $KycAddressCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -679,29 +687,53 @@ class _$KycDataCopyWithImpl<$Res, $Val extends KycData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullName = freezed,
-    Object? birthDate = freezed,
-    Object? idNumber = freezed,
-    Object? attachments = freezed,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
+    Object? dob = freezed,
+    Object? taxId = freezed,
+    Object? kycType = freezed,
+    Object? address = freezed,
   }) {
     return _then(_value.copyWith(
-      fullName: freezed == fullName
-          ? _value.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
               as String?,
-      birthDate: freezed == birthDate
-          ? _value.birthDate
-          : birthDate // ignore: cast_nullable_to_non_nullable
+      lastName: freezed == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dob: freezed == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      idNumber: freezed == idNumber
-          ? _value.idNumber
-          : idNumber // ignore: cast_nullable_to_non_nullable
+      taxId: freezed == taxId
+          ? _value.taxId
+          : taxId // ignore: cast_nullable_to_non_nullable
               as String?,
-      attachments: freezed == attachments
-          ? _value.attachments
-          : attachments // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+      kycType: freezed == kycType
+          ? _value.kycType
+          : kycType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as KycAddress?,
     ) as $Val);
+  }
+
+  /// Create a copy of KycData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $KycAddressCopyWith<$Res>? get address {
+    if (_value.address == null) {
+      return null;
+    }
+
+    return $KycAddressCopyWith<$Res>(_value.address!, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
   }
 }
 
@@ -713,10 +745,15 @@ abstract class _$$KycDataImplCopyWith<$Res> implements $KycDataCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "full_name") String? fullName,
-      @JsonKey(name: "birth_date") DateTime? birthDate,
-      @JsonKey(name: "id_number") String? idNumber,
-      @JsonKey(name: "attachments") List<String>? attachments});
+      {@JsonKey(name: "first_name") String? firstName,
+      @JsonKey(name: "last_name") String? lastName,
+      @JsonKey(name: "dob") DateTime? dob,
+      @JsonKey(name: "tax_id") String? taxId,
+      @JsonKey(name: "kyc_type") String? kycType,
+      @JsonKey(name: "address") KycAddress? address});
+
+  @override
+  $KycAddressCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -732,28 +769,38 @@ class __$$KycDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullName = freezed,
-    Object? birthDate = freezed,
-    Object? idNumber = freezed,
-    Object? attachments = freezed,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
+    Object? dob = freezed,
+    Object? taxId = freezed,
+    Object? kycType = freezed,
+    Object? address = freezed,
   }) {
     return _then(_$KycDataImpl(
-      fullName: freezed == fullName
-          ? _value.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
               as String?,
-      birthDate: freezed == birthDate
-          ? _value.birthDate
-          : birthDate // ignore: cast_nullable_to_non_nullable
+      lastName: freezed == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dob: freezed == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      idNumber: freezed == idNumber
-          ? _value.idNumber
-          : idNumber // ignore: cast_nullable_to_non_nullable
+      taxId: freezed == taxId
+          ? _value.taxId
+          : taxId // ignore: cast_nullable_to_non_nullable
               as String?,
-      attachments: freezed == attachments
-          ? _value._attachments
-          : attachments // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+      kycType: freezed == kycType
+          ? _value.kycType
+          : kycType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as KycAddress?,
     ));
   }
 }
@@ -762,38 +809,38 @@ class __$$KycDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$KycDataImpl implements _KycData {
   const _$KycDataImpl(
-      {@JsonKey(name: "full_name") this.fullName,
-      @JsonKey(name: "birth_date") this.birthDate,
-      @JsonKey(name: "id_number") this.idNumber,
-      @JsonKey(name: "attachments") final List<String>? attachments})
-      : _attachments = attachments;
+      {@JsonKey(name: "first_name") this.firstName,
+      @JsonKey(name: "last_name") this.lastName,
+      @JsonKey(name: "dob") this.dob,
+      @JsonKey(name: "tax_id") this.taxId,
+      @JsonKey(name: "kyc_type") this.kycType,
+      @JsonKey(name: "address") this.address});
 
   factory _$KycDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$KycDataImplFromJson(json);
 
   @override
-  @JsonKey(name: "full_name")
-  final String? fullName;
+  @JsonKey(name: "first_name")
+  final String? firstName;
   @override
-  @JsonKey(name: "birth_date")
-  final DateTime? birthDate;
+  @JsonKey(name: "last_name")
+  final String? lastName;
   @override
-  @JsonKey(name: "id_number")
-  final String? idNumber;
-  final List<String>? _attachments;
+  @JsonKey(name: "dob")
+  final DateTime? dob;
   @override
-  @JsonKey(name: "attachments")
-  List<String>? get attachments {
-    final value = _attachments;
-    if (value == null) return null;
-    if (_attachments is EqualUnmodifiableListView) return _attachments;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  @JsonKey(name: "tax_id")
+  final String? taxId;
+  @override
+  @JsonKey(name: "kyc_type")
+  final String? kycType;
+  @override
+  @JsonKey(name: "address")
+  final KycAddress? address;
 
   @override
   String toString() {
-    return 'KycData(fullName: $fullName, birthDate: $birthDate, idNumber: $idNumber, attachments: $attachments)';
+    return 'KycData(firstName: $firstName, lastName: $lastName, dob: $dob, taxId: $taxId, kycType: $kycType, address: $address)';
   }
 
   @override
@@ -801,20 +848,20 @@ class _$KycDataImpl implements _KycData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$KycDataImpl &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
-            (identical(other.birthDate, birthDate) ||
-                other.birthDate == birthDate) &&
-            (identical(other.idNumber, idNumber) ||
-                other.idNumber == idNumber) &&
-            const DeepCollectionEquality()
-                .equals(other._attachments, _attachments));
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.dob, dob) || other.dob == dob) &&
+            (identical(other.taxId, taxId) || other.taxId == taxId) &&
+            (identical(other.kycType, kycType) || other.kycType == kycType) &&
+            (identical(other.address, address) || other.address == address));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, fullName, birthDate, idNumber,
-      const DeepCollectionEquality().hash(_attachments));
+  int get hashCode => Object.hash(
+      runtimeType, firstName, lastName, dob, taxId, kycType, address);
 
   /// Create a copy of KycData
   /// with the given fields replaced by the non-null parameter values.
@@ -834,31 +881,311 @@ class _$KycDataImpl implements _KycData {
 
 abstract class _KycData implements KycData {
   const factory _KycData(
-          {@JsonKey(name: "full_name") final String? fullName,
-          @JsonKey(name: "birth_date") final DateTime? birthDate,
-          @JsonKey(name: "id_number") final String? idNumber,
-          @JsonKey(name: "attachments") final List<String>? attachments}) =
-      _$KycDataImpl;
+      {@JsonKey(name: "first_name") final String? firstName,
+      @JsonKey(name: "last_name") final String? lastName,
+      @JsonKey(name: "dob") final DateTime? dob,
+      @JsonKey(name: "tax_id") final String? taxId,
+      @JsonKey(name: "kyc_type") final String? kycType,
+      @JsonKey(name: "address") final KycAddress? address}) = _$KycDataImpl;
 
   factory _KycData.fromJson(Map<String, dynamic> json) = _$KycDataImpl.fromJson;
 
   @override
-  @JsonKey(name: "full_name")
-  String? get fullName;
+  @JsonKey(name: "first_name")
+  String? get firstName;
   @override
-  @JsonKey(name: "birth_date")
-  DateTime? get birthDate;
+  @JsonKey(name: "last_name")
+  String? get lastName;
   @override
-  @JsonKey(name: "id_number")
-  String? get idNumber;
+  @JsonKey(name: "dob")
+  DateTime? get dob;
   @override
-  @JsonKey(name: "attachments")
-  List<String>? get attachments;
+  @JsonKey(name: "tax_id")
+  String? get taxId;
+  @override
+  @JsonKey(name: "kyc_type")
+  String? get kycType;
+  @override
+  @JsonKey(name: "address")
+  KycAddress? get address;
 
   /// Create a copy of KycData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KycDataImplCopyWith<_$KycDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+KycAddress _$KycAddressFromJson(Map<String, dynamic> json) {
+  return _KycAddress.fromJson(json);
+}
+
+/// @nodoc
+mixin _$KycAddress {
+  @JsonKey(name: "line1")
+  String? get line1 => throw _privateConstructorUsedError;
+  @JsonKey(name: "line2")
+  String? get line2 => throw _privateConstructorUsedError;
+  @JsonKey(name: "city")
+  String? get city => throw _privateConstructorUsedError;
+  @JsonKey(name: "state")
+  String? get state => throw _privateConstructorUsedError;
+  @JsonKey(name: "postal_code")
+  String? get postalCode => throw _privateConstructorUsedError;
+  @JsonKey(name: "country")
+  String? get country => throw _privateConstructorUsedError;
+
+  /// Serializes this KycAddress to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of KycAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $KycAddressCopyWith<KycAddress> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $KycAddressCopyWith<$Res> {
+  factory $KycAddressCopyWith(
+          KycAddress value, $Res Function(KycAddress) then) =
+      _$KycAddressCopyWithImpl<$Res, KycAddress>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "line1") String? line1,
+      @JsonKey(name: "line2") String? line2,
+      @JsonKey(name: "city") String? city,
+      @JsonKey(name: "state") String? state,
+      @JsonKey(name: "postal_code") String? postalCode,
+      @JsonKey(name: "country") String? country});
+}
+
+/// @nodoc
+class _$KycAddressCopyWithImpl<$Res, $Val extends KycAddress>
+    implements $KycAddressCopyWith<$Res> {
+  _$KycAddressCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of KycAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? line1 = freezed,
+    Object? line2 = freezed,
+    Object? city = freezed,
+    Object? state = freezed,
+    Object? postalCode = freezed,
+    Object? country = freezed,
+  }) {
+    return _then(_value.copyWith(
+      line1: freezed == line1
+          ? _value.line1
+          : line1 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      line2: freezed == line2
+          ? _value.line2
+          : line2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      state: freezed == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$KycAddressImplCopyWith<$Res>
+    implements $KycAddressCopyWith<$Res> {
+  factory _$$KycAddressImplCopyWith(
+          _$KycAddressImpl value, $Res Function(_$KycAddressImpl) then) =
+      __$$KycAddressImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "line1") String? line1,
+      @JsonKey(name: "line2") String? line2,
+      @JsonKey(name: "city") String? city,
+      @JsonKey(name: "state") String? state,
+      @JsonKey(name: "postal_code") String? postalCode,
+      @JsonKey(name: "country") String? country});
+}
+
+/// @nodoc
+class __$$KycAddressImplCopyWithImpl<$Res>
+    extends _$KycAddressCopyWithImpl<$Res, _$KycAddressImpl>
+    implements _$$KycAddressImplCopyWith<$Res> {
+  __$$KycAddressImplCopyWithImpl(
+      _$KycAddressImpl _value, $Res Function(_$KycAddressImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of KycAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? line1 = freezed,
+    Object? line2 = freezed,
+    Object? city = freezed,
+    Object? state = freezed,
+    Object? postalCode = freezed,
+    Object? country = freezed,
+  }) {
+    return _then(_$KycAddressImpl(
+      line1: freezed == line1
+          ? _value.line1
+          : line1 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      line2: freezed == line2
+          ? _value.line2
+          : line2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      state: freezed == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$KycAddressImpl implements _KycAddress {
+  const _$KycAddressImpl(
+      {@JsonKey(name: "line1") this.line1,
+      @JsonKey(name: "line2") this.line2,
+      @JsonKey(name: "city") this.city,
+      @JsonKey(name: "state") this.state,
+      @JsonKey(name: "postal_code") this.postalCode,
+      @JsonKey(name: "country") this.country});
+
+  factory _$KycAddressImpl.fromJson(Map<String, dynamic> json) =>
+      _$$KycAddressImplFromJson(json);
+
+  @override
+  @JsonKey(name: "line1")
+  final String? line1;
+  @override
+  @JsonKey(name: "line2")
+  final String? line2;
+  @override
+  @JsonKey(name: "city")
+  final String? city;
+  @override
+  @JsonKey(name: "state")
+  final String? state;
+  @override
+  @JsonKey(name: "postal_code")
+  final String? postalCode;
+  @override
+  @JsonKey(name: "country")
+  final String? country;
+
+  @override
+  String toString() {
+    return 'KycAddress(line1: $line1, line2: $line2, city: $city, state: $state, postalCode: $postalCode, country: $country)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$KycAddressImpl &&
+            (identical(other.line1, line1) || other.line1 == line1) &&
+            (identical(other.line2, line2) || other.line2 == line2) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.state, state) || other.state == state) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.country, country) || other.country == country));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, line1, line2, city, state, postalCode, country);
+
+  /// Create a copy of KycAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$KycAddressImplCopyWith<_$KycAddressImpl> get copyWith =>
+      __$$KycAddressImplCopyWithImpl<_$KycAddressImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$KycAddressImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _KycAddress implements KycAddress {
+  const factory _KycAddress(
+      {@JsonKey(name: "line1") final String? line1,
+      @JsonKey(name: "line2") final String? line2,
+      @JsonKey(name: "city") final String? city,
+      @JsonKey(name: "state") final String? state,
+      @JsonKey(name: "postal_code") final String? postalCode,
+      @JsonKey(name: "country") final String? country}) = _$KycAddressImpl;
+
+  factory _KycAddress.fromJson(Map<String, dynamic> json) =
+      _$KycAddressImpl.fromJson;
+
+  @override
+  @JsonKey(name: "line1")
+  String? get line1;
+  @override
+  @JsonKey(name: "line2")
+  String? get line2;
+  @override
+  @JsonKey(name: "city")
+  String? get city;
+  @override
+  @JsonKey(name: "state")
+  String? get state;
+  @override
+  @JsonKey(name: "postal_code")
+  String? get postalCode;
+  @override
+  @JsonKey(name: "country")
+  String? get country;
+
+  /// Create a copy of KycAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$KycAddressImplCopyWith<_$KycAddressImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -5,7 +5,7 @@ import 'package:anantla_pay/src/core/main/domain/entities/user_model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class AuthenticationRepository {
-  Future<Either<String, String>> login(
+  Future<Either<String, LoginModel>> login(
       {required String email,
       required String password,
       required String fcmToken});

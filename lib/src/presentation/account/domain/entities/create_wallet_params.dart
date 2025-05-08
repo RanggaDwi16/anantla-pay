@@ -41,12 +41,29 @@ class EKycParams with _$EKycParams {
 @freezed
 class KycData with _$KycData {
   const factory KycData({
-    @JsonKey(name: "full_name") String? fullName,
-    @JsonKey(name: "birth_date") DateTime? birthDate,
-    @JsonKey(name: "id_number") String? idNumber,
-    @JsonKey(name: "attachments") List<String>? attachments,
+    @JsonKey(name: "first_name") String? firstName,
+    @JsonKey(name: "last_name") String? lastName,
+    @JsonKey(name: "dob") DateTime? dob,
+    @JsonKey(name: "tax_id") String? taxId,
+    @JsonKey(name: "kyc_type") String? kycType,
+    @JsonKey(name: "address") KycAddress? address,
   }) = _KycData;
 
   factory KycData.fromJson(Map<String, dynamic> json) =>
       _$KycDataFromJson(json);
+}
+
+@freezed
+class KycAddress with _$KycAddress {
+  const factory KycAddress({
+    @JsonKey(name: "line1") String? line1,
+    @JsonKey(name: "line2") String? line2,
+    @JsonKey(name: "city") String? city,
+    @JsonKey(name: "state") String? state,
+    @JsonKey(name: "postal_code") String? postalCode,
+    @JsonKey(name: "country") String? country,
+  }) = _KycAddress;
+
+  factory KycAddress.fromJson(Map<String, dynamic> json) =>
+      _$KycAddressFromJson(json);
 }

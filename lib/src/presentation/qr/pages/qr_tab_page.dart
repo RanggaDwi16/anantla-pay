@@ -68,7 +68,7 @@ class _QRTabPageState extends State<QRTabPage>
             child: TabBar(
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: AppColor.primaryColor2,
+              indicatorColor: AppColor.primaryColor,
               labelColor: AppColor.primaryBlack,
               labelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 14,

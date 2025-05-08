@@ -15,10 +15,19 @@ class EkycVerification implements UseCase<String, EKycParams> {
       countryCode: params.countryCode,
       userId: params.userId,
       kycData: KycData(
-        fullName: params.kycData!.fullName,
-        birthDate: params.kycData!.birthDate,
-        idNumber: params.kycData!.idNumber,
-        attachments: params.kycData!.attachments,
+        firstName: params.kycData!.firstName,
+        lastName: params.kycData!.lastName,
+        dob: params.kycData!.dob,
+        taxId: params.kycData!.taxId,
+        kycType: params.kycData!.kycType,
+        address: KycAddress(
+          line1: params.kycData!.address!.line1,
+          line2: params.kycData!.address!.line2,
+          city: params.kycData!.address!.city,
+          state: params.kycData!.address!.state,
+          country: params.kycData!.address!.country,
+          postalCode: params.kycData!.address!.postalCode,
+        ),
 
       )
     ));

@@ -7,7 +7,7 @@ part of 'post_ekyc_verification_provider.dart';
 // **************************************************************************
 
 String _$postEkycVerificationHash() =>
-    r'1dd86ddb66522419b1e524d937b50aa8c0b7a6a9';
+    r'ce07fe600f0f2d4cb64214cb11f1df88ad4ee5ad';
 
 /// See also [PostEkycVerification].
 @ProviderFor(PostEkycVerification)

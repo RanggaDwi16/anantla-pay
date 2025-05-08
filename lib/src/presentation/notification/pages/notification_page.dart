@@ -13,7 +13,9 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.secondaryBackground,
       appBar: CustomAppBar(
+        backgroundColor: AppColor.secondaryBackground,
         title: 'Notification',
         centertitle: true,
         leading: Padding(

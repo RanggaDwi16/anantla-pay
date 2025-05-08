@@ -10,6 +10,9 @@ import 'package:dartz/dartz.dart';
 abstract class AccountRepository {
   Future<Either<String, List<BalanceModel>>> getBalance();
   Future<Either<String, List<BankModel>>> getAllBank();
+  Future<Either<String, String>> eKycVerification({
+    required EKycParams params,
+  });
 
   Future<Either<String, String>> topUp({
     required TopupParams params,
@@ -20,9 +23,6 @@ abstract class AccountRepository {
   });
 
   Future<Either<String, List<TransactionModel>>> getTransaction();
-  Future<Either<String, String>> eKycVerification({
-    required EKycParams params,
-  });
   Future<Either<String, int>> createWallet({
     required CreateWalletParams params,
   });
@@ -31,11 +31,14 @@ abstract class AccountRepository {
     required ActivateWalletParams params,
   });
   Future<Either<String, String>> getTokenVirtualAccount();
+  Future<Either<String, FeeModel>> getFees({
+    required VirtualAccountParams params,
+  });
   Future<Either<String, String>> topUpVirtualAccount({
     required VirtualAccountParams params,
   });
   Future<Either<String, String>> verifyOtpVirtualAccount({
     required VirtualAccountParams params,
   });
-  Future<Either<String,List<CountryModel>>> getAllCountryCode();
+  Future<Either<String, List<CountryModel>>> getAllCountryCode();
 }

@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 abstract class AuthenticationRemoteDataSource {
-  Future<Either<String, String>> login({
+  Future<Either<String, LoginModel>> login({
     required String email,
     required String password,
     required String fcmToken,
@@ -33,7 +33,7 @@ class AuthenticationRemoteDataSourceImpl
       {required this.httpClient, required this.adminHttpClient});
 
   @override
-  Future<Either<String, String>> login({
+  Future<Either<String, LoginModel>> login({
     required String email,
     required String password,
     required String fcmToken,
@@ -42,14 +42,19 @@ class AuthenticationRemoteDataSourceImpl
       final response = await httpClient.post(
         '/users/login',
         data: {
-          'email': email,
+          'usernameoremail': email,
           'password': password,
           'firebase_token': fcmToken,
         },
       );
       if (response.statusCode == 200) {
-        final login = response.data['message'];
-        return Right(login);
+        final token = response.data['token'];
+        final userId = response.data['user']['user_id'];
+        final loginModel = LoginModel(
+          token: token,
+          user: User(userId: userId),
+        );
+        return Right(loginModel);
       } else if (response.statusCode == 202) {
         return Right(response.data['message']);
       } else if (response.statusCode == 400) {
@@ -64,7 +69,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'Unknown error occurred';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -91,7 +96,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -113,7 +118,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'Unknown error occurred';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -133,7 +138,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -155,7 +160,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -178,7 +183,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -198,7 +203,7 @@ class AuthenticationRemoteDataSourceImpl
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['error'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {

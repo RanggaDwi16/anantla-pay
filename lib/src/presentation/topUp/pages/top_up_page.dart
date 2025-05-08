@@ -1,6 +1,6 @@
 import 'package:anantla_pay/src/core/utils/assets.gen.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/top_up/top_up_data_provider.dart';
-import 'package:anantla_pay/src/presentation/topUp/widgets/item_topup_option.dart';
+import 'package:anantla_pay/src/presentation/add_money/widgets/item_topup_option.dart';
 import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/helpers/custom_app_bar.dart';

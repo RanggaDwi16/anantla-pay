@@ -160,7 +160,7 @@ class ReviewPage extends HookConsumerWidget {
                               .read(postInternalTransferProvider.notifier)
                               .postInternalTranfer(
                                 params: InternalTransferParams(
-                                  amount: transferData.amount!,
+                                  amount: transferData.fromAmount?.toInt(),
                                   fromWalletId: transferData.fromWalletId!,
                                   toWalletId: transferData.toWalletId!,
                                   note: messageController.text,
@@ -181,7 +181,7 @@ class ReviewPage extends HookConsumerWidget {
                               .read(postCrossPspTransferProvider.notifier)
                               .postCrossPspTransfer(
                                 params: CrossPspParams(
-                                  amount: transferData.amount!,
+                                  amount: transferData.fromAmount?.toInt(),
                                   fromWalletId: transferData.fromWalletId!,
                                   toWalletId: transferData.toWalletId!,
                                   fromCurrency: transferData.fromCurrency,

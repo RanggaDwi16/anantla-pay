@@ -1,3 +1,4 @@
+import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class IconCircle extends StatelessWidget {
@@ -26,6 +27,7 @@ class IconCircle extends StatelessWidget {
         child: Center(
           child: Image.asset(
             imagePath,
+            color: AppColor.primaryColor,
             width: imageSize,
             height: imageSize,
             fit: BoxFit.contain,

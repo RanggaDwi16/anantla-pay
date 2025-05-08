@@ -82,7 +82,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         else if (widget.labelText != null)
           Text(
             widget.labelText!,
-            style: textTheme.titleMedium?.copyWith(color: Colors.grey),
+            style: textTheme.titleMedium?.copyWith(
+              color: AppColor.primaryBlack,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         const SizedBox(height: 8),
         TextField(
@@ -112,17 +115,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
               horizontal: 0,
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.transparent),
-              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: AppColor.textSecondaryGray),
+              borderRadius: BorderRadius.circular(12),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: AppColor.primaryGray, width: 2),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
             errorBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
             suffixIcon: (widget.isLink == true && widget.suffixIcon != null)
                 ? GestureDetector(

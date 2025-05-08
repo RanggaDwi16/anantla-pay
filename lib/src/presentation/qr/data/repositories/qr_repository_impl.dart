@@ -20,9 +20,10 @@ class QrRepositoryImpl implements QrRepository {
       return Left(e.toString());
     }
   }
-  
+
   @override
-  Future<Either<String, String>> transferQr({required String qrCode, TransferQrModel? transferQrModel}) async {
+  Future<Either<String, String>> transferQr(
+      {required String qrCode, TransferQrModel? transferQrModel}) async {
     try {
       final result = await remoteDataSource.transferQr(
         qrCode: qrCode,
@@ -36,7 +37,34 @@ class QrRepositoryImpl implements QrRepository {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Either<String, DynamicCpmModel>> dynamicCpmQr(
+      {required int amount, required String note}) async {
+    try {
+      final result = await remoteDataSource.dynamicCpmQr(
+        amount: amount,
+        note: note,
+      );
+      return result.fold(
+        (error) => Left(error),
+        (qr) => Right(qr),
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
   
-
-
+  @override
+  Future<Either<String, TransferQrModel>> staticCpmQr() async{
+    try {
+      final result = await remoteDataSource.staticCpmQr();
+      return result.fold(
+        (error) => Left(error),
+        (qr) => Right(qr),
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

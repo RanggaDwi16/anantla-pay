@@ -156,7 +156,7 @@ class RegisterPage extends HookConsumerWidget {
                     width: 20,
                   ),
                   controller: nomorHpController,
-                  labelText: "Nomor HP",
+                  labelText: "Phone Number",
                   hintText: "628XXXXXXXX",
                   keyboardType: TextInputType.phone,
                   isRequired: true,
@@ -171,52 +171,52 @@ class RegisterPage extends HookConsumerWidget {
                         ),
                   ),
                 ],
-                const Gap(20),
+                // const Gap(20),
 
-                /// Wishlist Checkbox
-                Text(
-                  "Do you want to be included in the wishlist?",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
+                // /// Wishlist Checkbox
+                // Text(
+                //   "Do you want to be included in the wishlist?",
+                //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                //         fontWeight: FontWeight.w600,
+                //       ),
+                // ),
 
-                const Gap(5),
-                Text(
-                  "By enabling the checkbox below, you will be included in the list of people who will be notified when the app is fully released.",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColor.textGray,
-                      ),
-                ),
+                // const Gap(5),
+                // Text(
+                //   "By enabling the checkbox below, you will be included in the list of people who will be notified when the app is fully released.",
+                //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                //         color: AppColor.textGray,
+                //       ),
+                // ),
 
-                const Gap(10),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: wishlistChecked.value,
-                      onChanged: (value) {
-                        wishlistChecked.value = value ?? false;
-                        if (wishlistChecked.value) {
-                          addToWishlist(ref: ref, context: context);
-                        }
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      activeColor: AppColor.primaryColor,
-                    ),
-                    Text(
-                      "Yes, I want in",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
-                    ),
-                  ],
-                ),
+                // const Gap(10),
+                // Row(
+                //   children: [
+                //     Checkbox(
+                //       value: wishlistChecked.value,
+                //       onChanged: (value) {
+                //         wishlistChecked.value = value ?? false;
+                //         if (wishlistChecked.value) {
+                //           addToWishlist(ref: ref, context: context);
+                //         }
+                //       },
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(4),
+                //       ),
+                //       activeColor: AppColor.primaryColor,
+                //     ),
+                //     Text(
+                //       "Yes, I want in",
+                //       style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
+                //     ),
+                //   ],
+                // ),
 
                 const Gap(40),
 
                 Button.filled(
                     label: auth.isLoading ? 'Loading...' : 'Register',
-                    color: auth.isLoading ? Colors.grey : AppColor.primaryBlack,
+                    color: auth.isLoading ? Colors.grey : AppColor.primaryColor,
                     textColor: Colors.white,
                     disabled: !isValid,
                     onPressed: () {
@@ -229,7 +229,7 @@ class RegisterPage extends HookConsumerWidget {
                             email: formData.value.email,
                             phone: formData.value.nomorHp,
                             countryCode: 'ID',
-                            clientId: 25,
+                            clientId: 2,
                           ),
                         );
                       }

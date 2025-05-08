@@ -38,6 +38,12 @@ final List<Map<String, dynamic>> currencies = [
     'icon': Icons.attach_money,
     'color': Colors.orange
   },
+  {
+    'code': 'SGD',
+    'name': 'Singapore Dollar',
+    'icon': Icons.attach_money,
+    'color': Colors.purple,
+  },
 ];
 
 final Map<String, String> currencySymbols = {
@@ -48,4 +54,5 @@ final Map<String, String> currencySymbols = {
   'TRY': '₺',
   'COP': '\$',
   'ARS': '\$',
+  'SGD': '\$',
 };

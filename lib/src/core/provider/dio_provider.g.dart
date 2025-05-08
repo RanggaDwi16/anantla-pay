@@ -6,7 +6,7 @@ part of 'dio_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userDioHash() => r'10f5e80da87995a2450bee803e8aaa016c1119a6';
+String _$userDioHash() => r'9139bf09429ce1e732bc94a69252037fdc22de7c';
 
 /// See also [userDio].
 @ProviderFor(userDio)
@@ -39,7 +39,7 @@ final virtualAccountDioProvider = AutoDisposeProvider<Dio>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef VirtualAccountDioRef = AutoDisposeProviderRef<Dio>;
-String _$adminDioHash() => r'3b4c6cd9be0342a2f7aeb10edd0b558ef497e827';
+String _$adminDioHash() => r'1f3d7b7737a70394efd308f660a6abd4f25d128a';
 
 /// See also [adminDio].
 @ProviderFor(adminDio)

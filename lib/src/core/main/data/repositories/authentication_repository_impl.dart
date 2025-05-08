@@ -12,7 +12,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   AuthenticationRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<String, String>> login({required String email, required String password, required String fcmToken}) async {
+  Future<Either<String, LoginModel>> login({required String email, required String password, required String fcmToken}) async {
     try{
       final result = await remoteDataSource.login(email: email, password: password, fcmToken:  fcmToken);
       return result.fold(

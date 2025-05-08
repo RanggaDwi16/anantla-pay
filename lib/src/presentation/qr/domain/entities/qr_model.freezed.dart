@@ -524,3 +524,255 @@ abstract class _TransferQrModel implements TransferQrModel {
   _$$TransferQrModelImplCopyWith<_$TransferQrModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+DynamicCpmModel _$DynamicCpmModelFromJson(Map<String, dynamic> json) {
+  return _DynamicCpmModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DynamicCpmModel {
+  @JsonKey(name: "type")
+  String? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: "wallet_id_to")
+  int? get walletIdTo => throw _privateConstructorUsedError;
+  @JsonKey(name: "amount")
+  int? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: "currency")
+  String? get currency => throw _privateConstructorUsedError;
+  @JsonKey(name: "note")
+  String? get note => throw _privateConstructorUsedError;
+
+  /// Serializes this DynamicCpmModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of DynamicCpmModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $DynamicCpmModelCopyWith<DynamicCpmModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DynamicCpmModelCopyWith<$Res> {
+  factory $DynamicCpmModelCopyWith(
+          DynamicCpmModel value, $Res Function(DynamicCpmModel) then) =
+      _$DynamicCpmModelCopyWithImpl<$Res, DynamicCpmModel>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "type") String? type,
+      @JsonKey(name: "wallet_id_to") int? walletIdTo,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "note") String? note});
+}
+
+/// @nodoc
+class _$DynamicCpmModelCopyWithImpl<$Res, $Val extends DynamicCpmModel>
+    implements $DynamicCpmModelCopyWith<$Res> {
+  _$DynamicCpmModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of DynamicCpmModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = freezed,
+    Object? walletIdTo = freezed,
+    Object? amount = freezed,
+    Object? currency = freezed,
+    Object? note = freezed,
+  }) {
+    return _then(_value.copyWith(
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      walletIdTo: freezed == walletIdTo
+          ? _value.walletIdTo
+          : walletIdTo // ignore: cast_nullable_to_non_nullable
+              as int?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DynamicCpmModelImplCopyWith<$Res>
+    implements $DynamicCpmModelCopyWith<$Res> {
+  factory _$$DynamicCpmModelImplCopyWith(_$DynamicCpmModelImpl value,
+          $Res Function(_$DynamicCpmModelImpl) then) =
+      __$$DynamicCpmModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "type") String? type,
+      @JsonKey(name: "wallet_id_to") int? walletIdTo,
+      @JsonKey(name: "amount") int? amount,
+      @JsonKey(name: "currency") String? currency,
+      @JsonKey(name: "note") String? note});
+}
+
+/// @nodoc
+class __$$DynamicCpmModelImplCopyWithImpl<$Res>
+    extends _$DynamicCpmModelCopyWithImpl<$Res, _$DynamicCpmModelImpl>
+    implements _$$DynamicCpmModelImplCopyWith<$Res> {
+  __$$DynamicCpmModelImplCopyWithImpl(
+      _$DynamicCpmModelImpl _value, $Res Function(_$DynamicCpmModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of DynamicCpmModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = freezed,
+    Object? walletIdTo = freezed,
+    Object? amount = freezed,
+    Object? currency = freezed,
+    Object? note = freezed,
+  }) {
+    return _then(_$DynamicCpmModelImpl(
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      walletIdTo: freezed == walletIdTo
+          ? _value.walletIdTo
+          : walletIdTo // ignore: cast_nullable_to_non_nullable
+              as int?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DynamicCpmModelImpl implements _DynamicCpmModel {
+  const _$DynamicCpmModelImpl(
+      {@JsonKey(name: "type") this.type,
+      @JsonKey(name: "wallet_id_to") this.walletIdTo,
+      @JsonKey(name: "amount") this.amount,
+      @JsonKey(name: "currency") this.currency,
+      @JsonKey(name: "note") this.note});
+
+  factory _$DynamicCpmModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DynamicCpmModelImplFromJson(json);
+
+  @override
+  @JsonKey(name: "type")
+  final String? type;
+  @override
+  @JsonKey(name: "wallet_id_to")
+  final int? walletIdTo;
+  @override
+  @JsonKey(name: "amount")
+  final int? amount;
+  @override
+  @JsonKey(name: "currency")
+  final String? currency;
+  @override
+  @JsonKey(name: "note")
+  final String? note;
+
+  @override
+  String toString() {
+    return 'DynamicCpmModel(type: $type, walletIdTo: $walletIdTo, amount: $amount, currency: $currency, note: $note)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DynamicCpmModelImpl &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.walletIdTo, walletIdTo) ||
+                other.walletIdTo == walletIdTo) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
+            (identical(other.note, note) || other.note == note));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, type, walletIdTo, amount, currency, note);
+
+  /// Create a copy of DynamicCpmModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DynamicCpmModelImplCopyWith<_$DynamicCpmModelImpl> get copyWith =>
+      __$$DynamicCpmModelImplCopyWithImpl<_$DynamicCpmModelImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DynamicCpmModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DynamicCpmModel implements DynamicCpmModel {
+  const factory _DynamicCpmModel(
+      {@JsonKey(name: "type") final String? type,
+      @JsonKey(name: "wallet_id_to") final int? walletIdTo,
+      @JsonKey(name: "amount") final int? amount,
+      @JsonKey(name: "currency") final String? currency,
+      @JsonKey(name: "note") final String? note}) = _$DynamicCpmModelImpl;
+
+  factory _DynamicCpmModel.fromJson(Map<String, dynamic> json) =
+      _$DynamicCpmModelImpl.fromJson;
+
+  @override
+  @JsonKey(name: "type")
+  String? get type;
+  @override
+  @JsonKey(name: "wallet_id_to")
+  int? get walletIdTo;
+  @override
+  @JsonKey(name: "amount")
+  int? get amount;
+  @override
+  @JsonKey(name: "currency")
+  String? get currency;
+  @override
+  @JsonKey(name: "note")
+  String? get note;
+
+  /// Create a copy of DynamicCpmModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DynamicCpmModelImplCopyWith<_$DynamicCpmModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

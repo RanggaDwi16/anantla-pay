@@ -242,11 +242,11 @@ class WalletEmptyState extends ConsumerWidget {
                       params: EKycParams(
                         userId: userId,
                         countryCode: selectedCountryCode!,
-                        kycData: KycData(
-                          fullName: fullnameController.text.trim(),
-                          birthDate: selectedBirthdate,
-                          idNumber: idNumberController.text.trim(),
-                        ),
+                        // kycData: KycData(
+                        //   fullName: fullnameController.text.trim(),
+                        //   birthDate: selectedBirthdate,
+                        //   idNumber: idNumberController.text.trim(),
+                        // ),
                       ),
                       onSuccess: (message) {
                         context.showSuccessDialog(

@@ -45,3 +45,23 @@ Map<String, dynamic> _$$TransferQrModelImplToJson(
       'currency': instance.currency,
       'note': instance.note,
     };
+
+_$DynamicCpmModelImpl _$$DynamicCpmModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DynamicCpmModelImpl(
+      type: json['type'] as String?,
+      walletIdTo: (json['wallet_id_to'] as num?)?.toInt(),
+      amount: (json['amount'] as num?)?.toInt(),
+      currency: json['currency'] as String?,
+      note: json['note'] as String?,
+    );
+
+Map<String, dynamic> _$$DynamicCpmModelImplToJson(
+        _$DynamicCpmModelImpl instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'wallet_id_to': instance.walletIdTo,
+      'amount': instance.amount,
+      'currency': instance.currency,
+      'note': instance.note,
+    };

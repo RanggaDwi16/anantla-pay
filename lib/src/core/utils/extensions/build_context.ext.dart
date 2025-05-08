@@ -1,6 +1,8 @@
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 extension BuildContextExt on BuildContext {
@@ -13,13 +15,45 @@ extension BuildContextExt on BuildContext {
       SnackBar(
         content: Text(
           message,
-          style: const TextStyle(color: AppColor.primaryBlack),
+          style: const TextStyle(color: AppColor.primaryWhite),
         ),
         backgroundColor: isError ? Colors.redAccent : AppColor.primaryColor,
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
         duration: const Duration(seconds: 2),
       ),
+    );
+  }
+
+  void showProcessDialog() {
+    showDialog(
+      context: this,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                Text(
+                  'Processing...',
+                  style: Theme.of(this).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.primaryBlack,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -51,7 +85,7 @@ extension BuildContextExt on BuildContext {
                     shape: BoxShape.circle,
                     color: AppColor.primaryColor.withOpacity(0.9),
                   ),
-                  child: const Icon(Icons.check, size: 40, color: Colors.black),
+                  child: const Icon(Icons.check, size: 40, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
 
@@ -138,6 +172,73 @@ extension BuildContextExt on BuildContext {
     );
   }
 
+  void successOtpDialog({
+    required VoidCallback? onComplete,
+  }) {
+    showDialog(
+      context: this,
+      barrierDismissible: false,
+      builder: (context) {
+        Future.delayed(const Duration(seconds: 2), () {
+          if (context.mounted) {
+            context.pop();
+            onComplete?.call();
+          }
+        });
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: AppColor.primaryWhite,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icon success
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColor.primaryColor,
+                  ),
+                  child: const Icon(
+                    Icons.check,
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Title
+                Text(
+                  "You're verified!",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.primaryBlack,
+                        fontSize: 20,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                Gap(8),
+
+                // Description
+                Text(
+                  "You're verified and ready to go.\nLet's make the most of it!",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColor.textGray,
+                        fontWeight: FontWeight.w400,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void customErrorDialog(String message) {
     showDialog(
       context: this,
@@ -152,20 +253,20 @@ extension BuildContextExt on BuildContext {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                /// Error Circle
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.redAccent.withOpacity(0.9),
-                  ),
-                  child: const Icon(Icons.error, size: 40, color: Colors.white),
-                ),
-                const SizedBox(height: 20),
+                // /// Error Circle
+                // Container(
+                //   padding: const EdgeInsets.all(16),
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     color: Colors.redAccent.withOpacity(0.9),
+                //   ),
+                //   child: const Icon(Icons.error, size: 40, color: Colors.white),
+                // ),
+                // const SizedBox(height: 20),
 
                 /// Title
                 Text(
-                  "Error",
+                  "Oops! Something went wrong",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

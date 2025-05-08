@@ -31,3 +31,17 @@ class TransferQrModel with _$TransferQrModel {
   factory TransferQrModel.fromJson(Map<String, dynamic> json) =>
       _$TransferQrModelFromJson(json);
 }
+
+@freezed
+class DynamicCpmModel with _$DynamicCpmModel {
+  const factory DynamicCpmModel({
+    @JsonKey(name: "type") String? type,
+    @JsonKey(name: "wallet_id_to") int? walletIdTo,
+    @JsonKey(name: "amount") int? amount,
+    @JsonKey(name: "currency") String? currency,
+    @JsonKey(name: "note") String? note,
+  }) = _DynamicCpmModel;
+
+  factory DynamicCpmModel.fromJson(Map<String, dynamic> json) =>
+      _$DynamicCpmModelFromJson(json);
+}

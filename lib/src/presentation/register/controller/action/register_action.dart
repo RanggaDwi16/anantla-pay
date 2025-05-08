@@ -15,14 +15,14 @@ Future<void> registerUser({
         params: params,
         onSuccess: (message) {
           context.showSuccessDialog(
-            title: 'Success Register, Copy Password',
-            message: message,
-            enableCopy: true,
+            title: 'Success Register',
+            message:
+                'Please check your email to verify your account and login to the app',
             onConfirm: () => context.pushReplacementNamed(RouteName.login),
           );
         },
-        onError: () {
-          context.customErrorDialog('Register Failed');
+        onError: (message) {
+          context.customErrorDialog(message);
         },
       );
 }

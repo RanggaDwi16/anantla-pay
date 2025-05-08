@@ -15,7 +15,7 @@ Widget buildItemNotifications(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       decoration: BoxDecoration(
-        color: AppColor.itemGray,
+        color: AppColor.primaryWhite,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

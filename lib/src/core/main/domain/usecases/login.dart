@@ -3,13 +3,13 @@ import 'package:anantla_pay/src/core/main/domain/repository/authentication_repos
 import 'package:anantla_pay/src/core/utils/usecase/usecase.dart';
 import 'package:dartz/dartz.dart';
 
-class Login implements UseCase<String, LoginParams> {
+class Login implements UseCase<LoginModel, LoginParams> {
   final AuthenticationRepository authenticationRepository;
 
   Login({required this.authenticationRepository});
 
   @override
-  Future<Either<String, String>> call(LoginParams params) {
+  Future<Either<String, LoginModel>> call(LoginParams params) {
     return authenticationRepository.login(
         email: params.email, password: params.password, fcmToken: params.fcmToken);
   }

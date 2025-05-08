@@ -11,6 +11,7 @@ class TopupParams with _$TopupParams {
     @JsonKey(name: "amount") int? amount,
     @JsonKey(name: "currency") String? currency,
     @JsonKey(name: "firebase_token") String? firebaseToken,
+    @JsonKey(name: "otp_code") String? otpCode,
   }) = _TopupParams;
 
   factory TopupParams.fromJson(Map<String, dynamic> json) =>
@@ -21,6 +22,9 @@ class TopupParams with _$TopupParams {
 class VerifyOtpTopupParams with _$VerifyOtpTopupParams {
   const factory VerifyOtpTopupParams({
     @JsonKey(name: "wallet_id") int? walletId,
+    @JsonKey(name: "amount") int? amount,
+    @JsonKey(name: "currency") String? currency,
+    @JsonKey(name: "firebase_token") String? firebaseToken,
     @JsonKey(name: "otp_code") String? otpCode,
   }) = _VerifyOtpTopupParams;
 
@@ -57,7 +61,12 @@ class VirtualAccountParams with _$VirtualAccountParams {
     @JsonKey(name: "virtualAccountName") String? virtualAccountName,
     @JsonKey(name: "virtualAccountEmail") String? virtualAccountEmail,
     @JsonKey(name: "virtualAccountPhone") String? virtualAccountPhone,
+    @JsonKey(name: "platform_fee") int? platformFee,
+    @JsonKey(name: "partner_fee") int? partnerFee,
     @JsonKey(name: "totalAmount") TotalAmount? totalAmount,
+    @JsonKey(name: "amount") int? amount,
+    @JsonKey(name: "currency") String? currency,
+    @JsonKey(name: "cover_fee") bool? coverFee,
   }) = _VirtualAccountParams;
 
   factory VirtualAccountParams.fromJson(Map<String, dynamic> json) =>
@@ -67,10 +76,26 @@ class VirtualAccountParams with _$VirtualAccountParams {
 @freezed
 class TotalAmount with _$TotalAmount {
   const factory TotalAmount({
-    @JsonKey(name: "value") String? value,
+    @JsonKey(name: "value") String? amount,
     @JsonKey(name: "currency") String? currency,
   }) = _TotalAmount;
 
   factory TotalAmount.fromJson(Map<String, dynamic> json) =>
       _$TotalAmountFromJson(json);
+}
+
+@freezed
+class FeeModel with _$FeeModel {
+  const factory FeeModel({
+    @JsonKey(name: "quote_id") String? quoteId,
+    @JsonKey(name: "currency") String? currency,
+    @JsonKey(name: "amount") int? amount,
+    @JsonKey(name: "cover_fee") bool? coverFee,
+    @JsonKey(name: "total_with_fee") String? totalWithFee,
+    @JsonKey(name: "platform_fee") String? platformFee,
+    @JsonKey(name: "partner_fee") String? partnerFee,
+  }) = _FeeModel;
+
+  factory FeeModel.fromJson(Map<String, dynamic> json) =>
+      _$FeeModelFromJson(json);
 }
