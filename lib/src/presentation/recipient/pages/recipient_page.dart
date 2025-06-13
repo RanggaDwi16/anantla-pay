@@ -149,7 +149,8 @@ class RecipientPage extends HookConsumerWidget {
                             itemBuilder: (context, index) {
                               final transaction = listToShow[index];
                               return TransactionItem(
-                                name: transaction.transWalletType ?? '',
+                                name: formatTransactionType(
+                                    transaction.transWalletType),
                                 date: transaction.transactionDate
                                         ?.toIso8601String() ??
                                     '',

@@ -9,12 +9,14 @@ import 'package:anantla_pay/src/presentation/transfer/controllers/get_exhange_ra
 import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
 import 'package:anantla_pay/src/presentation/transfer/widgets/amount/fees_breakdown_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:intl/intl.dart';
 
 final convertedAmountProvider = StateProvider<String>((ref) => '');
 
@@ -163,83 +165,118 @@ class TransferAmountPage extends HookConsumerWidget {
                                   ],
                                 ),
                                 SizedBox(
-                                  width: context.deviceWidth * 0.6,
-                                  child: TextField(
-                                    controller: amount,
-                                    onChanged: (value) async {
-                                      final fromCurrency =
-                                          transferData.fromCurrency ?? '';
-                                      final toCurrency =
-                                          transferData.toCurrency ?? '';
+                                    width: context.deviceWidth * 0.6,
+                                    child: Stack(
+                                      children: [
+                                        TextField(
+                                          controller: amount,
+                                          onChanged: (value) async {
+                                            final fromCurrency =
+                                                transferData.fromCurrency ?? '';
+                                            final toCurrency =
+                                                transferData.toCurrency ?? '';
 
-                                      if (value.isEmpty) {
-                                        ref
-                                            .read(convertedAmountProvider
-                                                .notifier)
-                                            .state = '0';
-                                        return;
-                                      }
-
-                                      if (fromCurrency == toCurrency) {
-                                        ref
-                                            .read(convertedAmountProvider
-                                                .notifier)
-                                            .state = value;
-                                      } else {
-                                        await ref
-                                            .read(fetchExhangeRateProvider
-                                                .notifier)
-                                            .fetchExchangeRate(
-                                              fromCurrency: fromCurrency,
-                                              toCurrency: toCurrency,
-                                              amount:
-                                                  value, // tidak diubah, biarkan tetap dalam format seperti "Rp45.584"
-                                            );
-
-                                        final asyncExchange =
-                                            ref.read(fetchExhangeRateProvider);
-
-                                        if (asyncExchange is AsyncData) {
-                                          ref
+                                            if (value.isEmpty) {
+                                              ref
                                                   .read(convertedAmountProvider
                                                       .notifier)
-                                                  .state =
-                                              asyncExchange.value ?? '';
-                                        } else {
-                                          ref
-                                              .read(convertedAmountProvider
-                                                  .notifier)
-                                              .state = '...';
-                                        }
-                                      }
-                                    },
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.end,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(right: 0),
-                                      hintText: formatCurrency(
-                                          amount: 0,
-                                          currencyCode:
-                                              transferData.fromCurrency ??
-                                                  'IDR',
-                                          isTransferAmount: true),
-                                      hintStyle: TextStyle(
-                                        fontSize: dynamicFontSize,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColor.textGray,
-                                      ),
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: dynamicFontSize,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                ),
+                                                  .state = '0';
+                                              return;
+                                            }
+
+                                            if (fromCurrency == toCurrency) {
+                                              ref
+                                                  .read(convertedAmountProvider
+                                                      .notifier)
+                                                  .state = value;
+                                            } else {
+                                              await ref
+                                                  .read(fetchExhangeRateProvider
+                                                      .notifier)
+                                                  .fetchExchangeRate(
+                                                    fromCurrency: fromCurrency,
+                                                    toCurrency: toCurrency,
+                                                    amount:
+                                                        value, // tidak diubah, biarkan tetap dalam format seperti "Rp45.584"
+                                                  );
+
+                                              final asyncExchange = ref.read(
+                                                  fetchExhangeRateProvider);
+
+                                              if (asyncExchange is AsyncData) {
+                                                ref
+                                                    .read(
+                                                        convertedAmountProvider
+                                                            .notifier)
+                                                    .state = asyncExchange
+                                                        .value ??
+                                                    '';
+                                              } else {
+                                                ref
+                                                    .read(
+                                                        convertedAmountProvider
+                                                            .notifier)
+                                                    .state = '...';
+                                              }
+                                            }
+                                          },
+                                          keyboardType: TextInputType.number,
+                                          textAlign: TextAlign.end,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0),
+                                            // hintText: formatCurrency(
+                                            //     amount: 0,
+                                            //     currencyCode:
+                                            //         transferData.fromCurrency ??
+                                            //             'IDR',
+                                            //     isTransferAmount: true),
+                                            // hintStyle: TextStyle(
+                                            //   fontSize: dynamicFontSize,
+                                            //   fontWeight: FontWeight.w700,
+                                            //   color: AppColor.textGray,
+                                            // ),
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            isCollapsed: true,
+                                          ),
+                                          style: TextStyle(
+                                            fontSize: dynamicFontSize,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.transparent,
+                                          ),
+                                        ),
+                                        IgnorePointer(
+                                          child: Container(
+                                            alignment: Alignment.centerRight,
+                                            height: dynamicFontSize +
+                                                10, // ensure enough height to center vertically
+                                            child: Text(
+                                              formatCurrency(
+                                                amount: double.tryParse(
+                                                      amount.text
+                                                          .replaceAll(',', '')
+                                                          .replaceAll('.', ''),
+                                                    ) ??
+                                                    0,
+                                                currencyCode:
+                                                    transferData.fromCurrency ??
+                                                        '',
+                                                isTransferAmount: false,
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: dynamicFontSize,
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColor.primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
                               ],
                             ),
 
@@ -366,7 +403,17 @@ class TransferAmountPage extends HookConsumerWidget {
                                           ),
                                           SizedBox(height: 2),
                                           Text(
-                                            '${formatCurrency(amount: transferData.fromBalance ?? 0, currencyCode: transferData.fromCurrency ?? '')} available',
+                                            '${formatCurrency(
+                                              amount:
+                                                  transferData.fromBalance ?? 0,
+                                              currencyCode:
+                                                  transferData.fromCurrency ??
+                                                      '',
+                                              isTransferAmount: transferData
+                                                      .fromCurrency!
+                                                      .toUpperCase() !=
+                                                  'IDR',
+                                            )} available',
                                             style: const TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.grey),
@@ -558,7 +605,7 @@ class TransferAmountPage extends HookConsumerWidget {
                   .read(transferDataNotifierProvider.notifier)
                   .setFromAmount(double.parse(amount.text).toInt());
               ref.read(transferDataNotifierProvider.notifier).setToAmount(
-                  double.parse(convertedAmount.replaceAll(',', '')).toInt());
+                  double.parse(convertedAmount.replaceAll(',', '')));
               ref
                   .read(transferDataNotifierProvider.notifier)
                   .setFees(fees.text);

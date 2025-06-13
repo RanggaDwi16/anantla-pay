@@ -23,7 +23,8 @@ class TopUpChooseBankPage extends ConsumerStatefulWidget {
 }
 
 class _TopUpChooseBankPageState extends ConsumerState<TopUpChooseBankPage> {
-  final _segmentController = ValueNotifier<String>('international');
+  final _segmentController = ValueNotifier<String>('same');
+  final String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +88,13 @@ class _TopUpChooseBankPageState extends ConsumerState<TopUpChooseBankPage> {
                         ref
                             .read(topUpDataNotifierProvider.notifier)
                             .setVirtualAccountData(
-                                bankCode: data[0].bankCode ?? '');
+                              bankCode: data[2].bankCode ?? '',
+                              bankName: data[2].bankName ?? '',
+                            );
                         context.pushNamed(RouteName.topUpReviewDetail);
                       },
-                      title: data![0].bankName ?? '',
-                      description: data[0].bankCode ?? '',
+                      title: data![2].bankName ?? '',
+                      description: data[2].bankCode ?? '',
                       assetPath: Assets.icons.bankOutline.path,
                     );
                   },
@@ -172,7 +175,7 @@ class _TopUpChooseBankPageState extends ConsumerState<TopUpChooseBankPage> {
                               if (segment == 'international') {
                                 return const Center(
                                   child: Text(
-                                    'Bank internasional',
+                                    'International Bank Transfers is not available yet',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -182,28 +185,54 @@ class _TopUpChooseBankPageState extends ConsumerState<TopUpChooseBankPage> {
                                 );
                               }
 
-                              // Untuk segment 'same', tampilkan daftar bank
-                              final filtered = data!;
+                              final filtered = data!.where((bank) {
+                                final bankName =
+                                    bank.bankName?.toLowerCase() ?? '';
+                                return bankName.contains(_searchQuery);
+                              }).toList();
+
+                              if (filtered.isEmpty) {
+                                return const Center(
+                                  child: Text(
+                                    'No matching banks found.',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColor.textGray,
+                                    ),
+                                  ),
+                                );
+                              }
 
                               return ListView.separated(
                                 itemCount: filtered.length,
                                 separatorBuilder: (_, __) => const Gap(12),
                                 itemBuilder: (context, index) {
                                   final bank = filtered[index];
-                                  return MiniBankCard(
-                                    onTap: () {
-                                      ref
-                                          .read(topUpDataNotifierProvider
-                                              .notifier)
-                                          .setVirtualAccountData(
-                                              bankCode: bank.bankCode ?? '');
-                                      print('Bank Code: ${bank.bankCode}');
-                                      context.pushNamed(
-                                          RouteName.topUpReviewDetail);
-                                    },
-                                    title: bank.bankName ?? '',
-                                    description: bank.bankCode ?? '',
-                                    assetPath: Assets.icons.bankOutline.path,
+                                  final isMandiri =
+                                      bank.bankName == 'Bank Mandiri';
+
+                                  return Opacity(
+                                    opacity: isMandiri ? 1.0 : 0.4,
+                                    child: IgnorePointer(
+                                      ignoring: !isMandiri,
+                                      child: MiniBankCard(
+                                        onTap: () {
+                                          ref
+                                              .read(topUpDataNotifierProvider
+                                                  .notifier)
+                                              .setVirtualAccountData(
+                                                bankCode: bank.bankCode ?? '',
+                                                bankName: bank.bankName ?? '',
+                                              );
+                                          context.pushNamed(
+                                              RouteName.topUpReviewDetail);
+                                        },
+                                        title: bank.bankName ?? '',
+                                        description: bank.bankCode ?? '',
+                                        assetPath:
+                                            Assets.icons.bankOutline.path,
+                                      ),
+                                    ),
                                   );
                                 },
                               );

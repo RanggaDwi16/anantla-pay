@@ -1,7 +1,9 @@
 import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/get_transaction/fetch_transaction_provider.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/top_up/top_up_data_provider.dart';
 import 'package:anantla_pay/src/presentation/home/controllers/get_user/fetch_user_provider.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/helpers/custom_app_bar.dart';
 import 'package:anantla_pay/src/core/helpers/formatters/string_format.dart';
@@ -14,8 +16,9 @@ import 'package:anantla_pay/src/presentation/wallet/data/transaction_data.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DetailWalletPage extends ConsumerWidget {
+class DetailWalletPage extends HookConsumerWidget {
   final BalanceModel wallet;
 
   const DetailWalletPage({super.key, required this.wallet});
@@ -23,9 +26,13 @@ class DetailWalletPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final flag = getCurrencyFlagAsset(wallet.currency);
+    final transactions = ref.watch(fetchTransactionProvider);
+    final searchQuery = useState('');
+
     final formattedBalance = formatCurrency(
       amount: wallet.balance ?? 0,
       currencyCode: wallet.currency ?? '',
+      isTransferAmount: wallet.currency!.toUpperCase() != 'IDR',
     );
     final user = ref.watch(fetchUserProvider);
     return Scaffold(
@@ -143,7 +150,7 @@ class DetailWalletPage extends ConsumerWidget {
                     onPressed: () {
                       context.pushNamed(RouteName.ekyc);
                     },
-                    label: 'EYC Now',
+                    label: 'EKYC Now',
                   ),
                 ],
 
@@ -187,46 +194,98 @@ class DetailWalletPage extends ConsumerWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Column(
-                  children: [
-                    // Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Transactions:',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18,
-                                    color: AppColor.primaryBlack,
-                                  ),
-                        ),
-                      ],
-                    ),
-                    const Gap(24),
-                    CustomSearchField(),
-                    const Gap(24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Header
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Transactions:',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: AppColor.primaryBlack,
+                                ),
+                          ),
+                        ],
+                      ),
+                      const Gap(24),
+                      CustomSearchField(
+                        onChanged: (value) =>
+                            searchQuery.value = value.toLowerCase(),
+                      ),
+                      const Gap(24),
 
-                    /// Scrollable items only
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: transactions.length,
-                        itemBuilder: (context, index) {
-                          final tx = transactions[index];
-                          return TransactionItem(
-                            name: tx['name'] ?? '',
-                            date: tx['date'] ?? '',
-                            amount: tx['amount'] ?? '',
-                            currency: tx['currency'] ?? '',
-                            iconPath: tx['icon'] ?? '',
-                            statusLabel: tx['statusLabel'] ?? '',
-                            statusColor: parseColor(tx['statusColor']),
+                      /// Scrollable items only
+                      transactions.when(
+                        data: (data) {
+                          final filtered = data.where((tx) {
+                            final query = searchQuery.value;
+                            return tx.transWalletType
+                                        ?.toLowerCase()
+                                        .contains(query) ==
+                                    true ||
+                                tx.amount.toString().contains(query) ||
+                                tx.transactionDate
+                                        ?.toIso8601String()
+                                        .contains(query) ==
+                                    true;
+                          }).toList();
+                          if (filtered.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'No transactions found',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColor.primaryBlack,
+                                ),
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount:
+                                filtered.length > 5 ? 5 : filtered.length,
+                            itemBuilder: (context, index) {
+                              final transaction = filtered[index];
+                              return TransactionItem(
+                                name: formatTransactionType(
+                                  transaction.transWalletType ?? '',
+                                ),
+                                date: transaction.transactionDate
+                                        ?.toIso8601String() ??
+                                    '',
+                                amount: transaction.amount.toString(),
+                                currency: transaction.currencyTo ?? '',
+                                statusLabel: transaction.transactionType ?? '',
+                                iconPath: transaction.transactionType ?? '',
+                              );
+                            },
+                          );
+                        },
+                        loading: () => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        error: (error, stack) {
+                          return Center(
+                            child: Text(
+                              'Error: $error',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: AppColor.primaryBlack,
+                              ),
+                            ),
                           );
                         },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -239,7 +239,9 @@ extension BuildContextExt on BuildContext {
     );
   }
 
-  void customErrorDialog(String message) {
+  void customErrorDialog(
+    String message,
+  ) {
     showDialog(
       context: this,
       barrierDismissible: false,
@@ -279,6 +281,92 @@ extension BuildContextExt on BuildContext {
 
                 /// Message
                 Text(
+                  message,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                const SizedBox(height: 25),
+
+                /// OK Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void customErrorUserDialog(
+    String title,
+    String message,
+  ) {
+    showDialog(
+      context: this,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // /// Error Circle
+                // Container(
+                //   padding: const EdgeInsets.all(16),
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     color: Colors.redAccent.withOpacity(0.9),
+                //   ),
+                //   child: const Icon(Icons.error, size: 40, color: Colors.white),
+                // ),
+                // const SizedBox(height: 20),
+
+                /// Title
+                Text(
+                  // "Cannot pay with this qr code",
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.redAccent,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                const SizedBox(height: 10),
+
+                /// Message
+                Text(
+                  // 'This QR code is not valid for payment.\nPlease try again.',
                   message,
                   style: const TextStyle(
                     fontSize: 14,

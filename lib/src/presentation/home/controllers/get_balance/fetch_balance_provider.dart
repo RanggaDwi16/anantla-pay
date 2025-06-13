@@ -12,7 +12,7 @@ class FetchBalance extends _$FetchBalance {
     GetBalance getBalance = ref.watch(getBalanceProvider);
     final result = await getBalance.call(null);
     return result.fold(
-      (error) => throw Exception(error),
+      (error) => throw Exception('Failed to fetch balance. Please Check Server'),
       (balance) => balance,
     );
   }

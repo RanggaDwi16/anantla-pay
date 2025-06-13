@@ -36,7 +36,7 @@ class ReviewDetailTransferPage extends ConsumerWidget {
 
       ref.read(postInternalTransferProvider.notifier).postInternalTranfer(
             params: InternalTransferParams(
-              amount: transferData.toAmount ?? 0,
+              amount: transferData.toAmount!.toInt() ?? 0,
               fromWalletId: transferData.fromWalletId!,
               toWalletId: transferData.toWalletId,
               note: transferData.reason,
@@ -76,6 +76,7 @@ class ReviewDetailTransferPage extends ConsumerWidget {
             onSuccess: (message) {
               Navigator.of(context, rootNavigator: true).pop(); // tutup dialog
               ref.invalidate(fetchBalanceProvider);
+              ref.invalidate(fetchTransactionProvider);
 
               context.pushNamed(RouteName.successTransfer);
             },
@@ -174,7 +175,12 @@ class ReviewDetailTransferPage extends ConsumerWidget {
               ),
               Gap(12),
               Text(
-                'An amount of ${formatCurrency(amount: transferData.toAmount ?? 0, currencyCode: transferData.toCurrency ?? '')} is estimated to reach your account in seconds',
+                'An amount of ${formatCurrency(
+                  amount: transferData.toAmount ?? 0,
+                  currencyCode: transferData.toCurrency ?? '',
+                  isTransferAmount:
+                      transferData.fromCurrency != transferData.toCurrency,
+                )} is estimated to reach your account in seconds',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

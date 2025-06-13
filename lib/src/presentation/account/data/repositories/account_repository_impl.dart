@@ -187,4 +187,17 @@ class AccountRepositoryImpl implements AccountRepository {
       return Left(e.toString());
     }
   }
+  
+  @override
+  Future<Either<String, String>> onboardIron({required int userId}) async{
+    try {
+      final result = await remoteDataSource.onboardIron(userId: userId);
+      return result.fold(
+        (error) => Left(error),
+        (message) => Right(message),
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

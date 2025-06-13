@@ -367,14 +367,15 @@ class TransferMainPage extends ConsumerWidget {
                             ),
                           );
                         }
-                        return ListView.builder(
+                      return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: data.length > 5 ? 5 : data.length,
                           itemBuilder: (context, index) {
                             final transaction = data[index];
                             return TransactionItem(
-                              name: transaction.transWalletType ?? '',
+                              name: formatTransactionType(
+                                  transaction.transWalletType),
                               date: transaction.transactionDate
                                       ?.toIso8601String() ??
                                   '',

@@ -22,7 +22,7 @@ final userDioProvider = AutoDisposeProvider<Dio>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserDioRef = AutoDisposeProviderRef<Dio>;
-String _$virtualAccountDioHash() => r'4166b122d7625de40384837fc830e5232a5bf778';
+String _$virtualAccountDioHash() => r'7370da41aeccfb48196b2182950082a495daf1fe';
 
 /// See also [virtualAccountDio].
 @ProviderFor(virtualAccountDio)

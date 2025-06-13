@@ -38,6 +38,9 @@ abstract class AccountRemoteDataSource {
   Future<Either<String, String>> verifyOtpVirtualAccount({
     required VirtualAccountParams params,
   });
+  Future<Either<String, String>> onboardIron({
+    required int userId,
+  });
 }
 
 class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
@@ -70,7 +73,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -96,7 +99,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -123,7 +126,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -152,7 +155,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -181,7 +184,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -208,7 +211,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -236,7 +239,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -264,7 +267,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -292,7 +295,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -320,7 +323,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -348,7 +351,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -375,9 +378,10 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
+      
     } catch (e) {
       return Left('Error: $e');
     }
@@ -404,6 +408,33 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
+      final error =
+          e.response?.data['details']['error'] ?? 'We encountered an issue';
+      print('Error: $error');
+      return Left(error);
+    } catch (e) {
+      return Left('Error: $e');
+    }
+  }
+  
+  @override
+  Future<Either<String, String>> onboardIron({required int userId}) async {
+    try{
+      final response = await virtualHttpClient.post('/iron/onboard', data: {'user_id': userId});
+      if (response.statusCode == 200) {
+        return Right(response.data['message']);
+      } else if (response.statusCode == 401) {
+        return Left(response.data['value']['error']);
+      } else if (response.statusCode == 404) {
+        return Left(response.data['value']['error']);
+      } else if (response.statusCode == 500) {
+        return Left(response.data['value']['error']);
+      } else if (response.statusCode == 400) {
+        return Left(response.data['value']['error']);
+      } else {
+        return const Left("Something went wrong");
+      }
+    }on DioException catch (e) {
       final error =
           e.response?.data['details']['error'] ?? 'We encountered an issue';
       print('Error: $error');

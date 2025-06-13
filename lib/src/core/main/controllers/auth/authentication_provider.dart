@@ -155,7 +155,7 @@ class Authentication extends _$Authentication {
   Future<void> forgotPassword({
     required RegisterParams params,
     required Function(String message) onSuccess,
-    required Function() onError,
+    required Function(String message) onError,
   }) async {
     try {
       state = const AsyncLoading();
@@ -170,7 +170,7 @@ class Authentication extends _$Authentication {
       result.fold(
         (error) {
           state = AsyncError(error, StackTrace.current);
-          onError();
+          onError(error);
         },
         (data) async {
           onSuccess(data);
@@ -182,7 +182,7 @@ class Authentication extends _$Authentication {
       print('Error saat logout: $e');
       print('StackTrace: $stackTrace');
       state = AsyncError(e, stackTrace);
-      onError();
+      onError(e.toString());
     }
   }
 

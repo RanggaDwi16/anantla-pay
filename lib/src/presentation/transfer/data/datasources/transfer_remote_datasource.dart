@@ -3,6 +3,7 @@ import 'package:anantla_pay/src/presentation/transfer/domain/entities/bank_model
 import 'package:anantla_pay/src/presentation/transfer/domain/entities/transfer_params.dart';
 import 'package:anantla_pay/src/presentation/transfer/domain/entities/wallet_model.dart';
 import 'package:dartz/dartz.dart';
+
 import 'package:dio/dio.dart';
 
 abstract class TransferRemoteDataSource {
@@ -109,7 +110,7 @@ class TransferRemoteDataSourceImpl implements TransferRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -139,7 +140,7 @@ class TransferRemoteDataSourceImpl implements TransferRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -167,7 +168,7 @@ class TransferRemoteDataSourceImpl implements TransferRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {

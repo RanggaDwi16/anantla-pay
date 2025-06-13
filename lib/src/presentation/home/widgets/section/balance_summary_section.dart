@@ -4,6 +4,7 @@ import 'package:anantla_pay/src/presentation/home/controllers/get_balance/fetch_
 import 'package:anantla_pay/src/presentation/home/domain/entities/balance_model.dart';
 import 'package:anantla_pay/src/presentation/add_money/controllers/top_up_data_provider.dart';
 import 'package:anantla_pay/src/presentation/home/controllers/get_user/fetch_user_provider.dart';
+import 'package:anantla_pay/src/presentation/home/provider/balance_visibility_provider.dart';
 import 'package:anantla_pay/src/presentation/transfer/controllers/get_exhange_rate/fetch_exhange_rate_provider.dart';
 import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -26,19 +27,9 @@ class BalanceSummarySection extends HookConsumerWidget {
     final walletsAsync = ref.watch(fetchBalanceProvider);
     final selectedIndex = ref.watch(selectedWalletProvider);
     final user = ref.watch(fetchUserProvider);
-    final isBalanceVisible = useState(true);
-
-    final TextStyle labelStyle =
-        Theme.of(context).textTheme.labelLarge!.copyWith(
-              fontWeight: FontWeight.w400,
-              color: AppColor.textGray,
-            );
-    final TextStyle valueStyle =
-        Theme.of(context).textTheme.headlineSmall!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColor.primaryBlack,
-              fontSize: 58,
-            );
+    final isBalanceVisible = ref.watch(balanceVisibilityProvider);
+    final isBalanceVisibleNotifier =
+        ref.read(balanceVisibilityProvider.notifier);
 
     return walletsAsync.when(
       data: (data) {
@@ -48,105 +39,135 @@ class BalanceSummarySection extends HookConsumerWidget {
         }
 
         final selectedWallet = data[selectedIndex];
+        final currency = selectedWallet.currency ?? '';
+        final balance = selectedWallet.balance ?? 0;
 
         return Column(
           children: [
-            Row(
-              children: [
-                // Kotak selector negara di kiri
-                GestureDetector(
-                  onTap: () async {
-                    final newSelectedIndex = await showModalBottomSheet<int>(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(24)),
-                      ),
-                      builder: (_) => _WalletSelectorBottomSheet(
-                        wallets: data,
-                        selectedIndex: selectedIndex,
-                      ),
-                    );
-                    if (newSelectedIndex != null) {
-                      ref.read(selectedWalletProvider.notifier).state =
-                          newSelectedIndex;
-                    }
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColor.primaryWhite,
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    child: Row(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            getCurrencyFlagAsset(selectedWallet.currency ?? ''),
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down_rounded,
-                            size: 20, color: AppColor.textGray),
-                      ],
+            // Header bar
+            SizedBox(
+              height: 40,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Text(
+                    'Available balance',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.textGray,
                     ),
                   ),
-                ),
-                Gap(context.deviceWidth * 0.1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Available balance',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColor.textGray,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final newSelectedIndex =
+                            await showModalBottomSheet<int>(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(24)),
+                          ),
+                          builder: (_) => _WalletSelectorBottomSheet(
+                            wallets: data,
+                            selectedIndex: selectedIndex,
+                          ),
+                        );
+                        if (newSelectedIndex != null) {
+                          ref.read(selectedWalletProvider.notifier).state =
+                              newSelectedIndex;
+                        }
+                      },
+                      child: Container(
+                        width: context.deviceWidth * 0.18,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppColor.primaryWhite,
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        child: Row(
+                          children: [
+                            ClipOval(
+                              child: Image.asset(
+                                getCurrencyFlagAsset(currency),
+                                width: 20,
+                                height: 20,
+                              ),
+                            ),
+                            const Icon(Icons.keyboard_arrow_down_rounded,
+                                size: 20, color: AppColor.textGray),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 5),
-                    IconButton(
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
                       icon: Icon(
-                        isBalanceVisible.value
+                        isBalanceVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
                         size: 20,
                         color: AppColor.textGray,
                       ),
-                      onPressed: () =>
-                          isBalanceVisible.value = !isBalanceVisible.value,
+                      onPressed: () {
+                        isBalanceVisibleNotifier.state = !isBalanceVisible;
+                      },
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
+
             const Gap(14),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: isBalanceVisible.value
-                  ? Text(
-                      formatCurrency(
-                        amount: (selectedWallet.balance ?? 0),
-                        currencyCode: selectedWallet.currency ?? '',
-                        isTransferAmount: selectedWallet.currency != 'IDR',
-                      ),
-                      style: valueStyle.copyWith(
-                        fontSize: 48,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  : Container(
-                      width: context.deviceWidth * 0.5,
-                      height: context.deviceWidth * 0.15,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey.shade300,
+
+            // Balance text / shimmer
+            SizedBox(
+              height: 58,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Shimmer background (invisible if visible)
+                  if (!isBalanceVisible)
+                    SizedBox(
+                      width: _getTextWidth(context, balance, currency),
+                      height: 48,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.shade300,
+                        ),
                       ),
                     ),
+                  // Formatted balance text (invisible if not visible)
+                  Visibility(
+                    visible: isBalanceVisible,
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    child: Text(
+                      formatCurrency(
+                        amount: balance,
+                        currencyCode: currency,
+                        isTransferAmount: currency != 'IDR',
+                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 48,
+                              ),
+                    ),
+                  ),
+                ],
+              ),
             ),
+
             const Gap(20),
+
+            // Received / Spent Box
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               decoration: BoxDecoration(
@@ -160,10 +181,10 @@ class BalanceSummarySection extends HookConsumerWidget {
                     icon: Icons.arrow_upward,
                     color: AppColor.primaryColor2,
                     label: 'Received',
-                    amount: selectedWallet.totalReceived,
-                    currency: selectedWallet.currency ?? '',
+                    amount: selectedWallet.totalReceived ?? 0,
+                    currency: currency,
                     onTap: () => context.pushNamed(RouteName.receive),
-                    isVisible: isBalanceVisible.value,
+                    isVisible: isBalanceVisible,
                   ),
                   Container(width: 1, height: 40, color: Colors.grey.shade300),
                   _buildInfoBox(
@@ -171,15 +192,18 @@ class BalanceSummarySection extends HookConsumerWidget {
                     icon: Icons.arrow_downward,
                     color: AppColor.errorRed,
                     label: 'Spent',
-                    amount: selectedWallet.totalSpent,
-                    currency: selectedWallet.currency ?? '',
+                    amount: selectedWallet.totalSpent ?? 0,
+                    currency: currency,
                     onTap: () => context.pushNamed(RouteName.spent),
-                    isVisible: isBalanceVisible.value,
+                    isVisible: isBalanceVisible,
                   ),
                 ],
               ),
             ),
+
             const Gap(24),
+
+            // Action buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -188,13 +212,13 @@ class BalanceSummarySection extends HookConsumerWidget {
                   ref
                       .read(topUpDataNotifierProvider.notifier)
                       .setVirtualAccountData(
-                          virtualAccountName: user.value!.username,
-                          virtualAccountEmail: user.value!.email,
-                          virtualAccountPhone: user.value!.phone);
-
-                  ref.read(topUpDataNotifierProvider.notifier).setFromWalletId(
-                        selectedWallet.walletId!,
+                        virtualAccountName: user.value!.username ?? '',
+                        virtualAccountEmail: user.value!.email ?? '',
+                        virtualAccountPhone: user.value!.phone ?? '',
                       );
+                  ref
+                      .read(topUpDataNotifierProvider.notifier)
+                      .setFromWalletId(selectedWallet.walletId!);
                   context.pushNamed(RouteName.addMoney);
                 }),
                 _buildActionButton(Assets.icons.send.path, 'Transfer',
@@ -204,16 +228,17 @@ class BalanceSummarySection extends HookConsumerWidget {
                       .setFromWalletId(selectedWallet.walletId!);
                   ref
                       .read(transferDataNotifierProvider.notifier)
-                      .setCurrencies(fromCurrency: selectedWallet.currency);
+                      .setCurrencies(fromCurrency: currency);
                   ref
                       .read(transferDataNotifierProvider.notifier)
-                      .setFromBalance(selectedWallet.balance!.toInt() ?? 0);
+                      .setFromBalance(balance);
                   context.pushNamed(RouteName.sendingTo);
                 }),
-                _buildActionButton(Assets.icons.outOutlined.path, 'Request',
-                    onTap: () {
-                  context.pushNamed(RouteName.comingSoon);
-                }),
+                _buildActionButton(
+                  Assets.icons.outOutlined.path,
+                  'Request',
+                  disabled: true,
+                ),
                 _buildActionButton(Assets.icons.scan.path, 'Scan & Pay',
                     onTap: () {
                   context.pushNamed(RouteName.qrisScanner);
@@ -224,7 +249,7 @@ class BalanceSummarySection extends HookConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) =>
+      error: (error, _) =>
           Center(child: Text('Failed to load wallets: $error')),
     );
   }
@@ -234,32 +259,50 @@ class BalanceSummarySection extends HookConsumerWidget {
     required IconData icon,
     required Color color,
     required String label,
-    required dynamic amount,
+    required num amount,
     required String currency,
     required VoidCallback onTap,
-    required bool isVisible, // ← Tambahkan ini
+    required bool isVisible,
   }) {
+    final width = _getTextWidth(context, amount, currency);
+
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: color, size: 18),
+            Icon(icon, color: color, size: 24),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(label, style: Theme.of(context).textTheme.labelLarge),
                 const SizedBox(height: 4),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: isVisible
-                      ? Text(
+                SizedBox(
+                  height: 20,
+                  child: Stack(
+                    alignment: Alignment.centerLeft,
+                    children: [
+                      if (!isVisible)
+                        Container(
+                          width: 30,
+                          height: 18,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      Visibility(
+                        visible: isVisible,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: Text(
                           formatCurrency(
-                            amount: amount ?? 0,
+                            amount: amount.toDouble(),
                             currencyCode: currency,
-                            isTransferAmount: currency != 'IDR',
+                            isTransferAmount: currency.toUpperCase() != 'IDR',
                           ),
                           style: Theme.of(context)
                               .textTheme
@@ -267,17 +310,11 @@ class BalanceSummarySection extends HookConsumerWidget {
                               .copyWith(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                        )
-                      : Container(
-                          width: context.deviceWidth * 0.2,
-                          height: context.deviceWidth * 0.05,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.grey.shade300,
-                          ),
                         ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -288,25 +325,57 @@ class BalanceSummarySection extends HookConsumerWidget {
   }
 
   Widget _buildActionButton(String iconPath, String label,
-      {Function()? onTap}) {
+      {Function()? onTap, bool disabled = false}) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: disabled ? null : onTap,
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: AppColor.primaryColor,
+            decoration: BoxDecoration(
+              color: disabled ? Colors.grey.shade400 : AppColor.primaryColor,
               shape: BoxShape.circle,
             ),
-            child: Image.asset(iconPath,
-                width: 24, height: 24, color: AppColor.primaryWhite),
+            child: Image.asset(
+              iconPath,
+              width: 24,
+              height: 24,
+              color: AppColor.primaryWhite,
+            ),
           ),
           const SizedBox(height: 6),
-          Text(label, style: const TextStyle(fontSize: 14)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              color: disabled ? Colors.grey[350] : AppColor.primaryBlack,
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  double _getTextWidth(BuildContext context, num amount, String currency) {
+    final text = formatCurrency(
+      amount: amount.toDouble(),
+      currencyCode: currency,
+      isTransferAmount: currency.toUpperCase() != 'IDR',
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+            ),
+      ),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    return textPainter.size.width;
   }
 }
 
@@ -352,5 +421,27 @@ class _WalletSelectorBottomSheet extends StatelessWidget {
         );
       },
     );
+  }
+
+  double _getTextWidth(BuildContext context, num amount, String currency) {
+    final text = formatCurrency(
+      amount: amount.toDouble(),
+      currencyCode: currency,
+      isTransferAmount: currency.toUpperCase() != 'IDR',
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+      ),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    return textPainter.size.width;
   }
 }

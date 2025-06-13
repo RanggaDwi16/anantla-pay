@@ -13,7 +13,8 @@ class FetchTransaction extends _$FetchTransaction {
     final result = await getTransaction.call(null);
 
     return result.fold(
-      (error) => throw Exception(error),
+      (error) =>
+          throw Exception('Failed to fetch transaction. Please Check Server'),
       (transaction) => transaction,
     );
   }

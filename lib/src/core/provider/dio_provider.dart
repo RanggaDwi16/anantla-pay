@@ -64,10 +64,12 @@ Dio virtualAccountDio(VirtualAccountDioRef ref) {
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         final tokenManager = await ref.watch(tokenManagerProvider.future);
-        final authToken = await tokenManager.getTokenVirtualAccount();
+        final authToken = await tokenManager.getToken();
         options.headers['Authorization'] = 'Bearer $authToken';
-
         options.headers['x-api-key'] = 'mock-api-key';
+        options.headers['User-Agent'] =
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
+        print('User-Agent: ${options.headers['User-Agent']}');
         return handler.next(options);
       },
     ),

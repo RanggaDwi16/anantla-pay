@@ -1,3 +1,4 @@
+import 'package:anantla_pay/src/core/helpers/formatters/string_format.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/get_transaction/fetch_transaction_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
@@ -65,7 +66,7 @@ class LastTransactionSection extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final transaction = data[index];
                 return TransactionItem(
-                  name: transaction.transWalletType ?? '',
+                  name: formatTransactionType(transaction.transWalletType),
                   date: transaction.transactionDate?.toIso8601String() ?? '',
                   amount: transaction.amount.toString(),
                   currency: transaction.currencyTo ?? '',

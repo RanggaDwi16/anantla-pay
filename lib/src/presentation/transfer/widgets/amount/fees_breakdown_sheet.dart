@@ -1,21 +1,25 @@
+import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_segment/flutter_advanced_segment.dart';
 import 'package:gap/gap.dart';
 
-class FeesBreakdownSheet extends StatefulWidget {
+class FeesBreakdownSheet extends ConsumerStatefulWidget {
   const FeesBreakdownSheet({super.key});
 
   @override
-  State<FeesBreakdownSheet> createState() => _FeesBreakdownSheetState();
+  ConsumerState<FeesBreakdownSheet> createState() => _FeesBreakdownSheetState();
 }
 
-class _FeesBreakdownSheetState extends State<FeesBreakdownSheet> {
+class _FeesBreakdownSheetState extends ConsumerState<FeesBreakdownSheet> {
   final _controller = ValueNotifier<String>('breakdown');
 
   @override
   Widget build(BuildContext context) {
+    final transferData = ref.watch(transferDataNotifierProvider);
+
     return SizedBox(
       width: context.deviceWidth,
       child: Padding(
@@ -82,13 +86,14 @@ class _FeesBreakdownSheetState extends State<FeesBreakdownSheet> {
                             const SizedBox(height: 24),
 
                             // Connected Bank Fee
-                            _buildFeeRow(
-                                'Connected bank account (ACH) fee', '1.70 USD'),
+                            _buildFeeRow('Connected bank account (ACH) fee',
+                                '0,00 ${transferData.fromCurrency}'),
 
                             const SizedBox(height: 12),
 
                             // Our Fee
-                            _buildFeeRow('Our free', '4.02 USD'),
+                            _buildFeeRow('Our free',
+                                '0,00 ${transferData.fromCurrency}'),
 
                             const SizedBox(height: 16),
 
@@ -99,7 +104,7 @@ class _FeesBreakdownSheetState extends State<FeesBreakdownSheet> {
                             // Total
                             _buildFeeRow(
                               'Total',
-                              '5.72 USD',
+                              '0,00 ${transferData.fromCurrency}',
                               isBold: true,
                             ),
 
@@ -120,7 +125,7 @@ class _FeesBreakdownSheetState extends State<FeesBreakdownSheet> {
                           ],
                         )
                       : Text(
-                          'Fees comparison content goes here.',
+                          'Coming Soon',
                           style: Theme.of(context).textTheme.bodyLarge,
                         );
                 },

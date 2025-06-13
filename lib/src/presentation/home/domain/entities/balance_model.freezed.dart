@@ -38,9 +38,9 @@ mixin _$BalanceModel {
   @JsonKey(name: "is_limited")
   bool? get isLimited => throw _privateConstructorUsedError;
   @JsonKey(name: "total_received")
-  int? get totalReceived => throw _privateConstructorUsedError;
+  num? get totalReceived => throw _privateConstructorUsedError;
   @JsonKey(name: "total_spent")
-  int? get totalSpent => throw _privateConstructorUsedError;
+  num? get totalSpent => throw _privateConstructorUsedError;
 
   /// Serializes this BalanceModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -67,8 +67,8 @@ abstract class $BalanceModelCopyWith<$Res> {
       @JsonKey(name: "balance") num? balance,
       @JsonKey(name: "country_code") String? countryCode,
       @JsonKey(name: "is_limited") bool? isLimited,
-      @JsonKey(name: "total_received") int? totalReceived,
-      @JsonKey(name: "total_spent") int? totalSpent});
+      @JsonKey(name: "total_received") num? totalReceived,
+      @JsonKey(name: "total_spent") num? totalSpent});
 }
 
 /// @nodoc
@@ -133,11 +133,11 @@ class _$BalanceModelCopyWithImpl<$Res, $Val extends BalanceModel>
       totalReceived: freezed == totalReceived
           ? _value.totalReceived
           : totalReceived // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       totalSpent: freezed == totalSpent
           ? _value.totalSpent
           : totalSpent // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
     ) as $Val);
   }
 }
@@ -159,8 +159,8 @@ abstract class _$$BalanceModelImplCopyWith<$Res>
       @JsonKey(name: "balance") num? balance,
       @JsonKey(name: "country_code") String? countryCode,
       @JsonKey(name: "is_limited") bool? isLimited,
-      @JsonKey(name: "total_received") int? totalReceived,
-      @JsonKey(name: "total_spent") int? totalSpent});
+      @JsonKey(name: "total_received") num? totalReceived,
+      @JsonKey(name: "total_spent") num? totalSpent});
 }
 
 /// @nodoc
@@ -223,11 +223,11 @@ class __$$BalanceModelImplCopyWithImpl<$Res>
       totalReceived: freezed == totalReceived
           ? _value.totalReceived
           : totalReceived // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       totalSpent: freezed == totalSpent
           ? _value.totalSpent
           : totalSpent // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
     ));
   }
 }
@@ -278,10 +278,10 @@ class _$BalanceModelImpl implements _BalanceModel {
   final bool? isLimited;
   @override
   @JsonKey(name: "total_received")
-  final int? totalReceived;
+  final num? totalReceived;
   @override
   @JsonKey(name: "total_spent")
-  final int? totalSpent;
+  final num? totalSpent;
 
   @override
   String toString() {
@@ -355,8 +355,8 @@ abstract class _BalanceModel implements BalanceModel {
           @JsonKey(name: "balance") final num? balance,
           @JsonKey(name: "country_code") final String? countryCode,
           @JsonKey(name: "is_limited") final bool? isLimited,
-          @JsonKey(name: "total_received") final int? totalReceived,
-          @JsonKey(name: "total_spent") final int? totalSpent}) =
+          @JsonKey(name: "total_received") final num? totalReceived,
+          @JsonKey(name: "total_spent") final num? totalSpent}) =
       _$BalanceModelImpl;
 
   factory _BalanceModel.fromJson(Map<String, dynamic> json) =
@@ -389,10 +389,10 @@ abstract class _BalanceModel implements BalanceModel {
   bool? get isLimited;
   @override
   @JsonKey(name: "total_received")
-  int? get totalReceived;
+  num? get totalReceived;
   @override
   @JsonKey(name: "total_spent")
-  int? get totalSpent;
+  num? get totalSpent;
 
   /// Create a copy of BalanceModel
   /// with the given fields replaced by the non-null parameter values.

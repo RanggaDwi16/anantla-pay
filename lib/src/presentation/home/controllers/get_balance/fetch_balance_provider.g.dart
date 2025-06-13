@@ -6,7 +6,7 @@ part of 'fetch_balance_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchBalanceHash() => r'41d021228ff05848fcecd8ba1aa1f92ec116e3ba';
+String _$fetchBalanceHash() => r'86c894a5f628c7332b32281fbe21afa04e73f7fe';
 
 /// See also [FetchBalance].
 @ProviderFor(FetchBalance)

@@ -126,3 +126,17 @@ String _getSymbolByCurrency(String currencyCode) {
       return currencyCode; // fallback
   }
 }
+
+String formatTransactionType(String? type) {
+  switch (type) {
+    case 'TOPUP':
+      return 'Top Up';
+    case 'WALLET_TRANSFER':
+      return 'Wallet Transfer';
+    case 'WALLET_RECEIVE':
+      return 'Wallet Receive';
+    default:
+      return type ?? 'Unknown';
+  }
+}
+

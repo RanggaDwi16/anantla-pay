@@ -6,7 +6,7 @@ part of 'top_up_data_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$topUpDataNotifierHash() => r'4fa66a6a2b6d6dc4f8ece225a9cb622faaa5762d';
+String _$topUpDataNotifierHash() => r'43f530da9e2bdab47cf1eeeed0dc151011561c23';
 
 /// See also [TopUpDataNotifier].
 @ProviderFor(TopUpDataNotifier)

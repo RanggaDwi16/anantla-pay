@@ -1,8 +1,11 @@
 import 'package:anantla_pay/src/core/helpers/formatters/string_format.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
+import 'package:anantla_pay/src/presentation/home/controllers/get_balance/fetch_balance_provider.dart';
+import 'package:anantla_pay/src/presentation/home/controllers/get_user/fetch_user_provider.dart';
 import 'package:anantla_pay/src/presentation/home/provider/currency_state_provider.dart';
 import 'package:anantla_pay/src/presentation/transfer/controllers/get_exhange_rate/fetch_exhange_rate_provider.dart';
+import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,7 @@ class ConversionCurrencySection extends HookConsumerWidget {
     final fromCurrency = useTextEditingController();
     final amountController = useTextEditingController();
     final convertAmount = ref.watch(fetchExhangeRateProvider);
+    final wallet = ref.watch(fetchBalanceProvider);
 
     Future<void> showCurrencyBottomSheet({
       required bool isFrom,
@@ -79,7 +83,7 @@ class ConversionCurrencySection extends HookConsumerWidget {
       children: [
         // Title
         Text(
-          'Conversion Currency',
+          'Currency Conversion',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
@@ -317,9 +321,60 @@ class ConversionCurrencySection extends HookConsumerWidget {
                   const Gap(24),
                   Button.filled(
                     onPressed: () {
-                      context.pushNamed(RouteName.comingSoon);
+                      final notifier =
+                          ref.read(transferDataNotifierProvider.notifier);
+
+                      final amount = int.tryParse(amountController.text) ?? 0;
+                      final converted =
+                          ref.read(fetchExhangeRateProvider).value;
+                      final fromCurrency = ref.read(fromCurrencyTypeProvider);
+                      final toCurrency = ref.read(toCurrencyTypeProvider);
+                      final wallets = ref.read(fetchBalanceProvider).value;
+                      final user = ref.read(fetchUserProvider).value;
+
+                      final fromWallet = wallets?.firstWhere(
+                        (w) => w.currency == fromCurrency,
+                      );
+
+                      final toWallet = wallets?.firstWhere(
+                        (w) => w.currency == toCurrency,
+                      );
+
+                      if (fromWallet == null) {
+                        context.customErrorDialog(
+                            'No wallet found for $fromCurrency');
+                        return;
+                      }
+
+                      if (toWallet == null) {
+                        context.customErrorDialog(
+                            'No wallet found for $toCurrency');
+                        return;
+                      }
+
+                      notifier.setFromAmount(amount);
+                      notifier
+                          .setToAmount(double.tryParse(converted ?? '0') ?? 0);
+                      notifier.setCurrencies(
+                          fromCurrency: fromCurrency, toCurrency: toCurrency);
+                      notifier.setFromWalletId(fromWallet.walletId!);
+                      notifier.setToWalletId(toWallet.walletId!);
+                      notifier.setFromBalance(fromWallet.balance ?? 0);
+                      notifier.setFromName(fromWallet.walletCode ?? '-');
+                      notifier.setToName(user?.username ?? '-');
+                      notifier.setToPhone(user?.phone ?? '-');
+                      notifier.setReason(
+                          'Currency exchange from $fromCurrency to $toCurrency');
+
+                      context
+                          .pushNamed(RouteName.reviewDetailTransfer)
+                          .then((_) {
+                        amountController.clear();
+                        ref.invalidate(fetchExhangeRateProvider);
+                      });
                     },
-                    label: 'Send',
+                    disabled: amountController.text.isEmpty,
+                    label: 'Exchange',
                     borderRadius: 8,
                   ),
                 ],

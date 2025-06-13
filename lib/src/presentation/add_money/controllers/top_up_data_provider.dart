@@ -55,6 +55,7 @@ class TopUpDataNotifier extends _$TopUpDataNotifier {
 
   void setVirtualAccountData({
     String? bankCode,
+    String? bankName,
     String? virtualAccountName,
     String? virtualAccountEmail,
     String? virtualAccountPhone,
@@ -65,6 +66,7 @@ class TopUpDataNotifier extends _$TopUpDataNotifier {
   }) {
     state = state.copyWith(
       bankCode: bankCode ?? state.bankCode,
+      bankName: bankName ?? state.bankName,
       virtualAccountName: virtualAccountName ?? state.virtualAccountName,
       virtualAccountEmail: virtualAccountEmail ?? state.virtualAccountEmail,
       virtualAccountPhone: virtualAccountPhone ?? state.virtualAccountPhone,
@@ -156,6 +158,7 @@ class TopUpData {
 
   // Virtual Account fields
   final String? bankCode;
+  final String? bankName;
   final String? virtualAccountName;
   final String? virtualAccountPhone;
   final String? virtualAccountEmail;
@@ -175,6 +178,7 @@ class TopUpData {
     this.referenceId,
     this.topUpSource,
     this.bankCode,
+    this.bankName,
     this.virtualAccountName,
     this.virtualAccountPhone,
     this.virtualAccountEmail,
@@ -199,6 +203,7 @@ class TopUpData {
     String? referenceId,
     String? topUpSource,
     String? bankCode,
+    String? bankName,
     String? virtualAccountName,
     String? virtualAccountPhone,
     String? virtualAccountEmail,
@@ -218,6 +223,7 @@ class TopUpData {
       referenceId: referenceId ?? this.referenceId,
       topUpSource: topUpSource ?? this.topUpSource,
       bankCode: bankCode ?? this.bankCode,
+      bankName: bankName ?? this.bankName,
       virtualAccountName: virtualAccountName ?? this.virtualAccountName,
       virtualAccountPhone: virtualAccountPhone ?? this.virtualAccountPhone,
       virtualAccountEmail: virtualAccountEmail ?? this.virtualAccountEmail,
@@ -241,6 +247,7 @@ class TopUpData {
     Reference ID: $referenceId
     Top Up Source: $topUpSource
     Bank Code: $bankCode
+    Bank Name: $bankName
     Virtual Account Name: $virtualAccountName
     Virtual Account Phone: $virtualAccountPhone
     Virtual Account Email: $virtualAccountEmail

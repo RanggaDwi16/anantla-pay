@@ -16,8 +16,8 @@ class BalanceModel with _$BalanceModel {
     //country code
     @JsonKey(name: "country_code") String? countryCode,
     @JsonKey(name: "is_limited") bool? isLimited,
-    @JsonKey(name: "total_received") int? totalReceived,
-    @JsonKey(name: "total_spent") int? totalSpent,
+    @JsonKey(name: "total_received") num? totalReceived,
+    @JsonKey(name: "total_spent") num? totalSpent,
   }) = _BalanceModel;
 
   factory BalanceModel.fromJson(Map<String, dynamic> json) =>

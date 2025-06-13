@@ -64,7 +64,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -92,7 +92,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {

@@ -1,5 +1,6 @@
 import 'package:anantla_pay/src/core/helpers/formatters/string_format.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/get_transaction/fetch_transaction_provider.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/onboard_iron/post_onboard_iron_provider.dart';
 import 'package:anantla_pay/src/presentation/home/controllers/get_user/fetch_user_provider.dart';
 import 'package:anantla_pay/src/presentation/home/widgets/all_transaction/all_transaction_content.dart';
 import 'package:anantla_pay/src/presentation/home/widgets/all_transaction/transaction_item_widget.dart';
@@ -80,6 +81,31 @@ class WalletPage extends ConsumerWidget {
         children: [
           const SizedBox(height: 16),
           WalletCardList(),
+          const Gap(16),
+
+          /// Onboard Testing Iron
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Button.filled(
+              onPressed: () {
+                ref.read(postOnboardIronProvider.notifier).postOnboardIron(
+                      userId: user.value?.userId ?? 0,
+                      onSuccess: (message) {
+                        context.showSuccessDialog(
+                          title: 'Success',
+                          message: 'Successfully onboarded to Transfy',
+                          onConfirm: () {},
+                        );
+                      },
+                      onError: (message) {
+                        context.showCustomSnackBar(message, isError: true);
+                      },
+                    );
+              },
+              label: "Onboard Transfy",
+            ),
+          ),
+
           const SizedBox(height: 24),
           Expanded(
             child: Container(
@@ -148,7 +174,8 @@ class WalletPage extends ConsumerWidget {
                           itemBuilder: (context, index) {
                             final transaction = data[index];
                             return TransactionItem(
-                              name: transaction.transWalletType ?? '',
+                              name: formatTransactionType(
+                                  transaction.transWalletType),
                               date: transaction.transactionDate
                                       ?.toIso8601String() ??
                                   '',

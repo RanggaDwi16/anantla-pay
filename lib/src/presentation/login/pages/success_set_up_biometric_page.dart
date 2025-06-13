@@ -1,3 +1,4 @@
+import 'package:anantla_pay/src/core/helpers/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:anantla_pay/src/core/utils/constant/app_colors.dart';
@@ -76,25 +77,32 @@ class _SuccessSetUpBiometricPageState extends State<SuccessSetUpBiometricPage> {
             const Spacer(flex: 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  onPressed: () {
-                    context.goNamed(RouteName.main);
-                  },
-                  child: const Text(
-                    'Go to Wallet Dashboard',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+              child: Button.filled(
+                onPressed: () {
+                  context.goNamed(RouteName.main);
+                },
+                disabled: !_isDone,
+                label: 'Go to Wallet Dashboard',
               ),
+              // SizedBox(
+              //   width: double.infinity,
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: AppColor.primaryColor,
+              //       padding: const EdgeInsets.symmetric(vertical: 16),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(30),
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       context.goNamed(RouteName.main);
+              //     },
+              //     child: const Text(
+              //       'Go to Wallet Dashboard',
+              //       style: TextStyle(color: Colors.white),
+              //     ),
+              //   ),
+              // ),
             ),
             const SizedBox(height: 24),
           ],

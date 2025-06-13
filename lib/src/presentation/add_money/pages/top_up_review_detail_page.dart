@@ -171,15 +171,7 @@ class TopUpReviewDetailPage extends ConsumerWidget {
                       color: AppColor.textGray,
                     ),
               ),
-              Gap(32),
-              Text(
-                'Payment Method',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-              const Gap(12),
+              Gap(16),
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -228,6 +220,63 @@ class TopUpReviewDetailPage extends ConsumerWidget {
                         ],
                       ),
                     ),
+                  ],
+                ),
+              ),
+
+              Gap(16),
+              Text(
+                'Payment Method',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+              const Gap(12),
+
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColor.primaryWhite,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    // Flag
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: AppColor.secondaryBackground,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(8), // mengecilkan icon
+                      child: Center(
+                        child: Image.asset(
+                          Assets.icons.bankOutline.path,
+                          width: 20,
+                          height: 20,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+
+                    // Texts
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${topUpData.bankName}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -339,7 +388,9 @@ class TopUpReviewDetailPage extends ConsumerWidget {
               InfoField(
                 label: 'You will receive',
                 value: formatCurrency(
-                    amount: topUpData.totalAmount ?? 0,
+                    amount: (topUpData.topUpAmount ?? 0) -
+                        (topUpData.partnerFee ?? 0) -
+                        (topUpData.platformFee ?? 0),
                     currencyCode: topUpData.fromCurrency ?? ''),
               ),
               Gap(32),

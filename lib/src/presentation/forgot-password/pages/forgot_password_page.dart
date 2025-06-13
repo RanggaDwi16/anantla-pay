@@ -166,9 +166,10 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                               },
                                             );
                                           },
-                                          onError: () {
+                                          onError: (error) {
                                             context.customErrorDialog(
-                                                'Forgot Password Failed');
+                                              'User Not Found',
+                                            );
                                           },
                                         );
                                   }

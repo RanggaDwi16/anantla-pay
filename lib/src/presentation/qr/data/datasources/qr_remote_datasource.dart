@@ -49,7 +49,7 @@ class QrRemoteDataSourceImpl implements QrRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -80,7 +80,7 @@ class QrRemoteDataSourceImpl implements QrRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -110,7 +110,7 @@ class QrRemoteDataSourceImpl implements QrRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {
@@ -138,7 +138,7 @@ class QrRemoteDataSourceImpl implements QrRemoteDataSource {
         return const Left("Something went wrong");
       }
     } on DioException catch (e) {
-      final error = await DioErrorHandler.handleError(e);
+      final error = e.response?.data['details'] ?? 'We encountered an issue';
       print('Error: $error');
       return Left(error);
     } catch (e) {

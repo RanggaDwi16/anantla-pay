@@ -24,7 +24,7 @@ class TransferDataNotifier extends _$TransferDataNotifier {
     state = state.copyWith(toWalletId: id);
   }
 
-  void setFromBalance(int balance) {
+  void setFromBalance(num balance) {
     state = state.copyWith(fromBalance: balance);
   }
 
@@ -36,7 +36,7 @@ class TransferDataNotifier extends _$TransferDataNotifier {
     state = state.copyWith(fromAmount: amount);
   }
 
-  void setToAmount(int amount) {
+  void setToAmount(num amount) {
     state = state.copyWith(toAmount: amount);
   }
 
@@ -117,10 +117,10 @@ class TransferData {
   final TransferType transferType;
   final int? fromWalletId;
   final int? toWalletId;
-  final int? fromBalance;
+  final num? fromBalance;
   final int? fromAmount;
   final String? toPhone;
-  final int? toAmount;
+  final num? toAmount;
   final String? fromName;
   final String? fromEmail;
   final String? toName;
@@ -175,10 +175,10 @@ class TransferData {
     TransferType? transferType,
     int? fromWalletId,
     int? toWalletId,
-    int? fromBalance,
+    num? fromBalance,
     int? fromAmount,
     String? toPhone,
-    int? toAmount,
+    num? toAmount,
     String? fromName,
     String? fromEmail,
     String? toName,

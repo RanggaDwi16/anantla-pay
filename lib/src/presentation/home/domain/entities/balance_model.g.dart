@@ -18,8 +18,8 @@ _$BalanceModelImpl _$$BalanceModelImplFromJson(Map<String, dynamic> json) =>
       balance: json['balance'] as num?,
       countryCode: json['country_code'] as String?,
       isLimited: json['is_limited'] as bool?,
-      totalReceived: (json['total_received'] as num?)?.toInt(),
-      totalSpent: (json['total_spent'] as num?)?.toInt(),
+      totalReceived: json['total_received'] as num?,
+      totalSpent: json['total_spent'] as num?,
     );
 
 Map<String, dynamic> _$$BalanceModelImplToJson(_$BalanceModelImpl instance) =>

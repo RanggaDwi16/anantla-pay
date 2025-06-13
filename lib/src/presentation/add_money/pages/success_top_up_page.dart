@@ -1,3 +1,4 @@
+import 'package:anantla_pay/src/core/helpers/formatters/string_format.dart';
 import 'package:anantla_pay/src/presentation/add_money/controllers/top_up_data_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,6 @@ class _SuccessTopUpPageState extends ConsumerState<SuccessTopUpPage> {
     final topUpData = ref.watch(topUpDataNotifierProvider);
     return WillPopScope(
       onWillPop: () async {
-        ref.read(topUpDataNotifierProvider.notifier).reset();
         context.goNamed(RouteName.main);
         return true;
       },
@@ -123,8 +123,12 @@ class _SuccessTopUpPageState extends ConsumerState<SuccessTopUpPage> {
                                   ?.copyWith(color: AppColor.textGray),
                               children: [
                                 TextSpan(
-                                  text:
-                                      '${topUpData.topUpAmount} ${topUpData.toCurrency} ',
+                                  text: formatCurrency(
+                                    amount: (topUpData.topUpAmount ?? 0) -
+                                        (topUpData.partnerFee ?? 0) -
+                                        (topUpData.platformFee ?? 0),
+                                    currencyCode: topUpData.fromCurrency ?? '',
+                                  ),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -133,7 +137,7 @@ class _SuccessTopUpPageState extends ConsumerState<SuccessTopUpPage> {
                                         color: AppColor.primaryBlack,
                                       ),
                                 ),
-                                const TextSpan(text: 'to '),
+                                const TextSpan(text: ' to '),
                                 TextSpan(
                                   text: '${topUpData.virtualAccountName}',
                                   style: Theme.of(context)
@@ -160,9 +164,11 @@ class _SuccessTopUpPageState extends ConsumerState<SuccessTopUpPage> {
                 padding: const EdgeInsets.all(20),
                 child: Button.filled(
                   onPressed: () {
-                    context.goNamed(RouteName.main);
-                    ref.read(topUpDataNotifierProvider.notifier).reset();
+                    context.goNamed(
+                      RouteName.main,
+                    );
                   },
+                  disabled: !isTopUpComplete,
                   label: 'Back to My Balance',
                 ),
               )

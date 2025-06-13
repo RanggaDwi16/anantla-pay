@@ -1,5 +1,6 @@
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/presentation/home/controllers/get_balance/fetch_balance_provider.dart';
+import 'package:anantla_pay/src/presentation/home/provider/balance_visibility_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/helpers/formatters/string_format.dart';
 import 'package:anantla_pay/src/core/utils/extensions/build_context.ext.dart';
@@ -15,13 +16,15 @@ class MultiCurrencyWalletSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isBalanceVisible = ref.watch(balanceVisibilityProvider);
+
     final wallets = ref.watch(fetchBalanceProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Multi-currency Wallet',
+          'Your Wallets',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
@@ -85,19 +88,28 @@ class MultiCurrencyWalletSection extends ConsumerWidget {
                             ],
                           ),
                           const Spacer(),
-                          Text(
-                            formatCurrency(
-                              amount: wallet.balance ?? 0,
-                              currencyCode: wallet.currency ?? '',
-                              isTransferAmount: wallet.currency != 'IDR',
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                          ),
+                          isBalanceVisible
+                              ? Text(
+                                  formatCurrency(
+                                    amount: wallet.balance ?? 0,
+                                    currencyCode: wallet.currency ?? '',
+                                    isTransferAmount: wallet.currency != 'IDR',
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                  ),
+                                )
+                              : Container(
+                                  width: 60,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
                         ],
                       ),
                     ),

@@ -1,14 +1,17 @@
 import 'package:anantla_pay/src/core/provider/location_provider.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/core/utils/assets.gen.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/get_balance/fetch_balance_provider.dart';
+import 'package:anantla_pay/src/presentation/account/controllers/get_transaction/fetch_transaction_provider.dart';
 import 'package:anantla_pay/src/presentation/account/controllers/top_up/top_up_data_provider.dart';
 import 'package:anantla_pay/src/presentation/home/controllers/get_user/fetch_user_provider.dart';
 import 'package:anantla_pay/src/presentation/home/widgets/home_summary_section.dart';
 import 'package:anantla_pay/src/presentation/home/widgets/icon_circle_widget.dart';
 import 'package:anantla_pay/src/presentation/home/widgets/section/balance_summary_section.dart';
 import 'package:anantla_pay/src/presentation/home/widgets/section/multi_currency_wallet_section.dart';
-import 'package:anantla_pay/src/presentation/home/widgets/section/quick_transfer_section.dart';
 import 'package:anantla_pay/src/presentation/main/controllers/user_id_provider.dart';
+import 'package:anantla_pay/src/presentation/transfer/controllers/get_exhange_rate/fetch_exhange_rate_provider.dart';
+import 'package:anantla_pay/src/presentation/transfer/controllers/transfer_data_provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anantla_pay/src/core/helpers/custom_app_bar.dart';
@@ -39,6 +42,9 @@ class _HomePageState extends ConsumerState<HomePage> {
           );
     }
     await ref.read(locationProvider.future);
+    ref.invalidate(fetchBalanceProvider);
+    ref.invalidate(fetchTransactionProvider);
+    // ref.invalidate(fetchExhangeRateProvider);
   }
 
   //useeffect fetchuserid
@@ -50,6 +56,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     final user = ref.watch(fetchUserProvider);
     useEffect(() {
       final userIdAsync = ref.watch(userIdProvider);
+      Future.microtask(() {
+        ref.read(topUpDataNotifierProvider.notifier).reset();
+        ref.read(transferDataNotifierProvider.notifier).reset();
+        // ref.invalidate(fetchExhangeRateProvider);
+      });
+
       userIdAsync.whenData((userId) {
         if (!_hasFetchedUser && userId != null) {
           _hasFetchedUser = true; // Supaya tidak fetch berkali-kali

@@ -58,15 +58,19 @@ class _QrisScannerPageState extends ConsumerState<QrisScannerPage> {
           if (barcode != null && barcode.isNotEmpty) {
             _handleDecodedQr(barcode);
           } else {
-            context.customErrorDialog('QR code not detected in the image.');
+            context.customErrorUserDialog('Cannot pay with this qr code',
+                'This QR code is not valid for payment.\nPlease try again.');
             controller?.resumeCamera();
           }
         } else {
-          context.customErrorDialog('QR code not detected in the image.');
+          print('No QR code found in the image');
           controller?.resumeCamera();
         }
       } catch (e) {
-        context.customErrorDialog('QR code not detected in the image.');
+        context.customErrorUserDialog(
+          'QR Code Not Detected',
+          'Please select a valid QR code image.',
+        );
         controller?.resumeCamera();
       }
     } else {
@@ -102,8 +106,11 @@ class _QrisScannerPageState extends ConsumerState<QrisScannerPage> {
                 isLoading = false;
                 isScanning = false;
               });
-              context.customErrorDialog(
-                  "'Cannot connect to server, please try again later.'");
+              // context.customErrorDialog(
+              //     "'Cannot connect to server, please try again later.'");
+              // context.showCustomSnackBar("Invalid or unsupported QR code.");
+              context.customErrorUserDialog('Cannot pay with this qr code',
+                  'This QR code is not valid for payment.\nPlease try again.');
               controller?.resumeCamera();
             },
           );
@@ -289,9 +296,14 @@ class _QrisScannerPageState extends ConsumerState<QrisScannerPage> {
                     isLoading = false;
                     isScanning = false;
                   });
-                  context.customErrorDialog(
-                    "Cannot connect to server, please try again later.",
-                  );
+                  // context.customErrorDialog(
+                  //   "Cannot connect to server, please try again later.",
+                  // );
+                  // context.showCustomSnackBar(
+                  //   "Invalid or unsupported QR code.",
+                  // );
+                  context.customErrorUserDialog('Cannot pay with this qr code',
+                      'This QR code is not valid for payment.\nPlease try again.');
                   controller.resumeCamera();
                 },
               ),
@@ -302,8 +314,8 @@ class _QrisScannerPageState extends ConsumerState<QrisScannerPage> {
                   isLoading = false;
                   isScanning = false;
                 });
-                context
-                    .customErrorDialog("Permintaan terlalu lama, coba lagi.");
+                context.customErrorDialog(
+                    "Cannot connect to server, please try again later.");
                 controller.resumeCamera();
               }
             }

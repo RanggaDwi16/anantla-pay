@@ -22,7 +22,7 @@ class ChooseBankPage extends ConsumerStatefulWidget {
 }
 
 class _ChooseBankPageState extends ConsumerState<ChooseBankPage> {
-  final _segmentController = ValueNotifier<String>('international');
+  final _segmentController = ValueNotifier<String>('same');
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +177,7 @@ class _ChooseBankPageState extends ConsumerState<ChooseBankPage> {
                               if (segment == 'international') {
                                 return const Center(
                                   child: Text(
-                                    'Bank internasional',
+                                    'International Bank Transfer is not available yet',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,

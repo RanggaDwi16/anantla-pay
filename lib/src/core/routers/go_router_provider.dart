@@ -1,4 +1,5 @@
 import 'package:anantla_pay/src/core/main/domain/usecases/verifOtpLogin.dart';
+import 'package:anantla_pay/src/core/provider/auth_state_provider.dart';
 import 'package:anantla_pay/src/core/provider/token_manager_provider.dart';
 import 'package:anantla_pay/src/core/routers/router_name.dart';
 import 'package:anantla_pay/src/presentation/add_money/pages/top_up_choose_bank_page.dart';
@@ -112,48 +113,94 @@ Raw<GoRouter> router(RouterRef ref) {
         },
       ),
       GoRoute(
-        path: '/main',
-        name: RouteName.main,
-        builder: (context, state) {
-          return MainPage();
-        },
-        redirect: (context, state) async {
-          final tokenManager = await ref.read(tokenManagerProvider.future);
-          final isFingerprintEnabled =
-              await tokenManager.isFingerprintEnabled();
+          path: '/main',
+          name: RouteName.main,
+          builder: (context, state) {
+            return MainPage();
+          },
+          redirect: (context, state) async {
+            final hasAuthenticated =
+                ref.read(hasAuthenticatedThisSessionProvider);
+            if (hasAuthenticated) return null;
 
-          // Cek apakah fingerprint aktif
-          if (isFingerprintEnabled) {
-            final auth = LocalAuthentication();
-            final canCheckBiometrics = await auth.canCheckBiometrics;
-            final isDeviceSupported = await auth.isDeviceSupported();
+            final tokenManager = await ref.read(tokenManagerProvider.future);
+            final isFingerprintEnabled =
+                await tokenManager.isFingerprintEnabled();
 
-            if (canCheckBiometrics && isDeviceSupported) {
-              try {
-                final didAuthenticate = await auth.authenticate(
-                  localizedReason: 'Scan your fingerprint or Face ID to log in',
-                  options: const AuthenticationOptions(
-                    biometricOnly: false,
-                    stickyAuth: true,
-                  ),
-                );
+            if (isFingerprintEnabled) {
+              final auth = LocalAuthentication();
+              final canCheckBiometrics = await auth.canCheckBiometrics;
+              final isDeviceSupported = await auth.isDeviceSupported();
 
-                if (!didAuthenticate) {
+              if (canCheckBiometrics && isDeviceSupported) {
+                try {
+                  final didAuthenticate = await auth.authenticate(
+                    localizedReason:
+                        'Scan your fingerprint or Face ID to log in',
+                    options: const AuthenticationOptions(
+                      biometricOnly: false,
+                      stickyAuth: true,
+                    ),
+                  );
+
+                  if (didAuthenticate) {
+                    // ✅ Set session as authenticated
+                    ref
+                        .read(hasAuthenticatedThisSessionProvider.notifier)
+                        .state = true;
+                    return null;
+                  } else {
+                    SystemNavigator.pop();
+                  }
+                } catch (e) {
                   SystemNavigator.pop();
                 }
-              } catch (e) {
-                // Kalau error fingerprint, keluar aplikasi
-                SystemNavigator.pop();
               }
-            } else {
-              // Kalau device tidak support, skip (bisa langsung masuk)
-              return null;
             }
+
+            return null;
           }
 
-          return null; // Kalau fingerprint tidak diaktifkan, langsung masuk ke MainPage
-        },
-      ),
+          // redirect: (context, state) async {
+          //   final hasAuthenticated =
+          //       ref.read(hasAuthenticatedBiometricProvider); // <- pakai provider
+          //   if (hasAuthenticated) return null;
+          //   final tokenManager = await ref.read(tokenManagerProvider.future);
+          //   final isFingerprintEnabled =
+          //       await tokenManager.isFingerprintEnabled();
+
+          //   // Cek apakah fingerprint aktif
+          //   if (isFingerprintEnabled) {
+          //     final auth = LocalAuthentication();
+          //     final canCheckBiometrics = await auth.canCheckBiometrics;
+          //     final isDeviceSupported = await auth.isDeviceSupported();
+
+          //     if (canCheckBiometrics && isDeviceSupported) {
+          //       try {
+          //         final didAuthenticate = await auth.authenticate(
+          //           localizedReason: 'Scan your fingerprint or Face ID to log in',
+          //           options: const AuthenticationOptions(
+          //             biometricOnly: false,
+          //             stickyAuth: true,
+          //           ),
+          //         );
+
+          //         if (!didAuthenticate) {
+          //           SystemNavigator.pop();
+          //         }
+          //       } catch (e) {
+          //         // Kalau error fingerprint, keluar aplikasi
+          //         SystemNavigator.pop();
+          //       }
+          //     } else {
+          //       // Kalau device tidak support, skip (bisa langsung masuk)
+          //       return null;
+          //     }
+          //   }
+
+          //   return null; // Kalau fingerprint tidak diaktifkan, langsung masuk ke MainPage
+          // },
+          ),
       GoRoute(
         path: '/addMoney',
         name: RouteName.addMoney,

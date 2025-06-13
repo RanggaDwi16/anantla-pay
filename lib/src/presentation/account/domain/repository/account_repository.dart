@@ -41,4 +41,7 @@ abstract class AccountRepository {
     required VirtualAccountParams params,
   });
   Future<Either<String, List<CountryModel>>> getAllCountryCode();
+  Future<Either<String, String>> onboardIron({
+    required int userId,
+  });
 }
